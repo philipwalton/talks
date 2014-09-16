@@ -1,0 +1,38 @@
+<template id="template">
+  <h1>Shadow Header</h1>
+  <content></content>
+</template>
+
+<script>
+(function() {
+
+  // thisDoc refers to the "importee", which is blog-post.html
+  var thisDoc = document.currentScript.ownerDocument;
+
+  // thatDoc refers to the "importer", which is index.html
+  var thatDoc = document;
+
+  // Creates an object based in the HTML Element prototype
+  var element = Object.create(HTMLElement.prototype);
+
+  // Fires when an instance of the element is created
+  element.createdCallback = function() {
+    var template = thisDoc.querySelector('#template');
+    var clone = thisDoc.importNode(template.content, true);
+    this.createShadowRoot().appendChild(clone);
+  };
+
+  // Fires when an instance was inserted into the document
+  element.attachedCallback = function() {};
+
+  // Fires when an instance was removed from the document
+  element.detachedCallback = function() {};
+
+  // Fires when an attribute was added, removed, or updated
+  element.attributeChangedCallback = function(attr, oldVal, newVal) {};
+
+  document.registerElement('my-element', {
+    prototype: element
+  });
+}());
+</script>
