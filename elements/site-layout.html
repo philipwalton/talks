@@ -1,0 +1,60 @@
+<link rel="import" href="flex-line.html">
+
+<template id="shadow">
+  <style>
+    :host(body) {
+      box-sizing: border-box;
+      display: flex;
+      min-height: 100vh;
+      padding: 1em;
+      margin: 0;
+    }
+    flex-line {
+      flex: 1;
+    }
+    div {
+      background: #eee;
+      border-radius: .5em;
+      padding: 1em;
+    }
+  </style>
+
+  <flex-line gutters column>
+    <div>
+      <content select="header"></content>
+    </div>
+    <flex-line gutters flex>
+      <div>
+        <content select="aside"></content>
+      </div>
+      <div flex>
+        <content select="main"></content>
+      </div>
+    </flex-line>
+    <div>
+      <content select="footer"></content>
+    </div>
+  </flex-line>
+
+</template>
+
+<script>
+(function(ownerDoc) {
+
+  var proto = Object.create(HTMLBodyElement.prototype);
+
+  proto.createdCallback = function() {
+    var shadowRoot = this.createShadowRoot();
+    var shadowTemplate = ownerDoc.getElementById('shadow');
+    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
+
+    shadowRoot.appendChild(shadowTemplateClone);
+  };
+
+  window.ParentElement = document.registerElement('site-layout', {
+    prototype: proto,
+    extends: 'body',
+  });
+
+}(document.currentScript.ownerDocument));
+</script>
