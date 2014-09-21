@@ -2,44 +2,28 @@
   <style>
     :host {
       border: 1px solid red;
+      display: block;
     }
   </style>
-  <content></content>
+  <shadow></shadow>
 </template>
 
 <script>
-(function() {
+(function(doc, ownerDoc) {
 
-  // thisDoc refers to the "importee", which is blog-post.html
-  var thisDoc = document.currentScript.ownerDocument;
+  var name = 'child-element';
+  var proto = Object.create(HTMLElement.prototype);
 
-  // thatDoc refers to the "importer", which is index.html
-  var thatDoc = document;
+  proto.createdCallback = function() {
+    var parent = ownerDoc.createElement('parent-element');
+    parent.createdCallback.call(this, arguments);
 
-  // Creates an object based in the HTML Element prototype
-  window.childProto = Object.create(window.parentProto);
-
-  // Fires when an instance of the element is created
-  window.childProto.createdCallback = function() {
-    // Call super.
-    window.parentProto.createdCallback.call(this, arguments);
-
-    var template = thisDoc.querySelector('template');
-    var clone = thisDoc.importNode(template.content, true);
+    var template = ownerDoc.querySelector('template');
+    var clone = ownerDoc.importNode(template.content, true);
     this.createShadowRoot().appendChild(clone);
   };
 
-  // Fires when an instance was inserted into the document
-  window.childProto.attachedCallback = function() {};
+  document.registerElement(name, {prototype: proto});
 
-  // Fires when an instance was removed from the document
-  window.childProto.detachedCallback = function() {};
-
-  // Fires when an attribute was added, removed, or updated
-  window.childProto.attributeChangedCallback = function(attr, oldVal, newVal) {};
-
-  document.registerElement('child-element', {
-    prototype: window.childProto
-  });
-}());
+}(document, document.currentScript.ownerDocument));
 </script>

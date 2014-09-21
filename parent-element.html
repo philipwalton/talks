@@ -2,6 +2,7 @@
   <style>
     :host {
       background: yellow;
+      display: block;
       padding: 1em;
     }
   </style>
@@ -9,35 +10,18 @@
 </template>
 
 <script>
-(function() {
+(function(doc, ownerDoc) {
 
-  // thisDoc refers to the "importee", which is blog-post.html
-  var thisDoc = document.currentScript.ownerDocument;
+  var name = 'parent-element';
+  var proto = Object.create(HTMLElement.prototype);
 
-  // thatDoc refers to the "importer", which is index.html
-  var thatDoc = document;
-
-  // Creates an object based in the HTML Element prototype
-  window.parentProto = Object.create(HTMLElement.prototype);
-
-  // Fires when an instance of the element is created
-  window.parentProto.createdCallback = function() {
-    var template = thisDoc.querySelector('template');
-    var clone = thisDoc.importNode(template.content, true);
+  proto.createdCallback = function() {
+    var template = ownerDoc.querySelector('template');
+    var clone = ownerDoc.importNode(template.content, true);
     this.createShadowRoot().appendChild(clone);
   };
 
-  // Fires when an instance was inserted into the document
-  window.parentProto.attachedCallback = function() {};
+  document.registerElement(name, {prototype: proto});
 
-  // Fires when an instance was removed from the document
-  window.parentProto.detachedCallback = function() {};
-
-  // Fires when an attribute was added, removed, or updated
-  window.parentProto.attributeChangedCallback = function(attr, oldVal, newVal) {};
-
-  document.registerElement('parent-element', {
-    prototype: window.parentProto
-  });
-}());
+}(document, document.currentScript.ownerDocument));
 </script>
