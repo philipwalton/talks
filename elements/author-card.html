@@ -1,0 +1,48 @@
+<link href="boxed-media-object.html" rel="import">
+
+<template id="shadow">
+  <style>
+    :host {
+      border-radius: 4px;
+      max-width: 400px;
+    }
+    ::content img {
+      border-radius: 50%;
+    }
+    ::content .name {
+      margin: 0 0 .3em;
+    }
+    ::content .byline {
+      color: #999;
+      font-size: .8em;
+      margin: 0 0 1.5em;
+    }
+    ::content .bio {
+      margin: 0;
+    }
+  </style>
+  <shadow></shadow>
+</template>
+
+<script>
+(function(ownerDoc) {
+
+  var proto = Object.create(HTMLElement.prototype);
+
+  proto.createdCallback = function() {
+    // Call super.
+    window.BoxedMediaObject.prototype.createdCallback.call(this, arguments);
+
+    var shadowRoot = this.createShadowRoot();
+    var shadowTemplate = ownerDoc.getElementById('shadow');
+    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
+
+    shadowRoot.appendChild(shadowTemplateClone);
+  };
+
+  window.AuthorCard = document.registerElement('author-card', {
+    prototype: proto
+  });
+
+}(document.currentScript.ownerDocument));
+</script>
