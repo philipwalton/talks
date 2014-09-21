@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Site Layout Demo</title>
+  <link rel="import" href="elements/flex-line.html">
+  <style>
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    body {
+      box-sizing: border-box;
+      height: 100vh;
+      margin: 0;
+      padding: 1em;
+    }
+    header, footer, main, aside {
+      background: #eee;
+      border-radius: .5em;
+      padding: 1em;
+    }
+  </style>
+</head>
+<body>
+
+  <flex-line column gutters>
+
+    <header>Header</header>
+
+    <flex-line flex gutters>
+      <aside>Sidebar</aside>
+      <main flex>Content</main>
+      <aside>Sidebar</aside>
+    </flex-line>
+
+    <flex-line gutters>
+      <aside flex>Ads</aside>
+      <aside flex>Ads</aside>
+      <aside flex>Ads</aside>
+    </flex-line>
+
+    <footer>footer</footer>
+
+  </flex-line>
+
+
+</body>
+</html>

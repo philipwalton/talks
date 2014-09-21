@@ -1,0 +1,53 @@
+<template id="shadow">
+  <style>
+
+    :host {
+      display: flex;
+      width: 100%;
+    }
+    ::content > :not([flex]) {
+      flex: 0 0 auto;
+    }
+    ::content > [flex] {
+      flex: 1;
+    }
+
+    :host([column]) {
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    :host([gutters][column]) ::content > :not(:first-child) {
+      margin-top: 1em;
+    }
+    :host([gutters]:not([column])) ::content > :not(:first-child) {
+      margin-left: 1em;
+    }
+
+    :host([gutters][column]) ::content > :not(:first-child) {
+      margin-top: 1em;
+    }
+
+  </style>
+  <content></content>
+</template>
+
+<script>
+(function(ownerDoc) {
+
+  var proto = Object.create(HTMLElement.prototype);
+
+  proto.createdCallback = function() {
+    var shadowRoot = this.createShadowRoot();
+    var shadowTemplate = ownerDoc.getElementById('shadow');
+    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
+
+    shadowRoot.appendChild(shadowTemplateClone);
+  };
+
+  window.ParentElement = document.registerElement('flex-line', {
+    prototype: proto
+  });
+
+}(document.currentScript.ownerDocument));
+</script>
