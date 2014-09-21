@@ -1,0 +1,37 @@
+<template id="shadow">
+  <style>
+    :host {
+      display: flex;
+      flex: 1;
+      margin-left: 1em;
+    }
+    :host([size="1/2"]) {
+      flex: 0 0 calc(50% - 1em);
+    }
+    :host([size="1/3"]) {
+      flex: 0 0 calc(100%/3 - 1em);
+    }
+    :host([size="1/4"]) {
+      flex: 0 0 calc(100%/4 - 1em);
+    }
+  </style>
+  <content></content>
+</template>
+
+<script>
+(function(ownerDoc) {
+
+  var proto = Object.create(HTMLElement.prototype);
+
+  proto.createdCallback = function() {
+    var shadowRoot = this.createShadowRoot();
+    var shadowTemplate = ownerDoc.getElementById('shadow');
+    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
+
+    shadowRoot.appendChild(shadowTemplateClone);
+  };
+
+  window.GridCol = document.registerElement('grid-col', {prototype: proto});
+
+}(document.currentScript.ownerDocument));
+</script>

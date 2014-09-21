@@ -1,0 +1,28 @@
+<template id="shadow">
+  <style>
+    :host {
+      display: flex;
+      margin-left: -1em;
+      width: calc(100% + 1em);
+    }
+  </style>
+  <content select="grid-col"></content>
+</template>
+
+<script>
+(function(ownerDoc) {
+
+  var proto = Object.create(HTMLElement.prototype);
+
+  proto.createdCallback = function() {
+    var shadowRoot = this.createShadowRoot();
+    var shadowTemplate = ownerDoc.getElementById('shadow');
+    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
+
+    shadowRoot.appendChild(shadowTemplateClone);
+  };
+
+  window.GridRow = document.registerElement('grid-row', {prototype: proto});
+
+}(document.currentScript.ownerDocument));
+</script>
