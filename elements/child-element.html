@@ -1,0 +1,32 @@
+<template id="shadow">
+  <style>
+    :host {
+      border: 3px dotted black;
+      background: #ddd;
+    }
+  </style>
+  <shadow></shadow>
+</template>
+
+<script>
+(function(doc, ownerDoc) {
+
+  var proto = Object.create(HTMLElement.prototype);
+
+  proto.createdCallback = function() {
+    // Call super.
+    window.ParentElement.prototype.createdCallback.call(this, arguments);
+
+    var shadowRoot = this.createShadowRoot();
+    var shadowTemplate = ownerDoc.getElementById('shadow');
+    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
+
+    shadowRoot.appendChild(shadowTemplateClone);
+  };
+
+  window.ChildElement = document.registerElement('child-element', {
+    prototype: proto
+  });
+
+}(document, document.currentScript.ownerDocument));
+</script>
