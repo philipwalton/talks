@@ -4,12 +4,16 @@
       align-items: flex-start;
       display: flex;
     }
-    ::content > figure {
+    ::content > :first-child {
       display: flex;
       margin: 0 1em 0 0;
     }
-    ::content > div {
+    ::content > :last-child {
       flex: 1;
+    }
+
+    :host([center]) {
+      align-items: center;
     }
   </style>
   <content></content>
