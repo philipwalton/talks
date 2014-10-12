@@ -3,25 +3,31 @@
     :host {
       display: flex;
     }
-    ::content > :first-child {
+    ::content > img,
+    ::content > figure,
+    ::content > picture {
+      flex: 0 0 auto;
       margin: 0 1.5em 0 0;
     }
-    ::content > :last-child {
+    ::content > p,
+    ::content > main {
       flex: 1;
+      margin: 0;
     }
   </style>
-  <content></content>
+  <content select="img, figure, picture"></content>
+  <content select="p, main"></content>
 </template>
 
 <script>
-(function(template) {
-  document.registerElement('author-card', {
+(function(ownerDoc) {
+  MediaObject = document.registerElement('media-object', {
     prototype: Object.create(HTMLElement.prototype, {
       createdCallback: { value: function() {
-        var templateClone = document.importNode(template.content, true);
-        this.createShadowRoot().appendChild(templateClone);
+        this.createShadowRoot().innerHTML = ownerDoc
+            .querySelector('template').innerHTML;
       }}
     })
   });
-}(document.currentScript.ownerDocument.querySelector('template')));
+}(document.currentScript.ownerDocument));
 </script>

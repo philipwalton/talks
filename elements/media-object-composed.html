@@ -1,0 +1,30 @@
+<link rel="import" href="media-object.html">
+
+<template>
+  <style>
+    :host {
+      display: block;
+      background: hsl(0, 0%, 90%);
+      border-radius: 4px;
+      margin: 0 0 1.5em;
+      max-width: 30em;
+      padding: 1.5em;
+    }
+  </style>
+  <media-object>
+    <content></content>
+  </media-object>
+</template>
+
+<script>
+(function(ownerDoc) {
+  MediaObjectComposed = document.registerElement('media-object-composed', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        this.createShadowRoot().innerHTML = ownerDoc
+            .querySelector('template').innerHTML;
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument));
+</script>
