@@ -1,40 +1,27 @@
 <template id="shadow">
   <style>
     :host {
-      align-items: flex-start;
       display: flex;
     }
     ::content > :first-child {
-      display: flex;
       margin: 0 1.5em 0 0;
     }
     ::content > :last-child {
       flex: 1;
-    }
-
-    :host([center]) {
-      align-items: center;
     }
   </style>
   <content></content>
 </template>
 
 <script>
-(function(ownerDoc) {
-
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.MediaObject = document.registerElement('media-object', {
-    prototype: proto
+(function(template) {
+  document.registerElement('author-card', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
   });
-
-}(document.currentScript.ownerDocument));
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>
