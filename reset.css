@@ -5,8 +5,13 @@
 }
 
 html {
+  background: #fff;
   box-sizing: border-box;
   font: .875em/1.333 'Open Sans', sans-serif;
+}
+
+html[colored] {
+  background: hsl(0, 0%, 90%);
 }
 
 body {
@@ -14,10 +19,19 @@ body {
   padding: 1.5em;
 }
 
+body[full] {
+  height: 100vh;
+}
+
 section {
   margin-bottom: 1.5em;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400;
 }
