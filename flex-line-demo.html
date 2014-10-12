@@ -2,26 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Site Layout Demo</title>
+  <title>Flex Line Demo</title>
   <link rel="import" href="elements/flex-line.html">
+  <link rel="stylesheet" href="reset.css">
   <style>
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-    body {
-      box-sizing: border-box;
-      height: 100vh;
-      margin: 0;
-      padding: 1em;
-    }
     header, footer, main, aside {
-      background: #eee;
+      background: hsl(0, 0%, 90%);
       border-radius: .5em;
-      padding: 1em;
+      padding: 1.5em;
     }
   </style>
 </head>
-<body>
+<body full>
 
   <flex-line column gutters>
 
@@ -42,7 +34,6 @@
     <footer>footer</footer>
 
   </flex-line>
-
 
 </body>
 </html>

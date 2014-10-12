@@ -18,14 +18,14 @@
     }
 
     :host([gutters][column]) ::content > :not(:first-child) {
-      margin-top: 1em;
+      margin-top: 1.5em;
     }
     :host([gutters]:not([column])) ::content > :not(:first-child) {
-      margin-left: 1em;
+      margin-left: 1.5em;
     }
 
     :host([gutters][column]) ::content > :not(:first-child) {
-      margin-top: 1em;
+      margin-top: 1.5em;
     }
 
   </style>
@@ -33,21 +33,14 @@
 </template>
 
 <script>
-(function(ownerDoc) {
-
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.FlexLine = document.registerElement('flex-line', {
-    prototype: proto
+(function(template) {
+  document.registerElement('flex-line', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
   });
-
-}(document.currentScript.ownerDocument));
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>
