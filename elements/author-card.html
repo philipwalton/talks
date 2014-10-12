@@ -1,48 +1,60 @@
-<link href="boxed-media-object.html" rel="import">
+<link href="media-object.html" rel="import">
 
-<template id="shadow">
+<template>
   <style>
     :host {
-      border-radius: 4px;
-      max-width: 400px;
+      background: #fff;
+      box-shadow: 0 0 1em rgba(0,0,0,.1);
+      color: #222;
+      display: block;
+      font-weight: 300;
+      max-width: 30em;
+      padding: 1.5em;
     }
-    ::content img {
+    ::content > img {
       border-radius: 50%;
     }
-    ::content .name {
-      margin: 0 0 .3em;
-    }
-    ::content .byline {
-      color: #999;
-      font-size: .8em;
-      margin: 0 0 1.5em;
-    }
-    ::content .bio {
+    ::content > h1,
+    ::content > h2,
+    ::content > h3,
+    ::content > h4,
+    ::content > h5,
+    ::content > h6 {
+      font-size: 1.4em;
       margin: 0;
     }
+    ::content > b {
+      font-size: .85em;
+      font-weight: 300;
+    }
+    ::content > p {
+      border-top: 1px solid hsl(0, 0%, 90%);
+      color: #888;
+      margin: 1em 0 0;
+      padding-top: 1em;
+    }
   </style>
-  <shadow></shadow>
+  <media-object>
+    <figure>
+      <content select="img"></content>
+    </figure>
+    <div>
+      <content select="h1,h2,h3,h4,h5,h6"></content>
+      <content select="b"></content>
+      <content select="p"></content>
+    </div>
+  </media-object>
 </template>
 
 <script>
-(function(ownerDoc) {
-
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    // Call super.
-    window.BoxedMediaObject.prototype.createdCallback.call(this, arguments);
-
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.AuthorCard = document.registerElement('author-card', {
-    prototype: proto
+(function(template) {
+  document.registerElement('author-card', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
   });
-
-}(document.currentScript.ownerDocument));
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>
