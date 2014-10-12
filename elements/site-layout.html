@@ -1,13 +1,11 @@
 <link rel="import" href="flex-line.html">
 
-<template id="shadow">
+<template>
   <style>
     :host(body) {
       box-sizing: border-box;
       display: flex;
       min-height: 100vh;
-      padding: 1em;
-      margin: 0;
     }
     flex-line {
       flex: 1;
@@ -15,7 +13,7 @@
     div {
       background: #eee;
       border-radius: .5em;
-      padding: 1em;
+      padding: 1.5em;
     }
   </style>
 
@@ -39,22 +37,15 @@
 </template>
 
 <script>
-(function(ownerDoc) {
-
-  var proto = Object.create(HTMLBodyElement.prototype);
-
-  proto.createdCallback = function() {
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.ParentElement = document.registerElement('site-layout', {
-    prototype: proto,
+(function(template) {
+  document.registerElement('site-layout', {
     extends: 'body',
+    prototype: Object.create(HTMLBodyElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
   });
-
-}(document.currentScript.ownerDocument));
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>
