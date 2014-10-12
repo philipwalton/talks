@@ -1,29 +1,24 @@
-<template id="shadow">
+<template>
   <style>
     :host {
-      background: yellow;
+      background: hsl(0, 0%, 90%);
       display: block;
-      padding: 1em;
+      margin: 0 0 1.5em;
+      padding: 1.5em;
     }
   </style>
   <content></content>
 </template>
 
 <script>
-(function(ownerDoc) {
-
-  var name = 'parent-element';
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.ParentElement = document.registerElement(name, {prototype: proto});
-
-}(document.currentScript.ownerDocument));
+(function(template) {
+  ParentElement = document.registerElement('parent-element', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>

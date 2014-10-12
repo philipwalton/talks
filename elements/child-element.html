@@ -1,32 +1,25 @@
-<template id="shadow">
+<template>
   <style>
     :host {
-      border: 3px dotted black;
-      background: #ddd;
+      border: 3px dotted red;
+      color: red;
     }
   </style>
   <shadow></shadow>
 </template>
 
 <script>
-(function(doc, ownerDoc) {
+(function(template) {
+  ChildElement = document.registerElement('child-element', {
+    prototype: Object.create(ParentElement.prototype, {
+      createdCallback: { value: function() {
+        // Call super.
+        ParentElement.prototype.createdCallback.call(this);
 
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    // Call super.
-    window.ParentElement.prototype.createdCallback.call(this, arguments);
-
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.ChildElement = document.registerElement('child-element', {
-    prototype: proto
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
   });
-
-}(document, document.currentScript.ownerDocument));
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>
