@@ -1,132 +1,117 @@
-<template>
-  <style>
+<link rel="import" href="factory-element.html">
 
-    :host {
-      display: flex;
-    }
+<factory-element name="control-group">
+  <template>
+    <style>
 
-    /* Unset select styles to clear the canvas before adding some back. */
-    ::content select{
-      all: unset;
-    }
+      :host {
+        display: flex;
+      }
 
-    ::content button,
-    ::content input,
-    ::content select {
-      /* from normalize.css */
-      color: inherit;
-      font: inherit;
-      margin: 0;
+      /* Unset select styles to clear the canvas before adding some back. */
+      ::content select{
+        all: unset;
+      }
 
-      border: 1px solid #ccc;
-      box-shadow: 0 0 .25em rgba(0,0,0,0);
-      box-sizing: border-box;
-      line-height: 1.4;
-      padding: .5em .75em .5em;
-      transition: all .2s;
-    }
+      ::content button,
+      ::content input,
+      ::content select {
+        /* from normalize.css */
+        color: inherit;
+        font: inherit;
+        margin: 0;
 
-    ::content button:focus,
-    ::content input:focus,
-    ::content select:focus {
-      border-color: #aaa;
-      outline: none;
-      box-shadow: 0 0 .3em rgba(0,0,0,.15);
-    }
+        border: 1px solid #ccc;
+        box-shadow: 0 0 .25em rgba(0,0,0,0);
+        box-sizing: border-box;
+        line-height: 1.4;
+        padding: .5em .75em .5em;
+        transition: all .2s;
+      }
 
-    ::content input {
-      flex: 1 0 0px;
-      width: 10em;
-    }
+      ::content button:focus,
+      ::content input:focus,
+      ::content select:focus {
+        border-color: #aaa;
+        outline: none;
+        box-shadow: 0 0 .3em rgba(0,0,0,.15);
+      }
 
-    ::content button {
-      background: #f8f8f8;
-      cursor: pointer;
-      justify-content: center;
-    }
+      ::content input {
+        flex: 1 0 0px;
+        width: 10em;
+      }
 
-    ::content button:hover,
-    ::content select:hover {
-      background-color: #f0f0f0;
-      border-color: #aaa;
-    }
+      ::content button {
+        background: #f8f8f8;
+        cursor: pointer;
+        justify-content: center;
+      }
 
-    ::content select {
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><path fill="%23444" d="M80,30L57,67h46L80,30z M80,130l23-37-46,0L80,130z"/></svg>') no-repeat 100% 50%, #f8f8f8;
-      background-size: 1.667em;
-      padding-right: 2em;
-      position: relative;
-    }
+      ::content button:hover,
+      ::content select:hover {
+        background-color: #f0f0f0;
+        border-color: #aaa;
+      }
 
-    ::content :only-child {
-      flex: 1;
-    }
+      ::content select {
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><path fill="%23444" d="M80,30L57,67h46L80,30z M80,130l23-37-46,0L80,130z"/></svg>') no-repeat 100% 50%, #f8f8f8;
+        background-size: 1.667em;
+        padding-right: 2em;
+        position: relative;
+      }
 
-    ::content :first-child {
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
-    }
+      ::content :only-child {
+        flex: 1;
+      }
 
-    ::content :last-child {
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
+      ::content :first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
 
-    ::content * + * {
-      margin-left: -1px!important;
-    }
-    ::content *:active,
-    ::content *:focus,
-    ::content *:hover {
-      position: relative;
-      z-index: 2;
-    }
+      ::content :last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
 
-    /*
-     * :host([inline]) modifier.
-     */
+      ::content * + * {
+        margin-left: -1px!important;
+      }
+      ::content *:active,
+      ::content *:focus,
+      ::content *:hover {
+        position: relative;
+        z-index: 2;
+      }
 
-    :host([inline]) {
-      display: inline-flex;
-      vertical-align: bottom;
-    }
+      /*
+       * :host([inline]) modifier.
+       */
 
-    /*
-     * button[action] modifier.
-     */
+      :host([inline]) {
+        display: inline-flex;
+        vertical-align: bottom;
+      }
 
-    ::content button[action] {
-      background-color: hsl(150,50%,50%);
-      border-color: transparent;
-      color: #fff;
-      position: relative;
-      z-index: 1;
-    }
-    ::content button[action]:active,
-    ::content button[action]:focus,
-    ::content button[action]:hover {
-      background-color: hsl(150,50%,45%);
-    }
+      /*
+       * button[action] modifier.
+       */
 
-  </style>
-  <content select="button,input,select"></content>
-</template>
+      ::content button[action] {
+        background-color: hsl(150,50%,50%);
+        border-color: transparent;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+      }
+      ::content button[action]:active,
+      ::content button[action]:focus,
+      ::content button[action]:hover {
+        background-color: hsl(150,50%,45%);
+      }
 
-<script>
-(function(ownerDoc) {
-
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.ControlGroup =
-      document.registerElement('control-group', {prototype: proto});
-
-}(document.currentScript.ownerDocument));
-</script>
+    </style>
+    <content select="button,input,select"></content>
+  </template>
+</factory-element>
