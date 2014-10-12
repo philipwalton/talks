@@ -1,0 +1,42 @@
+<script>
+(function() {
+
+  // Store a reference to all created element by element name.
+  var elements = {};
+
+  function createElement(name, opts) {
+    opts = opts || {};
+    elements[name] = document.registerElement(name, {
+      // If these were dynamic elements, we'd need to extend from the proper
+      // prototype, but since they're just presentational elements, it's
+      // okay to always extend from `HTMLElement.prototype`.
+      prototype: Object.create(HTMLElement.prototype, {
+        createdCallback: { value: function() {
+          if (opts.extends) {
+            elements[opts.extends].prototype.createdCallback.call(this);
+          }
+          if (opts.template) {
+            this.createShadowRoot().innerHTML = opts.template.innerHTML;
+          }
+        }}
+      }),
+      extends: opts.extendsNative || undefined
+    });
+  }
+
+  document.registerElement('factory-element', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var name = this.getAttribute('name');
+        var opts = {
+          extends: this.getAttribute('extends'),
+          extendsNative: this.getAttribute('extends-native'),
+          template: this.querySelector('template')
+        };
+        createElement(name, opts);
+      }}
+    })
+  });
+
+}());
+</script>
