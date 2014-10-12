@@ -1,51 +1,39 @@
+<link rel="import" href="factory-element.html">
 <link rel="import" href="flex-line.html">
 
-<template>
-  <style>
-    :host(body) {
-      box-sizing: border-box;
-      display: flex;
-      min-height: 100vh;
-    }
-    flex-line {
-      flex: 1;
-    }
-    div {
-      background: #eee;
-      border-radius: .5em;
-      padding: 1.5em;
-    }
-  </style>
+<factory-element name="site-layout" extends-native="body">
+  <template>
+    <style>
+      :host(body) {
+        box-sizing: border-box;
+        display: flex;
+        min-height: 100vh;
+      }
+      flex-line {
+        flex: 1;
+      }
+      div {
+        background: hsl(0, 0%, 90%);
+        border-radius: .5em;
+        padding: 1.5em;
+      }
+    </style>
 
-  <flex-line gutters column>
-    <div>
-      <content select="header"></content>
-    </div>
-    <flex-line gutters flex>
+    <flex-line gutters column>
       <div>
-        <content select="aside"></content>
+        <content select="header"></content>
       </div>
-      <div flex>
-        <content select="main"></content>
+      <flex-line gutters flex>
+        <div>
+          <content select="aside"></content>
+        </div>
+        <div flex>
+          <content select="main"></content>
+        </div>
+      </flex-line>
+      <div>
+        <content select="footer"></content>
       </div>
     </flex-line>
-    <div>
-      <content select="footer"></content>
-    </div>
-  </flex-line>
-
-</template>
-
-<script>
-(function(template) {
-  document.registerElement('site-layout', {
-    extends: 'body',
-    prototype: Object.create(HTMLBodyElement.prototype, {
-      createdCallback: { value: function() {
-        var templateClone = document.importNode(template.content, true);
-        this.createShadowRoot().appendChild(templateClone);
-      }}
-    })
-  });
-}(document.currentScript.ownerDocument.querySelector('template')));
-</script>
+  </template>
+</factory-element>
