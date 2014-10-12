@@ -7,7 +7,7 @@
 html {
   background: #fff;
   box-sizing: border-box;
-  font: .875em/1.333 'Open Sans', sans-serif;
+  font: 1em/1.333 sans-serif;
 }
 
 html[colored] {
@@ -34,4 +34,8 @@ h4,
 h5,
 h6 {
   font-weight: 400;
+}
+
+p {
+  margin: 0 0 1em;
 }

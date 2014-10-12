@@ -1,4 +1,4 @@
-<template id="shadow">
+<template>
   <style>
     :host {
       display: flex;
@@ -19,19 +19,14 @@
 </template>
 
 <script>
-(function(ownerDoc) {
-
-  var proto = Object.create(HTMLElement.prototype);
-
-  proto.createdCallback = function() {
-    var shadowRoot = this.createShadowRoot();
-    var shadowTemplate = ownerDoc.getElementById('shadow');
-    var shadowTemplateClone = document.importNode(shadowTemplate.content, true);
-
-    shadowRoot.appendChild(shadowTemplateClone);
-  };
-
-  window.GridCol = document.registerElement('grid-col', {prototype: proto});
-
-}(document.currentScript.ownerDocument));
+(function(template) {
+  document.registerElement('grid-col', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument.querySelector('template')));
 </script>
