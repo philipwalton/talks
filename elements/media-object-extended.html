@@ -15,11 +15,13 @@
 
 <script>
 (function(ownerDoc) {
-  MediaObjectExtended = document.registerElement('media-object-extended', {
-    prototype: Object.create(MediaObject.prototype, {
+  document.registerElement('media-object-extended', {
+    prototype: Object.create(HTMLElement.prototype, {
       createdCallback: { value: function() {
-        // Call super.
-        MediaObject.prototype.createdCallback.call(this);
+
+        // Call the media-object's `createdCallback` prototype method.
+        document.createElement('media-object').constructor
+            .prototype.createdCallback.call(this);
 
         this.createShadowRoot().innerHTML = ownerDoc
             .querySelector('template').innerHTML;

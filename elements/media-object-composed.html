@@ -18,7 +18,7 @@
 
 <script>
 (function(ownerDoc) {
-  MediaObjectComposed = document.registerElement('media-object-composed', {
+  document.registerElement('media-object-composed', {
     prototype: Object.create(HTMLElement.prototype, {
       createdCallback: { value: function() {
         this.createShadowRoot().innerHTML = ownerDoc
