@@ -3,25 +3,26 @@
     :host {
       display: flex;
     }
-    ::content > img,
-    ::content > figure,
-    ::content > picture {
+    div:first-of-type {
       flex: 0 0 auto;
       margin: 0 1.5em 0 0;
     }
-    ::content > p,
-    ::content > main {
+    div:last-of-type {
       flex: 1;
       margin: 0;
     }
   </style>
-  <content select="img, figure, picture"></content>
-  <content select="p, main"></content>
+  <div>
+    <content select="img, svg, figure, picture"></content>
+  </div>
+  <div>
+    <content></content>
+  </div>
 </template>
 
 <script>
 (function(ownerDoc) {
-  MediaObject = document.registerElement('media-object', {
+  document.registerElement('media-object', {
     prototype: Object.create(HTMLElement.prototype, {
       createdCallback: { value: function() {
         this.createShadowRoot().innerHTML = ownerDoc
