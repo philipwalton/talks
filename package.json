@@ -1,0 +1,11 @@
+{
+  "name": "philipwalton-html5devconf-2014",
+  "description": "Slides and demos from my HTML5DevConf (Oct 2014) presentation.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/philipwalton/html5devconf.git"
+  },
+  "devDependencies": {
+    "reveal.js": "^2.6.2"
+  }
+}
