@@ -7,25 +7,27 @@
   <link rel="stylesheet" href="reset.css">
   <style>
     header, footer, main, aside {
-      background: hsl(0, 0%, 90%);
+      background: hsl(0, 0%, 50%);
       border-radius: .5em;
-      padding: 1.5em;
+      color: #fff;
+      font-weight: 700;
+      padding: 1em;
     }
   </style>
 </head>
 <body full>
 
-  <flex-line column gutters>
+  <flex-line column>
 
     <header>Header</header>
 
-    <flex-line flex gutters>
+    <flex-line flex>
       <aside>Sidebar</aside>
       <main flex>Content</main>
       <aside>Sidebar</aside>
     </flex-line>
 
-    <flex-line gutters>
+    <flex-line>
       <aside flex>Ads</aside>
       <aside flex>Ads</aside>
       <aside flex>Ads</aside>
