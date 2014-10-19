@@ -1,43 +1,53 @@
-<link href="factory-element.html" rel="import">
 <link href="media-object.html" rel="import">
 
-<factory-element name="author-card">
-  <template>
-    <style>
-      :host {
-        background: #fff;
-        box-shadow: 0 0 1em rgba(0,0,0,.1);
-        color: #222;
-        display: block;
-        font-weight: 300;
-        max-width: 30em;
-        padding: 1.5em;
-      }
-      ::content > img {
-        border-radius: 50%;
-      }
-      ::content > h1,
-      ::content > h2,
-      ::content > h3,
-      ::content > h4,
-      ::content > h5,
-      ::content > h6 {
-        font-size: 1.4em;
-        margin: 0;
-      }
-      ::content > b {
-        font-size: .85em;
-        font-weight: 300;
-      }
-      ::content > p {
-        border-top: 1px solid hsl(0, 0%, 90%);
-        color: #666;
-        margin: 1em 0 0;
-        padding-top: 1em;
-      }
-    </style>
-    <media-object>
-      <content></content>
-    </media-object>
-  </template>
-</factory-element>
+<template>
+  <style>
+    :host {
+      background: #fff;
+      box-shadow: 0 0 1em rgba(0,0,0,.67);
+      color: #222;
+      display: block;
+      font-weight: 300;
+      max-width: 30em;
+      padding: 1.5em;
+    }
+    div {
+      border-bottom: 1px solid hsl(0, 0%, 90%);
+      margin-bottom: 1em;
+      padding-bottom: 1em;
+    }
+    ::content h1,
+    ::content h2
+    ::content h3
+    ::content h4
+    ::content h5
+    ::content h6 {
+      font-size: 1.4em;
+      font-weight: 400;
+      margin-bottom: .25em;
+    }
+    ::content img {
+      display: block;
+      border-radius: 50%;
+    }
+  </style>
+  <media-object>
+    <div>
+      <content select="header"></content>
+    </div>
+    <content></content>
+  </media-object>
+</template>
+
+<script>
+(function(ownerDoc) {
+  document.registerElement('author-card', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        this.createShadowRoot().innerHTML = ownerDoc
+            .querySelector('template').innerHTML;
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument));
+</script>
