@@ -36,7 +36,7 @@ html {
   font: 1em/1.333 'Open Sans', sans-serif;
 }
 
-html[colored] {
+html[dark] {
   background: hsl(0, 0%, 33%);
 }
 
@@ -44,6 +44,12 @@ body {
   padding: 1em;
 }
 
-body[full] {
+body[max] {
   height: 100vh;
+}
+
+body[center] {
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }

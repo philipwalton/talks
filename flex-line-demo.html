@@ -3,37 +3,29 @@
 <head>
   <meta charset="utf-8">
   <title>Flex Line Demo</title>
-  <link rel="import" href="elements/flex-line.html">
-  <link rel="stylesheet" href="reset.css">
-  <style>
-    header, footer, main, aside {
-      background: hsl(0, 0%, 50%);
-      border-radius: .5em;
-      color: #fff;
-      font-weight: 700;
-      padding: 1em;
-    }
-  </style>
+  <link href="reset.css" rel="stylesheet">
+  <link href="elements/demo-box.html" rel="import">
+  <link href="elements/flex-line.html" rel="import">
 </head>
-<body full>
+<body max>
 
   <flex-line column>
 
-    <header>Header</header>
+    <demo-box>Header</demo-box>
 
     <flex-line flex>
-      <aside>Sidebar</aside>
-      <main flex>Content</main>
-      <aside>Sidebar</aside>
+      <demo-box>Sidebar</demo-box>
+      <demo-box flex>Content</demo-box>
+      <demo-box>Sidebar</demo-box>
     </flex-line>
 
     <flex-line>
-      <aside flex>Ads</aside>
-      <aside flex>Ads</aside>
-      <aside flex>Ads</aside>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
     </flex-line>
 
-    <footer>footer</footer>
+    <demo-box>footer</demo-box>
 
   </flex-line>
 

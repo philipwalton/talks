@@ -3,29 +3,20 @@
 <head>
   <meta charset="utf-8">
   <title>Flex Grid Demo</title>
-  <link rel="stylesheet" href="reset.css">
-  <link rel="import" href="elements/flex-grid.html">
-  <style>
-    flex-grid > * {
-      background: hsl(0, 0%, 33%);
-      border-radius: 4px;
-      color: #fff;
-      font-weight: 700;
-      line-height: 9em;
-      text-align: center;
-    }
-  </style>
+  <link href="reset.css" rel="stylesheet" >
+  <link href="elements/demo-box.html" rel="import" >
+  <link href="elements/flex-grid.html" rel="import" >
 </head>
 <body>
 
   <flex-grid>
-    <div>One</div>
-    <div>Two</div>
-    <div>Three</div>
-    <div>Four</div>
-    <div>Five</div>
-    <div>Six</div>
-    <div>Seven</div>
+    <demo-box>One</demo-box>
+    <demo-box>Two</demo-box>
+    <demo-box>Three</demo-box>
+    <demo-box>Four</demo-box>
+    <demo-box>Five</demo-box>
+    <demo-box>Six</demo-box>
+    <demo-box>Seven</demo-box>
   </flex-grid>
 
 </body>
