@@ -3,18 +3,17 @@
     :host {
       display: flex;
     }
-    div:first-of-type {
+    figure {
       flex: 0 0 auto;
       margin: 0 1.5em 0 0;
     }
-    div:last-of-type {
+    div {
       flex: 1;
-      margin: 0;
     }
   </style>
-  <div>
-    <content select="img, svg, figure, picture"></content>
-  </div>
+  <figure>
+    <content select="img"></content>
+  </figure>
   <div>
     <content></content>
   </div>
