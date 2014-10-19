@@ -6,6 +6,30 @@
   box-sizing: inherit;
 }
 
+a,
+body,
+code,
+em,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+html,
+ol,
+p,
+pre,
+strong,
+ul {
+  border: 0;
+  font: inherit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
 html {
   background: #fff;
   box-sizing: border-box;
@@ -13,36 +37,13 @@ html {
 }
 
 html[colored] {
-  background: hsl(0, 0%, 90%);
+  background: hsl(0, 0%, 33%);
 }
 
 body {
-  margin: 0;
-  padding: 1.5em;
+  padding: 1em;
 }
 
 body[full] {
   height: 100vh;
-}
-
-section {
-  margin-bottom: 1.5em;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 400;
-  margin-top: 0;
-}
-
-p {
-  margin: 0 0 1em;
-}
-
-p:last-child {
-  margin-bottom: 0;
 }
