@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>How Web Components Will Change CSS Best Practices &mdash; HTML5DevConf (Oct. 21, 2014)</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.min.css">
+  <link rel="stylesheet" href="slides.css" id="theme">
+
+</head>
+
+<body class="reveal">
+
+  <main class="slides">
+
+    <section>
+      <h1>How Web Components<br/>
+      will change CSS<br>
+      best practices</h1>
+      <p><a href="http://philipwalton.com">Philip Walton</a> / <a href="http://twitter.com/philwalton">@philwalton</a></p>
+    </section>
+
+    <section>
+      <h2>What is a best practice?</h2>
+      <blockquote>
+        &hellip;a method or technique that has consistently shown results superior to those achieved with other means&hellip;
+      </blockquote>
+    </section>
+
+    <section>
+      <h2>How are superior results measured?</h2>
+      <p>In order to determine what makes something a best practice, we must first define our goals.</p>
+      <p>
+        <span class="fragment">I believe we want to write CSS that is:<br></span>
+        <strong class="fragment">predictable,&nbsp;</strong>
+        <strong class="fragment">reusable,&nbsp;</strong>
+        <strong class="fragment">maintainable,&nbsp;</strong>
+        <strong class="fragment">scalable</strong>
+      </p>
+    </section>
+
+    <section>
+      <h3>Predictable</h3>
+      <p>Predictable CSS means your rules behave as you’d expect. When you add or update a rule, it shouldn’t affect parts of your site that you didn’t intend.</p>
+    </section>
+
+    <section>
+      <h3>Reusable</h3>
+      <p>CSS rules should be abstract and decoupled allowing you to build new components quickly from existing parts without having to recode patterns for problems you’ve already solved.</p>
+    </section>
+
+    <section>
+      <h3>Maintainable</h3>
+      <p>When new elements need to be added, updated or rearranged on your site, doing so shouldn’t require a major refactoring.</p>
+      <p>Adding component X to the page shouldn’t break component Y by its mere presence.</p>
+    </section>
+
+    <section>
+      <h3>Scalable</h3>
+      <p>As your site grows in size and complexity it usually requires more developers to maintain. Scalable CSS means it can be easily managed by a single person or a large engineering team.</p>
+      <p>It also means your site’s CSS architecture is easily approachable without requiring an enormous learning curve. Just because you’re the only developer touching the CSS today doesn’t mean that will always be the case.</p>
+    </section>
+
+    <section>
+      <h1>Why is CSS so hard?</h1>
+    </section>
+
+
+    <section>
+      <h2>It's not because:</h2>
+      <ul>
+        <li>you have to use <code>border-color</code> to make a triangle.</li>
+        <li><code>vertical-align</code> never works like you expect.</li>
+        <li><code>position: static</code> and <code>position: fixed</code> sound like they do the exact same thing.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>There are two hard problems in CSS:</h2>
+      <ul>
+        <li class="fragment">Getting your rules to match the elements you want
+          without them accidentally matching the elements you don't.</li>
+        <li class="fragment">Accomplishing the first part without writing too much code.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Today we have two choices:</h2>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <pre><code class="language-css">
+            aside h3 + ul li a { }
+          </code></pre>
+        </div>
+        <div class="FlexLine-item">
+          <pre><code class="language-css">
+            .Sidebar-link { }
+          </code></pre>
+        </div>
+      </div>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <pre><code class="language-markup">
+            <aside>
+              <h3>&hellip;</h3>
+              <ul>
+                <li>
+                  <a>&hellip;</a>
+                </li>
+              </ul>
+            </aside>
+          </code></pre>
+        </div>
+        <div class="FlexLine-item">
+          <pre><code class="language-markup">
+            <aside class="Sidebar">
+              <h3 class="Sidebar-title">&hellip;</h3>
+              <ul class="Sidebar-list">
+                <li class="Sidebar-item">
+                  <a class="Sidebar-link">&hellip;</a>
+                </li>
+              </ul>
+            </aside>
+          </code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Problem #1</h2>
+      <p>Getting your rules to match the elements you want without them accidentally matching the elements you don't.</p>
+      <h3 class="fragment">Why is this hard?</h3>
+      <p class="fragment">All CSS rules are global.</p>
+    </section>
+
+    <section>
+      <h2>Problem #2</h2>
+      <p>Accomplishing the first part without writing too much code.</p>
+      <h3 class="fragment">Why is this hard?</h3>
+      <p class="fragment">Implementation details cannot be easily abstracted away.</p>
+    </section>
+
+    <section>
+      <h3>All CSS rules are global</h3>
+      <p class="fragment">It’s hard to write predictable code when any rule you write could potentially conflict with another rule you didn’t know existed.</p>
+      <p class="fragment">And, for whatever reason, most people who write CSS like to live dangerously!</p>
+      <pre class="fragment"><code class="language-css">
+        #main #content div div div {
+          float: left;
+          width: 50%;
+        }
+      </code></pre>
+    </section>
+
+    <section>
+      <h3>Implementation details<br>cannot be easily abstracted away</h3>
+      <p>Are all these classes needed? What do they do?<br>
+      If I remove one of them will everything break? Wtf is going on? #FML</p>
+      <pre><code class="language-markup">
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">~~&hellip;~~</ul>
+            </div>
+          </div>
+        </nav>
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Web Components<br>to the Rescue</h1>
+      <p>&hellip;but first, a quick overview of the technologies.</p>
+    </section>
+
+    <section>
+      <h2>New Specs</h2>
+      <ul>
+        <li><strong>Custom Element:</strong> developers can define their own DOM element with custom styling and functionality.</li>
+        <li><strong>Shadow DOM</strong>: a sub-tree of DOM nodes that are rendered to the page but do not appear in the source. </li>
+        <li><strong>HTML Imports</strong>: <code>require()</code> for the browser. Package up scripts, styles, and custom elements into a single bundle.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>New Elements</h2>
+      <ul>
+        <li><code><strong>&lt;template&gt;</strong></code>: DOM nodes that aren't by the browser. But they can be clone and inserted dynamically later on.</li>
+        <li><code><strong>&lt;content&gt;</strong></code>: a content insertion point. Where nodes form the main document get rendered inside the shadow DOM.</li>
+        <li><code><strong>&lt;shadow&gt;</strong></code>: a shadow insertion point. Where parent (older) shadow roots get rendered inside child (younger) shadow roots, a.k.a. "Shadowception". </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>A hello world element:</h2>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <p>Basic usage:</p>
+          <pre><code class="language-markup">
+            <hello-world>Philip</hello-world>
+          </code></pre>
+          <div class="fragment">
+            <hello-world>Philip</hello-world>
+          </div>
+        </div>
+        <div class="FlexLine-item">
+          <p>The element's shadow DOM:</p>
+          <pre><code class="language-markup">
+            <style>code { color: red }</style>
+            <p>
+              Hello,
+              <code>
+                **<content></content>**
+              </code>
+            </p>
+          </code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Let's see the code.</h3>
+      <pre><code class="language-javascript">
+        var HelloWorld = Object.create(HTMLElement.prototype);
+
+        HelloWorld.createdCallback = function() {
+          this.createShadowRoot().innerHTML =
+            '<style>code { color: red }</style>' +
+            '<p>Hello, <code><content></content></code></p>';
+        }
+
+        document.registerElement('hello-world', { prototype: HelloWorld });
+      </code></pre>
+
+    </section>
+
+    <section>
+      <h2>Shadow DOM</h2>
+      <p>Shadow DOM allows us to write markup that will not be affected by the styles in the host page.</p>
+      <p>Shadow DOM also gives us the ability to hide presentational-only elements. Keeping them where they belong<span class="fragment">&mdash;in the shadows.</span></p>
+    </section>
+
+
+
+    <section>
+      <h1>Examples</h1>
+    </section>
+
+    <section>
+      <h2>The Media Object</h2>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <p>With BEM markup:</p>
+          <pre><code class="language-markup">
+            <div class="Media">
+              <img class="Media-figure">
+              **<div class="Media-body">**
+                <h1>&hellip;</h1>
+                <p>&hellip;</p>
+              **</div>**
+            </div>
+          </code></pre>
+        </div>
+        <div class="FlexLine-item">
+          <p>The purists dream:</p>
+          <pre><code class="language-markup">
+            <media-object>
+              <h1>&hellip;</h1>
+              <img>
+              <p>&hellip;</p>
+            </media-object>
+          </code></pre>
+        </div>
+      </div>
+
+    </section>
+
+    <section>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <p>Shadow DOM:</p>
+          <pre><code class="language-markup">
+            <style>
+              :host { display: flex }
+              figure { margin: 0 1em 0 0 }
+              div { flex: 1 }
+            </style>
+            <figure>
+              **<content select="img"></content>**
+            </figure>
+            <div>
+              **<content></content>**
+            </div>
+          </code></pre>
+        </div>
+        <div class="FlexLine-item">
+          <p>Light DOM (purist markup):</p>
+          <pre><code class="language-markup">
+            <media-object>
+              <h1>&hellip;</h1>
+              <img>
+              <p>&hellip;</p>
+            </media-object>
+          </code></pre>
+        </div>
+      </div>
+
+    </section>
+
+    <section>
+      <p>The Media Object: Composed Tree</p>
+      <pre><code class="language-markup">
+        <media-object>
+          ~~<figure>~~
+            <img>
+          ~~</figure>~~
+          ~~<div>~~
+            <h1>&hellip;</h1>
+            <p>&hellip;</p>
+          ~~</div>~~
+        </media-object>
+      </code></pre>
+    </section>
+
+    <section>
+      <h2>Flex Line Element</h2>
+      <pre><code class="language-markup">
+        <flex-line column>
+          <div>&hellip;</div>
+          <div flex>&hellip;</div>
+          <div>&hellip;</div>
+        </flex-line>
+      </code></pre>
+    </section>
+
+    <section>
+      <p>Holy Grail: Composed Tree</p>
+      <pre style="font-size:.70em;line-height:1.1;"><code class="language-markup">
+        &lt;body>
+          ~~<flex-line column>~~
+            ~~<div>~~
+              <header>&hellip;</header>
+            ~~</div>~~
+            ~~<flex-line flex>~~
+              ~~<div flex>~~
+                <main>&hellip;</main>~~
+              </div>~~
+              ~~<div>~~
+                <nav>&hellip;</nav>~~
+              </div>~~
+              ~~<div>~~
+                <aside>&hellip;</aside>~~
+              </div>~~
+            ~~</flex-line>~~
+            ~~<div>~~
+              <footer>&hellip;</footer>
+            ~~</div>~~
+          ~~</flex-line>~~
+        &lt;/body>
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>The End</h1>
+    </section>
+
+  </main>
+
+  <script src="node_modules/reveal.js/lib/js/head.min.js"></script>
+  <script src="node_modules/reveal.js/js/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      width: 1160,
+      height: 650,
+      transition: 'linear',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+        {
+          src: '/node_modules/reveal.js/plugin/notes/notes.js',
+          async: true,
+          condition: function() { return !!document.body.classList; }
+        }
+      ]
+    });
+  </script>
+
+  <!-- Syntax highlighting -->
+  <script src="assets/prism.js"></script>
+
+  <!-- Remove leading whitespace and escape HTML from code blocks. -->
+  <script>
+  (function() {
+    var blocks = document.querySelectorAll('pre > code');
+    for (var i = 0, block; block = blocks[i]; i++) {
+      var lines = block.innerHTML.split('\n').slice(1, -1);
+      var leadingWhitespaceAmount = /^\s+/.exec(lines[0])[0].length;
+      block.innerHTML = lines.map(function(line) {
+        return line.slice(leadingWhitespaceAmount)
+          .replace(/=""/g, '')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+
+      }).join('\n');
+    }
+  }());
+  document.addEventListener('DOMContentLoaded', function() {
+    var blocks = document.querySelectorAll('pre > code');
+    for (var i = 0, block; block = blocks[i]; i++) {
+      block.innerHTML = block.innerHTML
+          // remove empty attributes.
+          .replace(/\=\"\"/g, '')
+          // highlight content between `**` characters.
+          .replace(/\*\*([\s\S]+?)\*\*/g, '<mark>$1</mark>')
+          // mute content between `~~` characters.
+          .replace(/\~\~([\s\S]+?)\~\~/g, '<i>$1</i>')
+    }
+  });
+  </script>
+
+  <script>
+
+    var HelloWorld = Object.create(HTMLElement.prototype);
+
+    HelloWorld.createdCallback = function() {
+      this.createShadowRoot().innerHTML =
+        '<style>code { color: red; }</style>' +
+        '<p>Hello, <code><content></content></code></p>';
+    }
+
+    document.registerElement('hello-world', { prototype: HelloWorld });
+
+  </script>
+
+</body>
+</html>
