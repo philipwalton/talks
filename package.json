@@ -5,8 +5,11 @@
     "type": "git",
     "url": "git://github.com/philipwalton/html5devconf.git"
   },
-  "devDependencies": {
-    "highlight.js": "^8.3.0",
-    "reveal.js": "^2.6.2"
+  "scripts": {
+    "start": "serve"
+  },
+  "dependencies": {
+    "reveal.js": "^2.6.2",
+    "serve": "^1.4.0"
   }
 }
