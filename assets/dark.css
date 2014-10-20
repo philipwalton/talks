@@ -11,7 +11,8 @@
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: hsl(30, 20%, 50%);
+  /* color: hsl(30, 20%, 50%); */
+  color: hsl(0, 0%, 33%);
 }
 
 .token.punctuation {
