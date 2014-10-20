@@ -10,8 +10,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.min.css">
-  <link rel="stylesheet" href="slides.css" id="theme">
+  <link rel="stylesheet" href="/node_modules/reveal.js/css/reveal.min.css">
+  <link rel="stylesheet" href="/assets/slides.css" id="theme">
 
 </head>
 
@@ -381,7 +381,7 @@
       <h3>The Author Card</h3>
       <p class="fragment">The <code>&lt;author-card&gt;</code> imports the <code>&lt;media-object&gt;</code> and composes it within its own shadow DOM.</p>
       <pre class="fragment"><code class="language-markup">
-        <link href="media-object.html" rel="import">
+        &lt;link href="/path/to/media-object.html" rel="import"&gt;
 
         <author-card>
           &lt;style>&hellip;&lt;/style>
@@ -507,8 +507,8 @@
 
   </main>
 
-  <script src="node_modules/reveal.js/lib/js/head.min.js"></script>
-  <script src="node_modules/reveal.js/js/reveal.min.js"></script>
+  <script src="/node_modules/reveal.js/lib/js/head.min.js"></script>
+  <script src="/node_modules/reveal.js/js/reveal.min.js"></script>
   <script>
     Reveal.initialize({
       controls: true,
@@ -530,7 +530,7 @@
   </script>
 
   <!-- Syntax highlighting -->
-  <script src="assets/prism.js"></script>
+  <script src="/assets/prism.js"></script>
 
   <!-- Remove leading whitespace and escape HTML from code blocks. -->
   <script>
