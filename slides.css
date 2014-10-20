@@ -254,9 +254,6 @@ b, strong {
 }
 
 
-
-
-
 /*********************************************
  * Flex Line
  *********************************************/
@@ -268,4 +265,12 @@ b, strong {
 .FlexLine-item {
   flex: 1;
   margin-left: 1em!important;
+}
+
+.FlexLine-item--auto {
+  flex: 1 0 auto;
+}
+
+.FlexLine-item--fixed {
+  flex: 0 0 auto;
 }
