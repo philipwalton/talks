@@ -28,9 +28,9 @@
       <h2>Disclaimer</h2>
       <p>
         <span class="fragment">I don't really know.&nbsp;</span>
-        <span class="fragment">Nobody really knows.&nbsp;</span>
+        <span class="fragment">Nobody knows.&nbsp;</span>
       </p>
-      <p class="fragment">There haven't been enough production apps built with Web Components to get a feel for what works and what doesn't.</p>
+      <p class="fragment">Web Components haven't been around long enough to really get a feel for what works and what doesn't.</p>
       <p class="fragment">All we can do is learn from history and do our best to avoid repeating the mistakes of the past.</p>
     </section>
 
@@ -47,7 +47,7 @@
       <ul>
         <li class="fragment"><code>vertical-align</code> never works like you expect.</li>
         <li class="fragment">you have to use <code>border-color</code> to make a triangle.</li>
-        <li class="fragment"><code>position: static</code> and <code>position: fixed</code> sound like they do the exact same thing.</li>
+        <li class="fragment">the <code>position</code> keywords <code>absolute</code>, <code>static</code> and <code>fixed</code> all sound like they should do the exact same thing.</li>
       </ul>
       <p class="fragment">CSS isn't hard because of the tricks and the hacks, or because it doesn't support X or Y.</p>
     </section>
@@ -258,7 +258,7 @@
         // Create an object that will be the new element's prototype.
         var HelloWorld = Object.create(HTMLElement.prototype);
 
-        // Add a callback to be run whenever a new <hello-world> tag is parsed.
+        // Add a callback to run whenever a new <hello-world> tag is created.
         HelloWorld.createdCallback = function() {
           this.createShadowRoot().innerHTML =
             '<style>code { color: red }</style>' +
@@ -311,7 +311,7 @@
               div { flex: 1 }
             </style>
             <figure>
-              **<content select="img"></content>**
+              **<content select="img,svg"></content>**
             </figure>
             <div>
               **<content></content>**
@@ -432,7 +432,7 @@
       <h2>Building layouts from composable parts.</h2>
       <p class="fragment"><code>&lt;flex-line&gt;</code> and <code>&lt;flex-grid&gt;</code> are very presentational, so you might not want to have them appear in your main document source.</p>
       <p class="fragment">Luckily, you don't have to.
-      You can use <code>&lt;flex-line&gt;</code> to compose other layouts</h3>
+      You can use <code>&lt;flex-line&gt;</code> to compose other layouts.</h3>
     </section>
 
     <section>
@@ -459,23 +459,23 @@
           <pre style="font-size:.70em;line-height:1.1;"><code class="language-markup">
             &lt;body>
               ~~<flex-line column>~~
-                ~~<demo-box>~~
+                ~~<div>~~
                   <header>&hellip;</header>
-                ~~</demo-box>~~
+                ~~</div>~~
                 ~~<flex-line flex>~~
-                  ~~<demo-box flex>~~
+                  ~~<div flex>~~
                     <main>&hellip;</main>~~
-                  </demo-box>~~
-                  ~~<demo-box>~~
+                  </div>~~
+                  ~~<div>~~
                     <nav>&hellip;</nav>~~
-                  </demo-box>~~
-                  ~~<demo-box>~~
+                  </div>~~
+                  ~~<div>~~
                     <aside>&hellip;</aside>~~
-                  </demo-box>~~
+                  </div>~~
                 ~~</flex-line>~~
-                ~~<demo-box>~~
+                ~~<div>~~
                   <footer>&hellip;</footer>
-                ~~</demo-box>~~
+                ~~</div>~~
               ~~</flex-line>~~
             &lt;/body>
           </code></pre>
@@ -491,7 +491,7 @@
       <h3>When can I use this stuff? Are any sites currently using it?</h3>
       <p class="fragment">
         Check out <a href="https://www.polymer-project.org/">polymer-project.org</a> as well as <a href="https://www.chromestatus.com">chromestatus.com</a>. Both are built entirely with Polymer.</p>
-      <p class="fragment">I've also put together a simple toy site that I was using to validate some of these concepts.</p>
+      <p class="fragment">I've also put together a simple toy site that I was using to validate some of these concepts. You can find it on Github.</p>
     </section>
 
     <section>
