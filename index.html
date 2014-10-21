@@ -20,19 +20,17 @@
   <main class="slides">
 
     <section>
-      <h1>How Web Components<br/>
-      will change CSS<br>
-      best practices</h1>
+      <h1>How Web Components will change CSS best practices</h1>
       <p><a href="http://philipwalton.com">Philip Walton</a> / <a href="http://twitter.com/philwalton">@philwalton</a></p>
     </section>
 
     <section>
       <h2>Disclaimer</h2>
       <p>
-        <span class="fragment">I don't know.&nbsp;</span>
+        <span class="fragment">I don't really know.&nbsp;</span>
         <span class="fragment">Nobody really knows.&nbsp;</span>
       </p>
-      <p class="fragment">There haven't been enough production apps built with Web Components to test what works and what doesn't.</p>
+      <p class="fragment">There haven't been enough production apps built with Web Components to get a feel for what works and what doesn't.</p>
       <p class="fragment">All we can do is learn from history and do our best to avoid repeating the mistakes of the past.</p>
     </section>
 
@@ -43,55 +41,12 @@
       </p>
     </section>
 
-    <!--
-    <section>
-      <h2>What is a best practice?</h2>
-      <blockquote>
-        &hellip;a method or technique that has consistently shown results superior to those achieved with other means&hellip;
-      </blockquote>
-    </section>
-
-    <section>
-      <h2>How are superior results measured?</h2>
-      <p>In order to determine what makes something a best practice, we must first define our goals.</p>
-      <p>
-        <span class="fragment">I believe we want to write CSS that is:<br></span>
-        <strong class="fragment">predictable,&nbsp;</strong>
-        <strong class="fragment">reusable,&nbsp;</strong>
-        <strong class="fragment">maintainable,&nbsp;</strong>
-        <strong class="fragment">scalable</strong>
-      </p>
-    </section>
-
-    <section>
-      <h3>Predictable</h3>
-      <p>Predictable CSS means your rules behave as you’d expect. When you add or update a rule, it shouldn’t affect parts of your site that you didn’t intend.</p>
-    </section>
-
-    <section>
-      <h3>Reusable</h3>
-      <p>CSS rules should be abstract and decoupled allowing you to build new components quickly from existing parts without having to recode patterns for problems you’ve already solved.</p>
-    </section>
-
-    <section>
-      <h3>Maintainable</h3>
-      <p>When new elements need to be added, updated or rearranged on your site, doing so shouldn’t require a major refactoring.</p>
-      <p>Adding component X to the page shouldn’t break component Y by its mere presence.</p>
-    </section>
-
-    <section>
-      <h3>Scalable</h3>
-      <p>As your site grows in size and complexity it usually requires more developers to maintain. Scalable CSS means it can be easily managed by a single person or a large engineering team.</p>
-      <p>It also means your site’s CSS architecture is easily approachable without requiring an enormous learning curve. Just because you’re the only developer touching the CSS today doesn’t mean that will always be the case.</p>
-    </section>
-    -->
-
     <section>
       <h2>Why is CSS so hard?</h2>
       <p class="fragment">It's <strong>not</strong> because:</p>
       <ul>
-        <li class="fragment">you have to use <code>border-color</code> to make a triangle.</li>
         <li class="fragment"><code>vertical-align</code> never works like you expect.</li>
+        <li class="fragment">you have to use <code>border-color</code> to make a triangle.</li>
         <li class="fragment"><code>position: static</code> and <code>position: fixed</code> sound like they do the exact same thing.</li>
       </ul>
       <p class="fragment">CSS isn't hard because of the tricks and the hacks, or because it doesn't support X or Y.</p>
@@ -247,29 +202,34 @@
       <h2>New Elements</h2>
       <ul>
         <li><code><strong>&lt;template&gt;</strong></code>: DOM nodes that aren't parsed by the browser. They can be cloned and inserted dynamically later on.</li>
-        <li><code><strong>&lt;content&gt;</strong></code>: a content insertion point. Where nodes form the main document get rendered inside the shadow DOM.</li>
-        <li><code><strong>&lt;shadow&gt;</strong></code>: a shadow insertion point. Where parent (older) shadow trees get rendered inside child (younger) shadow trees, a.k.a. "Shadowception". </li>
+        <li><code><strong>&lt;content&gt;</strong></code>: an insertion point. Where nodes from the main document get rendered inside the shadow DOM.</li>
       </ul>
     </section>
 
     <section>
       <h2>A hello world element:</h2>
       <div class="FlexLine">
-        <div class="FlexLine-item FlexLine-item--auto">
+        <div class="FlexLine-item">
           <p>The main document:</p>
           <pre><code class="language-markup">
-            <hello-world>Philip</hello-world>
+            <hello-world>Newman</hello-world>
           </code></pre>
           <div class="fragment">
-            <hello-world>Philip</hello-world>
+            <hello-world>
+              Newman
+            </hello-world>
           </div>
         </div>
-        <div class="FlexLine-item FlexLine-item--auto">
+        <div class="FlexLine-item">
           <p>The element's shadow DOM:</p>
           <pre><code class="language-markup">
-            <style>code { color: red }</style>
+            <style>
+              code { color: red }
+            </style>
             <p>
-              Hello, <code>**<content></content>**</code>
+              Hello, <code>
+                **<content></content>**
+              </code>
             </p>
           </code></pre>
         </div>
@@ -284,7 +244,9 @@
             ~~code { color: red }~~
           ~~</style>~~
           ~~<p>~~
-            ~~Hello, <code>~~Philip~~</code>~~
+            ~~Hello, <code>~~
+              Newman
+            ~~</code>~~
           ~~</p>~~
         </hello-world>
       </code></pre>
@@ -306,6 +268,9 @@
         // Register the element.
         document.registerElement('hello-world', { prototype: HelloWorld });
       </code></pre>
+      <small><a href="http://w3c.github.io/webcomponents/spec/custom/#custom-element-lifecycle">
+        Callbacks reference &nbsp;&#8594;</a>
+      </small>
 
     </section>
 
@@ -321,6 +286,7 @@
           **</div>**
         </div>
       </code></pre>
+      <p>Notice how <code>div.Media-body</code> serves no semantic purpose.</p>
     </section>
 
     <section>
@@ -370,87 +336,151 @@
           ~~</div>~~
         </media-object>
       </code></pre>
+      <small>
+        <a href="/demos/media-object-demo.html" target="_blank">
+          Media object demo &nbsp;&#8594;
+        </a>
+      </small>
     </section>
 
     <section>
       <h2>Extending elements</h2>
-      <p>I don't like how the media object looks. How can I style it?</p>
+      <p>What if I don't like how the media object looks.<br>
+        How can I make it better?</p>
     </section>
 
     <section>
       <h3>The Author Card</h3>
-      <p class="fragment">The <code>&lt;author-card&gt;</code> imports the <code>&lt;media-object&gt;</code> and composes it within its own shadow DOM.</p>
-      <pre class="fragment"><code class="language-markup">
+      <p>The <code>&lt;author-card&gt;</code> imports the <code>&lt;media-object&gt;</code> and composes it within its own shadow DOM.</p>
+      <pre><code class="language-markup">
         &lt;link href="/path/to/media-object.html" rel="import"&gt;
 
-        <author-card>
+        <template>
           &lt;style>&hellip;&lt;/style>
           **<media-object>**
-            <content select="**&hellip;**"></content>
+            <content></content>
           **</media-object>**
-        </author-card>
+        </template>
       </code></pre>
-
+      <small>
+        <a href="/demos/author-card-demo.html" target="_blank">
+          Author card demo &nbsp;&#8594;
+        </a>
+      </small>
     </section>
 
     <section>
-      <h2>Layout Examples</h2>
-      <p>The <code>&lt;flex-line&gt;</code> element</p>
-      <pre><code class="language-markup">
-        <flex-line column>
-          <div>&hellip;</div>
-          <div flex>&hellip;</div>
-          <flex-line>
-            <div flex>&hellip;</div>
-            <div flex>&hellip;</div>
-          </flex-line>
-        </flex-line>
-      </code></pre>
+      <h2>Abstract Layout Components</h2>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <p>The <code>&lt;flex-line&gt;</code> element:</p>
+          <pre><code class="language-markup">
+            <flex-line>
+              <div>&hellip;</div>
+              <div flex>&hellip;</div>
+              <flex-line column>
+                <div flex>&hellip;</div>
+                <div flex>&hellip;</div>
+              </flex-line>
+            </flex-line>
+          </code></pre>
+          <small>
+            <a href="/demos/flex-line-demo.html" target="_blank">
+              Flex line demo &nbsp;&#8594;
+            </a>
+          </small>
+        </div>
+        <div class="FlexLine-item">
+          <p>The <code>&lt;flex-grid&gt;</code> element:</p>
+          <pre><code class="language-markup">
+            <flex-grid>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+            </flex-grid>
+          </code></pre>
+          <small>
+            <a href="/demos/flex-grid-demo.html" target="_blank">
+              Flex grid demo &nbsp;&#8594;
+            </a>
+          </small>
+        </div>
+      </div>
     </section>
 
     <section>
-      <h3>You can use <code>&lt;flex-line&gt;</code> to compose other layouts</h3>
-      <pre><code class="language-markup">
-        &lt;body is="holy-grail">
-          <header>Site Title</header>
-          <main>Main Content Area</main>
-          <nav>Navigation</nav>
-          <aside>Advertisements</aside>
-          <footer>Site Footer</footer>
-        &lt;/body>
-      </code></pre>
+      <h3>Keeping hacks in the shadows</h3>
+      <p class="fragment">Sometimes CSS doesn't do exactly what you want, so you have to resort to hacks.</p>
+      <div class="fragment">
+        <p>With shadow DOM, you can keep these hacks out of sight, where they belong.</p>
+        <small>
+          <a href="/demos/flex-grid-broken.html" target="_blank">
+            Flex grid broken
+          </a>
+          &nbsp;|&nbsp;
+          <a href="/demos/flex-grid-demo.html" target="_blank">
+            Flex grid fixed
+          </a>
+        </small>
+      </div>
     </section>
 
     <section>
-      <h3>Holy grail layout (composed tree)</h3>
-      <pre style="font-size:.70em;line-height:1.1;"><code class="language-markup">
-        &lt;body>
-          ~~<flex-line column>~~
-            ~~<demo-box>~~
+      <h2>Building layouts from composable parts.</h2>
+      <p class="fragment"><code>&lt;flex-line&gt;</code> and <code>&lt;flex-grid&gt;</code> are very presentational, so you might not want to have them appear in your main document source.</p>
+      <p class="fragment">Luckily, you don't have to.
+      You can use <code>&lt;flex-line&gt;</code> to compose other layouts</h3>
+    </section>
+
+    <section>
+      <div class="FlexLine">
+        <div class="FlexLine-item">
+          <p>The main document:</p>
+          <pre><code class="language-markup">
+            &lt;body is="holy-grail">
               <header>&hellip;</header>
-            ~~</demo-box>~~
-            ~~<flex-line flex>~~
-              ~~<demo-box flex>~~
-                <main>&hellip;</main>~~
-              </demo-box>~~
-              ~~<demo-box>~~
-                <nav>&hellip;</nav>~~
-              </demo-box>~~
-              ~~<demo-box>~~
-                <aside>&hellip;</aside>~~
-              </demo-box>~~
-            ~~</flex-line>~~
-            ~~<demo-box>~~
+              <main>&hellip;</main>
+              <nav>&hellip;</nav>
+              <aside>&hellip;</aside>
               <footer>&hellip;</footer>
-            ~~</demo-box>~~
-          ~~</flex-line>~~
-        &lt;/body>
-      </code></pre>
-    </section>
-
-    <section>
-      <h2>A full demo</h2>
-      <p>An example ecommerce store page styled entirely with Web Components.</p>
+            &lt;/body>
+          </code></pre>
+          <small>
+            <a href="/demos/holy-grail-demo.html" target="_blank">
+              Holy grid demo &nbsp;&#8594;
+            </a>
+          </small>
+        </div>
+        <div class="FlexLine-item">
+          <p>Composed tree:</p>
+          <pre style="font-size:.70em;line-height:1.1;"><code class="language-markup">
+            &lt;body>
+              ~~<flex-line column>~~
+                ~~<demo-box>~~
+                  <header>&hellip;</header>
+                ~~</demo-box>~~
+                ~~<flex-line flex>~~
+                  ~~<demo-box flex>~~
+                    <main>&hellip;</main>~~
+                  </demo-box>~~
+                  ~~<demo-box>~~
+                    <nav>&hellip;</nav>~~
+                  </demo-box>~~
+                  ~~<demo-box>~~
+                    <aside>&hellip;</aside>~~
+                  </demo-box>~~
+                ~~</flex-line>~~
+                ~~<demo-box>~~
+                  <footer>&hellip;</footer>
+                ~~</demo-box>~~
+              ~~</flex-line>~~
+            &lt;/body>
+          </code></pre>
+        </div>
+      </div>
     </section>
 
     <section>
@@ -458,47 +488,45 @@
     </section>
 
     <section>
-      <p><strong>Is it possible to style content in the shadow DOM from outside?</strong></p>
+      <h3>When can I use this stuff? Are any sites currently using it?</h3>
+      <p class="fragment">
+        Check out <a href="https://www.polymer-project.org/">polymer-project.org</a> as well as <a href="https://www.chromestatus.com">chromestatus.com</a>. Both are built entirely with Polymer.</p>
+      <p class="fragment">I've also put together a simple toy site that I was using to validate some of these concepts.</p>
+    </section>
+
+    <section>
+      <h3>What browsers support these technologies?</h3>
+      <p class="fragment">With the <a href="https://www.polymer-project.org/docs/start/platform.html">platform.js</a> polyfill you can get most of these features in all modern browsers (IE 10+).</p>
+      <p class="fragment">Some features (like full style encapsulation) cannot be polyfilled, and so native support is required (Chrome 36+ only at this point).
+    </section>
+
+    <section>
+      <h3>Is it possible to style content in the shadow DOM from outside?</h3>
       <p class="fragment">Yes, the selectors <code>::shadow</code> and <code>/deep/</code> allow you to do this.</p>
-
-      <p class="fragment">But in general you should never use these selectors on your own elements, only on third-party components that aren't sufficiently expendable.</p>
-
+      <p class="fragment">But in general you should never use these selectors on your own elements, only on third-party components that aren't sufficiently extensible.</p>
       <p class="fragment">To quote the open/closed principle:</p>
       <blockquote class="fragment">Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.</blockquote>
     </section>
 
     <section>
-      <p><strong>What about theming? When a Web Components incarnation of Bootstrap inevitably comes out, how can I use it with my own branding?</strong></p>
-      <p class="fragment">The Web Components version of Bootstrap will most likely come with a base look, and then themes will just build on top of that.</p>
-      <p class="fragment">Also, CSS custom properties (also known as variables) will help a lot with this. UI Libraries will define their customizable attributes on properties that you can then change in your CSS (without needing to use <code>::shadow</code> and <code>/deep/</code>)</p>
-      <p class="fragment">Lastly, the Polymer team has created an element called <code>&lt;core-style&gt;</code> to help address this problem.</p>
-    </section>
-
-    <section>
-      <p><strong>When should I put content in the shadow DOM vs the light DOM?</strong></p>
+      <h3>When should I put content in the shadow DOM vs the light DOM?</h3>
       <p class="fragment">In general, dynamic content should be in the light DOM so your components can be static, bundleable, and cacheable.</p>
     </section>
 
     <section>
-      <p><strong>Is content in the shadow DOM accessible to screen readers and search engines?</strong></p>
+      <h3>Is content in the shadow DOM accessible to screen readers and search engines?</h3>
       <p class="fragment">Yes. Screen readers see the rendered tree in the same way that you see it (visually) when using your browser.
       <p class="fragment">And search engines that can run JavaScript have access to all content, including shadow content.</p>
     </section>
 
     <section>
-      <p>
-        <strong>I use BEM today and I'm pretty happy with my CSS architecture, should I switch to web components?</strong>
-      </p>
-      <p class="fragment">Maybe, Web Components are a standards-based implementation of what BEM aims to be. So if you're doing BEM right, the switch should be pretty easy.</p>
-      <p class="fragment">Also Web Components offer abstraction, which BEM doesn't offer at all, and true scoping, which BEM only offers nominally.</p>
-      <p class="fragment">On the other hand, if it ain't broke, don't fix it.</p>
-    </section>
-
-    <section>
       <h1>Summary</h1>
-      <p class="fragment">Web Components is a paradigm shift. They will completely change the way we write CSS in the future.</p>
-      <p class="fragment">Web Components finally give us the tools we need to write truly modular CSS. And they solve the main challenges developers and teams have when writing CSS today.</p>
-      <p class="fragment">The future is bright!</p>
+      <h3>Key points:</h3>
+      <ul>
+        <li class="fragment">Style scoping via shadow DOM will make your code more resilient. Refactoring CSS is not something that should be feared.</li>
+        <li class="fragment">CSS modularity will no longer come at the cost of dirty HTML. Implementation details can be abstracted into the shadows.</li>
+      </ul>
+
     </section>
 
     <section>
@@ -511,8 +539,6 @@
         <dt>Github</dt>
         <dd><a href="https://github.com/philipwalton">github.com/philipwalton</a></dd>
       </dl>
-
-
     </section>
 
   </main>
@@ -524,8 +550,8 @@
       controls: true,
       progress: true,
       history: true,
-      width: 1160,
-      height: 650,
+      width: 960,
+      height: 720,
       transition: 'linear',
 
       // Optional libraries used to extend on reveal.js
