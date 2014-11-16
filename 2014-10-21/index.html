@@ -10,8 +10,8 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <link rel="stylesheet" href="/node_modules/reveal.js/css/reveal.min.css">
-  <link rel="stylesheet" href="/assets/slides.css" id="theme">
+  <link rel="stylesheet" href="../node_modules/reveal.js/css/reveal.min.css">
+  <link rel="stylesheet" href="assets/slides.css" id="theme">
 
 </head>
 
@@ -31,7 +31,7 @@
         <span class="fragment">Nobody knows.&nbsp;</span>
       </p>
       <p class="fragment">Web Components haven't been around long enough to really get a feel for what works and what doesn't.</p>
-      <p class="fragment">All we can do is learn from history and do our best to avoid repeating the mistakes of the past.</p>
+      <p class="fragment">But we can learn from history and do our best to avoid repeating the mistakes of the past.</p>
     </section>
 
     <section>
@@ -337,7 +337,7 @@
         </media-object>
       </code></pre>
       <small>
-        <a href="/demos/media-object-demo.html" target="_blank">
+        <a href="demos/media-object-demo.html" target="_blank">
           Media object demo &nbsp;&#8594;
         </a>
       </small>
@@ -363,7 +363,7 @@
         </template>
       </code></pre>
       <small>
-        <a href="/demos/author-card-demo.html" target="_blank">
+        <a href="demos/author-card-demo.html" target="_blank">
           Author card demo &nbsp;&#8594;
         </a>
       </small>
@@ -385,7 +385,7 @@
             </flex-line>
           </code></pre>
           <small>
-            <a href="/demos/flex-line-demo.html" target="_blank">
+            <a href="demos/flex-line-demo.html" target="_blank">
               Flex line demo &nbsp;&#8594;
             </a>
           </small>
@@ -403,7 +403,7 @@
             </flex-grid>
           </code></pre>
           <small>
-            <a href="/demos/flex-grid-demo.html" target="_blank">
+            <a href="demos/flex-grid-demo.html" target="_blank">
               Flex grid demo &nbsp;&#8594;
             </a>
           </small>
@@ -417,11 +417,11 @@
       <div class="fragment">
         <p>With shadow DOM, you can keep these hacks out of sight, where they belong.</p>
         <small>
-          <a href="/demos/flex-grid-broken.html" target="_blank">
+          <a href="demos/flex-grid-broken.html" target="_blank">
             Flex grid broken
           </a>
           &nbsp;|&nbsp;
-          <a href="/demos/flex-grid-demo.html" target="_blank">
+          <a href="demos/flex-grid-demo.html" target="_blank">
             Flex grid fixed
           </a>
         </small>
@@ -449,7 +449,7 @@
             &lt;/body>
           </code></pre>
           <small>
-            <a href="/demos/holy-grail-demo.html" target="_blank">
+            <a href="demos/holy-grail-demo.html" target="_blank">
               Holy grid demo &nbsp;&#8594;
             </a>
           </small>
@@ -543,8 +543,8 @@
 
   </main>
 
-  <script src="/node_modules/reveal.js/lib/js/head.min.js"></script>
-  <script src="/node_modules/reveal.js/js/reveal.min.js"></script>
+  <script src="../node_modules/reveal.js/lib/js/head.min.js"></script>
+  <script src="../node_modules/reveal.js/js/reveal.min.js"></script>
   <script>
     Reveal.initialize({
       controls: true,
@@ -552,21 +552,12 @@
       history: true,
       width: 960,
       height: 720,
-      transition: 'linear',
-
-      // Optional libraries used to extend on reveal.js
-      dependencies: [
-        {
-          src: '/node_modules/reveal.js/plugin/notes/notes.js',
-          async: true,
-          condition: function() { return !!document.body.classList; }
-        }
-      ]
+      transition: 'linear'
     });
   </script>
 
   <!-- Syntax highlighting -->
-  <script src="/assets/prism.js"></script>
+  <script src="assets/prism.js"></script>
 
   <!-- Remove leading whitespace and escape HTML from code blocks. -->
   <script>
