@@ -1,30 +1,7 @@
-HTML5DevConf (Oct 2014)
-=======================
+Talks
+=====
 
-The slides and demos from my HTML5DevConf talk: [How Web Components Will Change CSS Best Practices](http://html5devconf.com/speakers/philip_walton.html#session).
+Slides and demos from talks I've given at various conferences and meetups.
 
-## Slides
-
-To install the dependencies and view the slides, run the following commands:
-
-```sh
-# Install the dependencies.
-npm install
-
-# Start up a local server on port 3000.
-npm start
-```
-
-You can now navigate in your browser to [localhost:3000](http:/localhost:3000) and view the slides.
-
-If you'd like to run the server on a different port, change the last command above to the following:
-
-```sh
-# Change "1234" to the port number of your choosing.
-npm start -p 1234
-```
-
-## Demos
-
-Once you have the server running, you can view the demos by navigating to [localhost:3000/demos](http://localhost:3000/demos).
-
+* Nov. 24, 2014 &mdash; [Web Components and the future of CSS](https://github.com/philipwalton/talks/blob/master/2014-11-24/README.md) &mdash; *SFHTML5*
+* Oct. 21, 2014 &mdash; [How Web Components will change CSS best practices](https://github.com/philipwalton/talks/blob/master/2014-10-21/README.md) &mdash; *HTML5DevConf*
