@@ -1,0 +1,13 @@
+{
+  "name": "talks",
+  "version": "0.0.0",
+  "homepage": "https://github.com/philipwalton/talks",
+  "authors": [
+    "Philip Walton <philip@philipwalton.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "slide-deck": "philipwalton/slide-deck"
+  }
+}
