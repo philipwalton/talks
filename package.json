@@ -1,9 +1,9 @@
 {
-  "name": "philipwalton-html5devconf-2014",
-  "description": "Slides and demos from my HTML5DevConf (Oct 2014) presentation.",
+  "name": "talks",
+  "description": "Slides and demos from talks I've given at conferences and meetups.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/philipwalton/html5devconf.git"
+    "url": "git://github.com/philipwalton/talks.git"
   },
   "scripts": {
     "start": "serve"
