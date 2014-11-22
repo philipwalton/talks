@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="demo-box" noscript>
+<template>
+  <style>
+    :host {
+      background: hsl(0, 0%, 33%);
+      border-radius: 4px;
+      color: #fff;
+      display: block;
+      font-weight: 700;
+      padding: 1em;
+      text-align: center;
+    }
+
+    /*
+     * One-off style for flex-grid, normally this should be done with
+     * attributes, but I'm doing it here for simplicity.
+     */
+    :host-context(flex-grid) {
+      line-height: 7em;
+    }
+  </style>
+  <content></content>
+</template>
+</polymer-element>
