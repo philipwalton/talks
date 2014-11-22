@@ -13,15 +13,22 @@
       min-height: calc(100% + 1em);
     }
 
+    polyfill-next-selector { content: ':host > *' }
     ::content > * {
       margin: 1em 0 0 1em;
     }
+
+    polyfill-next-selector { content: ':host > :not([flex])' }
     ::content > :not([flex]) {
       flex: 0 0 auto;
     }
+
+    polyfill-next-selector { content: ':host > [flex]' }
     ::content > [flex] {
       flex: 1;
     }
+
+    polyfill-next-selector { content: ':host > flex-line' }
     ::content > flex-line {
       margin: 0;
       width: 100%;
