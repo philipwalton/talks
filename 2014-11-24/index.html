@@ -13,7 +13,7 @@
   <link rel="import" href="elements/flex-grid.html">
   <link rel="import" href="elements/flex-line.html">
 
-  <link rel="stylesheet" href="../bower_components/slide-deck/assets/theme.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body is="a-slide-deck" unresolved>
 
@@ -21,6 +21,15 @@
     <h1>Web Components</h1>
     <h3 style="margin-top:-.4em; font-weight:400">And the Future of CSS</h3>
     <p><a href="http://philipwalton.com">Philip Walton</a> / <a href="https://twitter.com/philwalton">@philwalton</a></p>
+  </a-slide>
+
+  <a-slide>
+    <h2>Some quick disclaimers</h2>
+    <ul>
+      <li part>This talk is not an introduction to Web Components.</li>
+      <li part>This talk is not intended to be a how-to guide or a tutorial.</li>
+      <li part>Instead, I'm going to talk about some high-level concepts, hopefully get you thinking, and then you can go explore these issues on your own.</li>
+    </ul>
   </a-slide>
 
   <a-slide>
@@ -36,7 +45,8 @@
 
   <a-slide>
     <h2>But is that stuff really what makes CSS hard?</h2>
-    <p part>Solving these problems just requires a little memorization or Googling. These aren't actually "hard" problems.</p>
+    <p part>Solving these problems just requires a little memorization or Googling.<br>
+      These aren't actually "hard" problems.</p>
   </a-slide>
 
   <a-slide>
@@ -58,8 +68,8 @@
         <code-block>
           ~~#sidebar ul li a {~~
             color: red;
-            display: inline;
-            font-family: sans-serif;
+            display: block;
+            padding: 1em;
           ~~}~~
         </code-block>
       </div>
@@ -68,8 +78,8 @@
         <code-block>
           #sidebar ul li a {
             ~~color: red;
-            display: inline;
-            font-family: sans-serif;~~
+            display: block;
+            padding: 1em;~~
           }
         </code-block>
       </div>
@@ -125,7 +135,7 @@
   <a-slide>
     <h3>So what is the answer?<br>What does good CSS look like?</h3>
     <p part>Good CSS consists of selectors that match exactly the elements you want
-    without accidentally matching the elements you don't. All while not being overly verbose or repetitive, being resilient to changes, and adaptable to any and all future design requirements.</p>
+    without accidentally matching the elements you don't. All while not being overly verbose or repetitive, being resilient to change, and adaptable to any and all future design requirements.</p>
     <p part>In other words, you need to hire someone who has magical powers and can predict the future.</p>
   </a-slide>
 
@@ -197,26 +207,6 @@
   </a-slide>
 
   <a-slide>
-    <h3>The rendered (composed) tree:</h3>
-    <code-block language="html">
-      <my-button>~~
-        &lt;style>
-          button {
-            background: #0af;
-            border: 0;
-            border-radius: .2em;
-            color: #fff;
-            font: inherit;
-            padding: .5em 1em;
-          }
-        &lt;/style>
-        <button>~~Click Me~~</button>~~
-      </my-button>
-    </code-block>
-  </a-slide>
-
-
-  <a-slide>
     <h3>How do you create a shadow root?</h3>
     <code-block language="javascript">
       var element = document.getElementById('some-id');
@@ -233,7 +223,7 @@
       <li>Composing components</li>
       <li>Layout primatives</li>
       <li>Building layouts from primatives</li>
-      <li>Hiding implementation details (i.e. hacks)</li>
+      <li>Hiding implementation details (and hacks)</li>
     </ul>
   </a-slide>
 
@@ -330,26 +320,8 @@
   </a-slide>
 
   <a-slide>
-    <h3>Layout primatives</h3>
+    <h3>Layout primitives</h3>
     <flex-line>
-      <div flex>
-        <p>The <code>&lt;flex-line&gt;</code> element:</p>
-        <code-block language="html">
-          <flex-line>
-            <div>&hellip;</div>
-            <div flex>&hellip;</div>
-            <flex-line column>
-              <div flex>&hellip;</div>
-              <div flex>&hellip;</div>
-            </flex-line>
-          </flex-line>
-        </code-block>
-        <small>
-          <a href="demos/flex-line-demo.html" target="_blank">
-            Flex line demo &nbsp;&#8594;
-          </a>
-        </small>
-      </div>
       <div flex>
         <p>The <code>&lt;flex-grid&gt;</code> element:</p>
         <code-block language="html">
@@ -368,11 +340,29 @@
           </a>
         </small>
       </div>
+      <div flex>
+        <p>The <code>&lt;flex-line&gt;</code> element:</p>
+        <code-block language="html">
+          <flex-line>
+            <div>&hellip;</div>
+            <div flex>&hellip;</div>
+            <flex-line column>
+              <div flex>&hellip;</div>
+              <div flex>&hellip;</div>
+            </flex-line>
+          </flex-line>
+        </code-block>
+        <small>
+          <a href="demos/flex-line-demo.html" target="_blank">
+            Flex line demo &nbsp;&#8594;
+          </a>
+        </small>
+      </div>
     </flex-line>
   </a-slide>
 
   <a-slide>
-    <h3>Building layouts from composable primatives.</h3>
+    <h3>Building layouts from composable primitives.</h3>
     <p part><code>&lt;flex-line&gt;</code> and <code>&lt;flex-grid&gt;</code> are very presentational, so you might not want to have them appear in your main document source.</p>
     <p part>Luckily, you don't have to.</p>
     <p part>The next example uses <code>&lt;flex-line&gt;</code> in its shadow DOM to build the classic "Holy Grail" layout.</p>
@@ -456,8 +446,8 @@
 
   <a-slide>
     <h3>What browsers support these technologies?</h3>
-    <p part>With the <a href="http://webcomponents.org/polyfills/">webcomponents.js</a> polyfill you can get most of these features in all modern browsers (IE 10+).</p>
-    <p part>Some features (like full style encapsulation) cannot be polyfilled, and so keep that in mind.</p>
+    <p part>With the <a href="http://webcomponents.org/polyfills/">webcomponents.js</a> polyfills you can get most of these features in all modern browsers (IE 10+).</p>
+    <p part>Though some features (like full style encapsulation) cannot be polyfilled, and so keep that in mind.</p>
   </a-slide>
 
   <a-slide>
@@ -477,7 +467,8 @@
   <a-slide>
     <h3>Is content in the shadow DOM accessible to screen readers and search engines?</h3>
     <p part>Yes. Screen readers see the rendered tree in the same way that you see it (visually) when using your browser.</p>
-    <p part>As with any emerging technology, test it in the devices you need to support.</p>
+    <p part>Since Web Components are just HTML, you can use ARIA roles and attribtues just as you can today.</p>
+    <p part>As with any emerging technology, test it on the devices you need to support.</p>
   </a-slide>
 
   <a-slide>
@@ -485,7 +476,7 @@
     <h3>Key points:</h3>
     <ul>
       <li part>Style scoping via shadow DOM will make your code more resilient. Refactoring CSS is not something that should be feared.</li>
-      <li part>CSS modularity will no longer come at the cost of dirty HTML. Implementation details can be abstracted into the shadows.</li>
+      <li part>Modular and Reusable CSS will no longer come at the cost of dirty HTML. Implementation details can be abstracted into the shadows.</li>
     </ul>
   </a-slide>
 
@@ -516,16 +507,15 @@
   </template>
 
   <script>
-    var HelloWorld = Object.create(HTMLElement.prototype);
+    var MyButton = Object.create(HTMLElement.prototype);
 
-    HelloWorld.createdCallback = function() {
+    MyButton.createdCallback = function() {
       var buttonTemplate = document.getElementById('my-button-template');
       this.createShadowRoot().innerHTML = buttonTemplate.innerHTML;
-    }
+    };
 
-    document.registerElement('my-button', { prototype: HelloWorld });
+    document.registerElement('my-button', { prototype: MyButton });
   </script>
-
 
 </body>
 </html>
