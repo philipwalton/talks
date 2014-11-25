@@ -467,21 +467,36 @@
   <a-slide>
     <h3>Is content in the shadow DOM accessible to screen readers and search engines?</h3>
     <p part>Yes. Screen readers see the rendered tree in the same way that you see it (visually) when using your browser.</p>
-    <p part>Since Web Components are just HTML, you can use ARIA roles and attribtues just as you can today.</p>
+    <p part>Since Web Components are just HTML, you can use ARIA roles and attributes just as you can today.</p>
     <p part>As with any emerging technology, test it on the devices you need to support.</p>
   </a-slide>
 
   <a-slide>
-    <h1>Summary</h1>
-    <h3>Key points:</h3>
+    <h1>Wrapping Up</h1>
+  </a-slide>
+
+  <a-slide>
+    <h2>Revisiting the hard problems in CSS</h2>
     <ul>
-      <li part>Style scoping via shadow DOM will make your code more resilient. Refactoring CSS is not something that should be feared.</li>
-      <li part>Modular and Reusable CSS will no longer come at the cost of dirty HTML. Implementation details can be abstracted into the shadows.</li>
+      <li part>Scoping styles</li>
+      <li part>Specificity conflicts</li>
+      <li part>Non-deterministic matching</li>
+      <li part>Dependency management</li>
+      <li part>Removing "dead" code</li>
     </ul>
   </a-slide>
 
   <a-slide>
-    <h1>Questions?</h1>
+    <h2>Key points:</h2>
+    <ul>
+      <li part>With Shadow DOM it is finally possible to write CSS rules that aren't global, enabling true modular development.</li>
+      <li part>Modular CSS makes refactoring significantly less painful and risky. With Web Components, minor redesigns won't be something to be feared.</li>
+      <li part>Shadow DOM allows us to separate markup that is for content from markup that is purely presentational. Implementation details can be hidden from the user.</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h1>The End</h1>
     <dl>
       <dt>Twitter</dt>
       <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>
