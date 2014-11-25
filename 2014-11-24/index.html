@@ -19,7 +19,7 @@
 
   <a-slide>
     <h1>Web Components</h1>
-    <h3 style="margin-top:-.4em; font-weight:400">And the Future of CSS</h3>
+    <h3 style="margin-top:-.4em; font-weight:400">And the future of CSS</h3>
     <p><a href="http://philipwalton.com">Philip Walton</a> / <a href="https://twitter.com/philwalton">@philwalton</a></p>
   </a-slide>
 
@@ -45,7 +45,7 @@
 
   <a-slide>
     <h2>But is that stuff really what makes CSS hard?</h2>
-    <p part>Solving these problems just requires a little memorization or Googling.<br>
+    <p part>Solving those problems just requires a little memorization or Googling.<br>
       These aren't actually "hard" problems.</p>
   </a-slide>
 
@@ -56,7 +56,7 @@
       <li part>Specificity conflicts</li>
       <li part>Non-deterministic matching</li>
       <li part>Dependency management</li>
-      <li part>Removing "dead" code</li>
+      <li part>Removing unused code</li>
     </ul>
   </a-slide>
 
@@ -95,7 +95,7 @@
   <a-slide>
     <h3>What are bad selectors?</h3>
     <p part>Selectors that cast a wide net increase the chances of unintended matches.</p>
-    <p part>But for whatever reason, people who write CSS like to live dangerously!</p>
+    <p part>And for whatever reason, people who write CSS like to live dangerously!</p>
     <div part>
       <code-block language="css">
         #main #content div div div {
@@ -136,7 +136,7 @@
     <h3>So what is the answer?<br>What does good CSS look like?</h3>
     <p part>Good CSS consists of selectors that match exactly the elements you want
     without accidentally matching the elements you don't. All while not being overly verbose or repetitive, being resilient to change, and adaptable to any and all future design requirements.</p>
-    <p part>In other words, you need to hire someone who has magical powers and can predict the future.</p>
+    <p part>In other words, writing good CSS means you need magical powers and the ability to predict the future.</p>
   </a-slide>
 
   <a-slide>
@@ -159,7 +159,7 @@
   <a-slide>
     <h1>Web Components</h1>
     <h3 part>Specifically, Shadow DOM</h3>
-    <p part>Shadow DOM gives us real style scoping and encapsulation. We can add elements to the page that won't be affected by the existing CSS, and we write style rules that won't affect the rest of the page.</p>
+    <p part>Shadow DOM gives us real style scoping and encapsulation. We can add elements to the page that won't be affected by the existing CSS, and we can write style rules that won't affect the rest of the page.</p>
     <p part>Shadow DOM also allows us hide presentational elements from end users. Effectively creating a private and public API.</p>
   </a-slide>
 
@@ -199,7 +199,7 @@
             }
           &lt;/style>
           <button>
-            **<content></content>**
+            <content></content>
           </button>
         </code-block>
       </div>
@@ -207,7 +207,7 @@
   </a-slide>
 
   <a-slide>
-    <h3>How do you create a shadow root?</h3>
+    <h3>How can I get me some Shadow DOM?</h3>
     <code-block language="javascript">
       var element = document.getElementById('some-id');
       var shadowRoot = element.createShadowRoot();
@@ -220,7 +220,7 @@
     <h2>Let's see some examples</h2>
     <ul>
       <li>Basic Components</li>
-      <li>Composing components</li>
+      <li>Extending components</li>
       <li>Layout primatives</li>
       <li>Building layouts from primatives</li>
       <li>Hiding implementation details (and hacks)</li>
@@ -299,7 +299,7 @@
     <h3>The Author Card</h3>
     <p>The <code>&lt;author-card&gt;</code> imports the <code>&lt;media-object&gt;</code> and composes it within its own shadow DOM.</p>
     <code-block language="html">
-      &lt;link href="/path/to/media-object.html" rel="import"&gt;
+      **&lt;link href="/path/to/media-object.html" rel="import"&gt;**
       <template>
         &lt;style>
           /* Author card styles&hellip; */
@@ -440,8 +440,7 @@
   <a-slide>
     <h3>When can I use this stuff? Are any sites currently using it?</h3>
     <p part>
-      Check out <a href="https://www.polymer-project.org/">polymer-project.org</a> as well as <a href="https://www.chromestatus.com">chromestatus.com</a>. Both are built entirely with Polymer.</p>
-    <p part>I've also put together a simple toy site that I was using to validate some of these concepts. You can find it on Github.</p>
+      Check out <a href="https://www.polymer-project.org/">polymer-project.org</a> as well as <a href="https://www.chromestatus.com">chromestatus.com</a>. Both are built entirely with Web Components using Polymer.</p>
   </a-slide>
 
   <a-slide>
