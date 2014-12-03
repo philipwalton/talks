@@ -8,8 +8,7 @@
   "scripts": {
     "start": "serve"
   },
-  "dependencies": {
-    "reveal.js": "^2.6.2",
+  "devDependencies": {
     "serve": "^1.4.0"
   }
 }
