@@ -1,0 +1,7 @@
+{
+  "name": "2014-11-24",
+  "private": true,
+  "dependencies": {
+    "slide-deck": "philipwalton/slide-deck#0.0.1"
+  }
+}
