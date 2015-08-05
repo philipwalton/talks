@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Web Components and the future of CSS &mdash; SFHTML5 (Nov. 24, 2014)</title>
+
+  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+
+  <link rel="import" href="bower_components/slide-deck/a-slide-deck.html">
+  <link rel="import" href="bower_components/slide-deck/a-slide.html">
+  <link rel="import" href="bower_components/slide-deck/code-block.html">
+
+  <link rel="import" href="elements/flex-grid.html">
+  <link rel="import" href="elements/flex-line.html">
+
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body is="a-slide-deck" unresolved>
+
+  <a-slide>
+    <h1>Web Components</h1>
+    <h3 style="margin-top:-.4em; font-weight:400">And the future of CSS</h3>
+    <p><a href="http://philipwalton.com">Philip Walton</a> / <a href="https://twitter.com/philwalton">@philwalton</a></p>
+  </a-slide>
+
+  <a-slide>
+    <h2>Some quick disclaimers</h2>
+    <ul>
+      <li part>This talk is not an introduction to Web Components.</li>
+      <li part>This talk is not intended to be a how-to guide or a tutorial.</li>
+      <li part>Instead, I'm going to talk about some high-level concepts, hopefully get you thinking, and then you can go explore these issues on your own.</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h2>What makes CSS hard?</h2>
+    <h3 part>The usual answers:</h3>
+    <ul>
+      <li part>Vertical centering</li>
+      <li part>Equal height columns</li>
+      <li part>Browser inconsistencies</li>
+      <li part>Learning all the tricks, hacks, and unintuitive property combinations required to do simple things.</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h2>But is that stuff really what makes CSS hard?</h2>
+    <p part>Solving those problems just requires a little memorization or Googling.<br>
+      These aren't actually "hard" problems.</p>
+  </a-slide>
+
+  <a-slide>
+    <h2>What are some of the real hard problems in CSS?</h2>
+    <ul>
+      <li part>Scoping styles</li>
+      <li part>Specificity conflicts</li>
+      <li part>Non-deterministic matching</li>
+      <li part>Dependency management</li>
+      <li part>Removing unused code</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h3>What do all these have in common?</h3>
+    <flex-line>
+      <div flex part>
+        <p>Hint, it's not these&hellip;</p>
+        <code-block>
+          ~~#sidebar ul li a {~~
+            color: red;
+            display: block;
+            padding: 1em;
+          ~~}~~
+        </code-block>
+      </div>
+      <div flex part>
+        <p>&hellip;it's these</p>
+        <code-block>
+          #sidebar ul li a {
+            ~~color: red;
+            display: block;
+            padding: 1em;~~
+          }
+        </code-block>
+      </div>
+    </flex-line>
+  </a-slide>
+
+  <a-slide>
+    <h3>Your selectors are the biggest determining factor in how scalable your code is.</h3>
+    <p part>Selectors are globals. It’s hard to write predictable code when any rule you write could potentially conflict with another rule you didn’t know existed.</p>
+    <p part>Writing bad selectors today will likely cripple your ability to makes changes to the front-end in the future.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>What are bad selectors?</h3>
+    <p part>Selectors that cast a wide net increase the chances of unintended matches.</p>
+    <p part>And for whatever reason, people who write CSS like to live dangerously!</p>
+    <div part>
+      <code-block language="css">
+        #main #content div div div {
+          float: left;
+          width: 50%;
+        }
+      </code-block>
+      <p>This is not a joke. This actually happened.</p>
+    </div>
+  </a-slide>
+
+  <a-slide>
+    <h3>Okay, but my selectors aren't <em>that</em> bad.</h3>
+    <p part>Yes, they are.</p>
+    <p part>In my experience, any attempt to style markup through selectors alone is inevitably going to fail.</p>
+    <p part>Selectors that target HTML tags will always be vulnerable to future changes. Instead, your selectors should target classes.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>But adding classes to your HTML has its own problems</h3>
+    <p part>Without thoughtful conventions, you end up with this:</p>
+    <div part>
+      <code-block language="html">
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">~~&hellip;~~</ul>
+            </div>
+          </div>
+        </nav>
+      </code-block>
+      <p>Are all these classes needed? What do they do? If I remove one of them will
+      everything break? WTF is going on? #FML</p>
+    </div>
+  </a-slide>
+
+  <a-slide>
+    <h3>So what is the answer?<br>What does good CSS look like?</h3>
+    <p part>Good CSS consists of selectors that match exactly the elements you want
+    without accidentally matching the elements you don't. All while not being overly verbose or repetitive, being resilient to change, and adaptable to any and all future design requirements.</p>
+    <p part>In other words, writing good CSS means you need magical powers and the ability to predict the future.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>Is all hope lost?</h3>
+    <p part>In all seriousness, the people who are good at CSS recognize its shortcomings and approach new problems with those shortcomings in mind.</p>
+    <p part>Methodologies like BEM, SMACSS, and OOCSS are invaluable tools for writing CSS today.</p>
+    <p part>The real question isn't "how do I write good CSS?" its "how should we change CSS to make it harder to screw up?"</p>
+  </a-slide>
+
+  <a-slide>
+    <h2>What is CSS missing?</h2>
+    <p part>If I could change anything about HTML and CSS to make these problems easier to solve, what would it be?</p>
+    <ul>
+      <li part>The ability to scope styles to a particular part of the DOM.</li>
+      <li part>The ability to hide implementation details.</li>
+    </ul>
+    <p part>As it turns out, Web Components give us both of these.</p>
+  </a-slide>
+
+  <a-slide>
+    <h1>Web Components</h1>
+    <h3 part>Specifically, Shadow DOM</h3>
+    <p part>Shadow DOM gives us real style scoping and encapsulation. We can add elements to the page that won't be affected by the existing CSS, and we can write style rules that won't affect the rest of the page.</p>
+    <p part>Shadow DOM also allows us hide presentational elements from end users. Effectively creating a private and public API.</p>
+  </a-slide>
+
+  <a-slide>
+    <h2>What is Shadow DOM?</h2>
+    <p part>Shadow DOM is a subtree of DOM nodes that you can create on any HTML element.</p>
+    <p part>The shadow subtree is ultimately rendered onto the page with the main DOM tree, but unlike the main DOM tree, shadow nodes can only be modified or styled from within.</p>
+    <p part>In short, shadow nodes are private.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>A simple example:</h3>
+    <flex-line>
+      <div flex>
+        <p>The main DOM:</p>
+        <code-block language="html">
+          <my-button>Click Me</my-button>
+        </code-block>
+        <p part style="font-size: .6em">
+          <my-button>Click Me</my-button>
+        </p>
+        <p part style="font-size: .6em">
+          <button>Regular Button</button>
+        </p>
+      </div>
+      <div flex>
+        <p>The element's shadow DOM:</p>
+        <code-block language="html">
+          &lt;style>
+            button {
+              background: #0af;
+              border: 0;
+              border-radius: .2em;
+              color: #fff;
+              font: inherit;
+              padding: .5em 1em;
+            }
+          &lt;/style>
+          <button>
+            <content></content>
+          </button>
+        </code-block>
+      </div>
+    </flex-line>
+  </a-slide>
+
+  <a-slide>
+    <h3>How can I get me some Shadow DOM?</h3>
+    <code-block language="javascript">
+      var element = document.getElementById('some-id');
+      var shadowRoot = element.createShadowRoot();
+
+      shadowRoot.innerHTML = 'Some HTML string...';
+    </code-block>
+  </a-slide>
+
+  <a-slide>
+    <h2>Let's see some examples</h2>
+    <ul>
+      <li>Basic Components</li>
+      <li>Extending components</li>
+      <li>Layout primatives</li>
+      <li>Building layouts from primatives</li>
+      <li>Hiding implementation details (and hacks)</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h3>The Media Object</h3>
+    <p>How it's done today (using BEM syntax):</p>
+    <code-block language="html">
+      <div class="Media">
+        <img class="Media-figure">
+        **<div class="Media-body">**
+          <h1>&hellip;</h1>
+          <p>&hellip;</p>
+        **</div>**
+      </div>
+    </code-block>
+    <p>Notice how <code>div.Media-body</code> serves no semantic purpose. It's a container elements that is purely presentational.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>How it could be done.</h3>
+    <flex-line>
+      <div flex>
+        <p>The main DOM:</p>
+        <code-block language="html">
+          <media-object>
+            <h1>&hellip;</h1>
+            <img>
+            <p>&hellip;</p>
+          </media-object>
+        </code-block>
+      </div>
+      <div>
+        <p>Shadow DOM:</p>
+        <code-block language="html">
+          &lt;style>
+            :host { display: flex }
+            figure { margin: 0 1em 0 0 }
+            div { flex: 1 }
+          &lt;/style>
+          <figure>
+            **<content select="img, svg, picture"></content>**
+          </figure>
+          <div>
+            **<content></content>**
+          </div>
+        </code-block>
+      </div>
+    </flex-line>
+  </a-slide>
+
+  <a-slide>
+    <h3>The composed tree</h3>
+    <code-block language="html">
+      <media-object>
+        ~~&lt;style>&hellip;&lt;/style>~~
+        ~~<figure>~~
+          <img>
+        ~~</figure>~~
+        ~~<div>~~
+          <h1>&hellip;</h1>
+          <p>&hellip;</p>
+        ~~</div>~~
+      </media-object>
+    </code-block>
+    <small>
+      <a href="demos/media-object-demo.html" target="_blank">
+        Media object demo &nbsp;&#8594;
+      </a>
+    </small>
+  </a-slide>
+
+  <a-slide>
+    <h3>The Author Card</h3>
+    <p>The <code>&lt;author-card&gt;</code> imports the <code>&lt;media-object&gt;</code> and composes it within its own shadow DOM.</p>
+    <code-block language="html">
+      **&lt;link href="/path/to/media-object.html" rel="import"&gt;**
+      <template>
+        &lt;style>
+          /* Author card styles&hellip; */
+        &lt;/style>
+        **<media-object>**
+          <div>
+            <content select="header"></content>
+          </div>
+          <content></content>
+        **</media-object>**
+      </template>
+    </code-block>
+    <small>
+      <a href="demos/author-card-demo.html" target="_blank">
+        Author card demo &nbsp;&#8594;
+      </a>
+    </small>
+  </a-slide>
+
+  <a-slide>
+    <h3>Layout primitives</h3>
+    <flex-line>
+      <div flex>
+        <p>The <code>&lt;flex-grid&gt;</code> element:</p>
+        <code-block language="html">
+          <flex-grid>
+            <div>&hellip;</div>
+            <div>&hellip;</div>
+            <div>&hellip;</div>
+            <div>&hellip;</div>
+            <div>&hellip;</div>
+            <div>&hellip;</div>
+          </flex-grid>
+        </code-block>
+        <small>
+          <a href="demos/flex-grid-demo.html" target="_blank">
+            Flex grid demo &nbsp;&#8594;
+          </a>
+        </small>
+      </div>
+      <div flex>
+        <p>The <code>&lt;flex-line&gt;</code> element:</p>
+        <code-block language="html">
+          <flex-line>
+            <div>&hellip;</div>
+            <div flex>&hellip;</div>
+            <flex-line column>
+              <div flex>&hellip;</div>
+              <div flex>&hellip;</div>
+            </flex-line>
+          </flex-line>
+        </code-block>
+        <small>
+          <a href="demos/flex-line-demo.html" target="_blank">
+            Flex line demo &nbsp;&#8594;
+          </a>
+        </small>
+      </div>
+    </flex-line>
+  </a-slide>
+
+  <a-slide>
+    <h3>Building layouts from composable primitives.</h3>
+    <p part><code>&lt;flex-line&gt;</code> and <code>&lt;flex-grid&gt;</code> are very presentational, so you might not want to have them appear in your main document source.</p>
+    <p part>Luckily, you don't have to.</p>
+    <p part>The next example uses <code>&lt;flex-line&gt;</code> in its shadow DOM to build the classic "Holy Grail" layout.</p>
+  </a-slide>
+
+  <a-slide>
+    <flex-line>
+      <div flex>
+        <p>The main document:</p>
+        <code-block language="html">
+          &lt;body is="holy-grail">
+            <header>&hellip;</header>
+            <main>&hellip;</main>
+            <nav>&hellip;</nav>
+            <aside>&hellip;</aside>
+            <footer>&hellip;</footer>
+          &lt;/body>
+        </code-block>
+        <small>
+          <a href="demos/holy-grail-demo.html" target="_blank">
+            Holy grid demo &nbsp;&#8594;
+          </a>
+        </small>
+      </div>
+      <div flex>
+        <p>Composed tree:</p>
+        <code-block language="html">
+          &lt;body>
+            ~~<flex-line column>~~
+              ~~<div>~~
+                <header>&hellip;</header>
+              ~~</div>~~
+              ~~<flex-line flex>~~
+                ~~<div flex>~~
+                  <main>&hellip;</main>~~
+                </div>~~
+                ~~<div>~~
+                  <nav>&hellip;</nav>~~
+                </div>~~
+                ~~<div>~~
+                  <aside>&hellip;</aside>~~
+                </div>~~
+              ~~</flex-line>~~
+              ~~<div>~~
+                <footer>&hellip;</footer>
+              ~~</div>~~
+            ~~</flex-line>~~
+          &lt;/body>
+        </code-block>
+      </div>
+    </flex-line>
+  </a-slide>
+
+  <a-slide>
+    <h3>Keeping hacks in the shadows</h3>
+    <p part>Sometimes CSS doesn't do exactly what you want, so you have to resort to hacks.</p>
+    <div part>
+      <p>With shadow DOM, you can keep these hacks out of sight, where they belong.</p>
+      <small>
+        <a href="demos/flex-grid-broken.html" target="_blank">
+          Flex grid broken
+        </a>
+        &nbsp;|&nbsp;
+        <a href="demos/flex-grid-demo.html" target="_blank">
+          Flex grid fixed
+        </a>
+      </small>
+    </div>
+  </a-slide>
+
+  <a-slide>
+    <h2>FAQs</h2>
+  </a-slide>
+
+  <a-slide>
+    <h3>When can I use this stuff? Are any sites currently using it?</h3>
+    <p part>
+      Check out <a href="https://www.polymer-project.org/">polymer-project.org</a> as well as <a href="https://www.chromestatus.com">chromestatus.com</a>. Both are built entirely with Web Components using Polymer.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>What browsers support these technologies?</h3>
+    <p part>With the <a href="http://webcomponents.org/polyfills/">webcomponents.js</a> polyfills you can get most of these features in all modern browsers (IE 10+).</p>
+    <p part>Though some features (like full style encapsulation) cannot be polyfilled, and so keep that in mind.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>Is it possible to style content in the shadow DOM from outside?</h3>
+    <p part>Yes, the selectors <code>::shadow</code> and <code>/deep/</code> allow you to do this.</p>
+    <p part>But as a general rule, you shouldn't ever do this. Well designed elements should make themselves sufficiently extensible.</p>
+    <p part>To quote the open/closed principle:</p>
+    <blockquote part>Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.</blockquote>
+  </a-slide>
+
+  <a-slide>
+    <h3>How do I know when to put content in the main DOM vs. the shadow DOM?</h3>
+    <p part>The shadow DOM is your private API and the main DOM is your public API. Implementation details belong in the shadow DOM.</p>
+    <p part>Also, dynamic content should go in the main DOM whenever possible. As a rule, Web Components should be static, bundleable, and cacheable.</p>
+  </a-slide>
+
+  <a-slide>
+    <h3>Is content in the shadow DOM accessible to screen readers and search engines?</h3>
+    <p part>Yes. Screen readers see the rendered tree in the same way that you see it (visually) when using your browser.</p>
+    <p part>Since Web Components are just HTML, you can use ARIA roles and attributes just as you can today.</p>
+    <p part>As with any emerging technology, test it on the devices you need to support.</p>
+  </a-slide>
+
+  <a-slide>
+    <h1>Wrapping Up</h1>
+  </a-slide>
+
+  <a-slide>
+    <h2>Revisiting the hard problems in CSS</h2>
+    <ul>
+      <li part>Scoping styles</li>
+      <li part>Specificity conflicts</li>
+      <li part>Non-deterministic matching</li>
+      <li part>Dependency management</li>
+      <li part>Removing "dead" code</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h2>Key points:</h2>
+    <ul>
+      <li part>With Shadow DOM it is finally possible to write CSS rules that aren't global, enabling true modular development.</li>
+      <li part>Modular CSS makes refactoring significantly less painful and risky. With Web Components, minor redesigns won't be something to be feared.</li>
+      <li part>Shadow DOM allows us to separate markup that is for content from markup that is purely presentational. Implementation details can be hidden from the user.</li>
+    </ul>
+  </a-slide>
+
+  <a-slide>
+    <h1>The End</h1>
+    <dl>
+      <dt>Twitter</dt>
+      <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>
+      <dt>Website</dt>
+      <dd><a href="http://philipwalton.com">philipwalton.com</a></dd>
+      <dt>Github</dt>
+      <dd><a href="https://github.com/philipwalton">github.com/philipwalton</a></dd>
+      <dt>Slides</dt>
+      <dd><a href="https://github.com/philipwalton/talks">github.com/philipwalton/talks</a></dd>
+    </dl>
+  </a-slide>
+
+  <template id="my-button-template">
+    <style>
+      button {
+        background: #0af;
+        border: 0;
+        border-radius: .2em;
+        color: #fff;
+        font: inherit;
+        padding: .5em 1em;
+      }
+    </style>
+    <button><content></content></button>
+  </template>
+
+  <script>
+    var MyButton = Object.create(HTMLElement.prototype);
+
+    MyButton.createdCallback = function() {
+      var buttonTemplate = document.getElementById('my-button-template');
+      this.createShadowRoot().innerHTML = buttonTemplate.innerHTML;
+    };
+
+    document.registerElement('my-button', { prototype: MyButton });
+  </script>
+
+</body>
+</html>

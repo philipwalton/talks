@@ -1,0 +1,33 @@
+<template>
+  <style>
+    :host {
+      display: flex;
+    }
+    figure {
+      flex: 0 0 auto;
+      margin: 0 1.5em 0 0;
+    }
+    div {
+      flex: 1;
+    }
+  </style>
+  <figure>
+    <content select="img"></content>
+  </figure>
+  <div>
+    <content></content>
+  </div>
+</template>
+
+<script>
+(function(ownerDoc) {
+  document.registerElement('media-object', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        this.createShadowRoot().innerHTML = ownerDoc
+            .querySelector('template').innerHTML;
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument));
+</script>

@@ -1,0 +1,55 @@
+<link rel="import" href="demo-box.html">
+<link rel="import" href="flex-line.html">
+
+<template>
+  <style>
+    :host(body) {
+      box-sizing: border-box;
+      display: flex;
+      height: 100vh;
+    }
+    flex-line {
+      flex: 1;
+    }
+    @media (min-width: 600px) {
+      flex-line > demo-box:nth-child(2) {
+        order: -1;
+      }
+    }
+  </style>
+
+  <flex-line column>
+    <demo-box>
+      <content select="header"></content>
+    </demo-box>
+    <flex-line flex>
+      <demo-box flex>
+        <content select="main"></content>
+      </demo-box>
+      <demo-box>
+        <content select="nav"></content>
+      </demo-box>
+      <demo-box>
+        <content select="aside"></content>
+      </demo-box>
+    </flex-line>
+    <demo-box>
+      <content select="footer"></content>
+    </demo-box>
+  </flex-line>
+
+</template>
+
+<script>
+(function(ownerDoc) {
+  document.registerElement('holy-grail', {
+    prototype: Object.create(HTMLBodyElement.prototype, {
+      createdCallback: { value: function() {
+        this.createShadowRoot().innerHTML = ownerDoc
+            .querySelector('template').innerHTML;
+      }}
+    }),
+    extends: 'body'
+  });
+}(document.currentScript.ownerDocument));
+</script>

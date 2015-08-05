@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Slider</title>
+
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+
+  <link href="a-slide-deck.html" rel="import">
+  <link href="a-slide.html" rel="import">
+  <link href="code-block.html" rel="import">
+
+  <link href="assets/theme.css" rel="stylesheet">
+</head>
+<body is="a-slide-deck" unresolved>
+
+  <a-slide>
+    <h1>Slider</h1>
+    <h3>A Web Component presentation framework.</h3>
+    <p>By <a href="http://philipwalton.com">Philip Walton</a>
+      / <a href="https://twitter.com/philwalton">@philwalton</a></p>
+  </a-slide>
+
+  <a-slide>
+    <h2>Slide with parts</h2>
+    <p part>Ad diam nisl aliquip luptatum vulputate augue enim minim, et aliquam luptatum eu minim vel at molestie autem in nonummy ad.</p>
+    <p part>Dolore qui feugait eu te esse iusto molestie eu.</p>
+    <p part>Nisl illum sit vel te vel ex lobortis wisi ullamcorper qui zzril et feugait accumsan.</p>
+    <p part>Euismod adipiscing odio ex vulputate tation illum dignissim in ut eum et minim feugiat suscipit, dolore wisi.</p>
+    <p part>Autem, erat vulputate vero vel elit facilisi te iusto augue duis ea blandit et in vel tincidunt, esse lorem tincidunt augue.</p>
+  </a-slide>
+
+  <a-slide>
+    <h2>Code blocks</h2>
+    <code-block language="javascript">
+      // Create an object that will be the new element's prototype.
+      var HelloWorld = Object.create(HTMLElement.prototype);
+
+      // Add a callback to run whenever a new <hello-world> tag is created.
+      HelloWorld.createdCallback = function() {
+        this.createShadowRoot().innerHTML =
+          '<style>code { color: red }</style>' +
+          '<p>Hello, <code><content></content></code></p>';
+      }
+
+      // Register the element.
+      document.registerElement('hello-world', { prototype: HelloWorld });
+    </code-block>
+  </a-slide>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<template>
+  <style>
+    :host {
+      display: flex;
+      flex-wrap: wrap;
+      flex-basis: 16em;
+      margin: 0 0 -1em -1em;
+      padding: 0;
+    }
+    ::content > * {
+      flex-grow: 1;
+      flex-basis: inherit;
+      margin: 0 0 1em 1em;
+    }
+    div {
+      flex-grow: 1;
+      flex-basis: inherit;
+      height: 0;
+      margin-left: 1em;
+    }
+  </style>
+  <content></content>
+
+  <!--
+  * The divs below solve the "last-line" issue with multiline flexboxes.
+  * There are 5 divs, so it can support 6-element wide grids.
+  -->
+
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+
+</template>
+
+<script>
+(function(template) {
+  document.registerElement('flex-grid', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument.querySelector('template')));
+</script>

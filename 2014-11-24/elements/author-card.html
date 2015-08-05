@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link href="media-object.html" rel="import">
+
+<polymer-element name="author-card" noscript>
+<template>
+  <style>
+    :host {
+      background: #fff;
+      box-shadow: 0 0 1em rgba(0,0,0,.67);
+      color: #222;
+      display: block;
+      font-weight: 300;
+      max-width: 30em;
+      padding: 1.5em;
+    }
+    div {
+      border-bottom: 1px solid hsl(0, 0%, 90%);
+      margin-bottom: 1em;
+      padding-bottom: 1em;
+    }
+    ::content h1 {
+      font-size: 1.4em;
+      font-weight: 400;
+      margin-bottom: .25em;
+    }
+    ::content img {
+      display: block;
+      border-radius: 50%;
+    }
+  </style>
+  <media-object>
+    <div>
+      <content select="header"></content>
+    </div>
+    <content></content>
+  </media-object>
+</template>
+</polymer-element>

@@ -1,0 +1,49 @@
+<template>
+  <style>
+
+    :host {
+      display: flex;
+      flex-direction: column;
+      margin: -1em 0 0 -1em;
+      width: calc(100% + 1em);
+    }
+    :host([column]) {
+      min-height: calc(100% + 1em);
+    }
+
+    ::content > * {
+      margin: 1em 0 0 1em;
+    }
+    ::content > :not([flex]) {
+      flex: 0 0 auto;
+    }
+    ::content > [flex] {
+      flex: 1;
+    }
+    ::content > flex-line {
+      margin: 0;
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      :host(:not([column])) {
+        flex-direction: row;
+      }
+    }
+
+  </style>
+  <content></content>
+</template>
+
+<script>
+(function(template) {
+  document.registerElement('flex-line', {
+    prototype: Object.create(HTMLElement.prototype, {
+      createdCallback: { value: function() {
+        var templateClone = document.importNode(template.content, true);
+        this.createShadowRoot().appendChild(templateClone);
+      }}
+    })
+  });
+}(document.currentScript.ownerDocument.querySelector('template')));
+</script>

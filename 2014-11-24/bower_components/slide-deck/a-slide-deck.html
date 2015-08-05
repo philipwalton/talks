@@ -1,0 +1,162 @@
+<link href="../polymer/polymer.html" rel="import">
+<link href="a-slide.html" rel="import">
+
+<polymer-element name="a-slide-deck" attributes="width height" extends="body">
+<template>
+  <style>
+    :host {
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: absolute;
+      width: 100vw;
+    }
+    #container {
+      box-sizing: border-box;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+    }
+  </style>
+  <div id="container">
+    <content select="a-slide"></content>
+  </div>
+</template>
+<script>
+Polymer('a-slide-deck', {
+
+  width: 1280,
+
+  height: 720,
+
+  padding: 80,
+
+  ready: function() {
+
+    this.slides = [].slice.call(this.children).filter(function(child) {
+      return child.matches('a-slide');
+    });
+    this.i = this.getIndexFromUrl();
+
+    this.slides.forEach(function(slide, i) {
+      if (i < this.i) slide.setAttribute('history', 'past');
+      if (i === this.i) slide.setAttribute('history', 'present');
+      if (i > this.i) slide.setAttribute('history', 'future');
+    }.bind(this));
+
+    addEventListener('resize', this.onResize.bind(this));
+    addEventListener('keydown', this.onKeyDown.bind(this));
+    addEventListener('hashchange', this.onHashChange.bind(this));
+
+    this.onResize();
+  },
+
+
+  /**
+   * Get the slide at the current index.
+   */
+  get slide() {
+    return this.slides[this.i];
+  },
+
+
+  /**
+   * Navigate forward in the slide-deck. Check the current slide for
+   * additional parts before switching to a different slide.
+   */
+  forward: function() {
+    if (!this.slide.forward()) {
+      this.navigate(this.i + 1);
+      this.slide.hideParts();
+    }
+  },
+
+
+  /**
+   * Navigate backward in the slide-deck. Check the current slide for
+   * additional parts before switching to a different slide.
+   */
+  back: function() {
+    if (!this.slide.back()) {
+      this.navigate(this.i - 1);
+      this.slide.showParts();
+    }
+  },
+
+
+  navigate: function(i) {
+    if (i < 0 || i > this.slides.length - 1) return;
+
+    var direction = i > this.i ? 1 : -1;
+
+    // Update the history for each slide between this and the target.
+    while (i !== this.i) {
+      this.slide.setAttribute('history', direction > 0 ? 'past' : 'future');
+      this.i += direction;
+    }
+
+    this.slide.setAttribute('history', 'present');
+    this.updateUrl(i);
+  },
+
+
+  updateUrl: function(i) {
+    this.i = i;
+    location.hash = this.i + 1;
+  },
+
+
+  getIndexFromUrl: function() {
+    var i = Math.floor(location.hash.slice(1));
+    return !i || i > this.slides.length ? 0 : i - 1;
+  },
+
+
+  onKeyDown: function(e) {
+    switch (e.keyCode) {
+      case 32: // Spacebar.
+      case 39: // Right arrow key.
+        e.preventDefault();
+        this.forward();
+        break;
+      case 37: // Left arrow key.
+        this.back();
+        e.preventDefault();
+        break;
+    }
+  },
+
+
+  onHashChange: function() {
+    var i = this.getIndexFromUrl();
+    if (i === this.i) return;
+
+    this.navigate(i);
+  },
+
+
+  onResize: function() {
+    var css = this.$.container.style;
+    var offsetWidth = this.offsetWidth;
+    var offsetHeight = this.offsetHeight;
+
+    css.width = (this.width - this.padding) + 'px';
+    css.height = (this.height - this.padding) + 'px';
+    css.marginLeft = -((this.width / 2) - (this.padding / 2)) + 'px';
+    css.marginTop = -((this.height / 2) - (this.padding / 2)) + 'px';
+
+    if (offsetWidth < this.width || offsetHeight < this.height) {
+      var hRatio = offsetWidth / this.width;
+      var vRatio = offsetHeight / this.height;
+      var scale = Math.min(vRatio, hRatio);
+
+      css.transform = 'scale(' + scale + ')';
+    }
+    else {
+      css.transform = null;
+    }
+  }
+
+});
+</script>
+</polymer-element>

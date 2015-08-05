@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flex Line Demo</title>
+  <link href="../assets/reset.css" rel="stylesheet">
+  <link href="../elements/demo-box.html" rel="import">
+  <link href="../elements/flex-line.html" rel="import">
+</head>
+<body max>
+
+  <flex-line column>
+
+    <demo-box>Header</demo-box>
+
+    <flex-line flex>
+      <demo-box>Sidebar</demo-box>
+      <demo-box flex>Content</demo-box>
+      <demo-box>Sidebar</demo-box>
+    </flex-line>
+
+    <flex-line>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
+    </flex-line>
+
+    <demo-box>footer</demo-box>
+
+  </flex-line>
+
+</body>
+</html>
