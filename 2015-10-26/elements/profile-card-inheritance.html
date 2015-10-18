@@ -1,0 +1,43 @@
+<link rel="import" href="media-object-inheritance.html">
+
+<template>
+  <style>
+    :host {
+      background: #fff;
+      box-shadow: 0 0 1em rgba(0,0,0,.67);
+      color: #222;
+      font-weight: 300;
+      padding: 1.5em;
+    }
+    ::content header {
+      border-bottom: 1px solid hsl(0, 0%, 90%);
+      margin-bottom: 1em;
+      padding-bottom: 1em;
+    }
+    ::content img {
+      display: block;
+      border-radius: 50%;
+    }
+  </style>
+</template>
+
+<script>
+(function(shadowTemplate) {
+
+  // Creates a ProfileCardElement class that extends MediaObjectElmenet.
+  window.ProfileCardElement = function() {}
+  Object.setPrototypeOf(ProfileCardElement.prototype,
+                        MediaObjectElement.prototype);
+
+  // Creates a shadow root and populates it with the template contents
+  // after calling "super" so it also gets the <media-object> contents.
+  ProfileCardElement.prototype.createdCallback = function() {
+    MediaObjectElement.prototype.createdCallback.call(this);
+    this.shadowRoot.innerHTML += shadowTemplate.innerHTML;
+  };
+
+  // Registers the `<profile-card>` element for use.
+  document.registerElement('profile-card', ProfileCardElement);
+
+}(document.currentScript.ownerDocument.querySelector('template')));
+</script>

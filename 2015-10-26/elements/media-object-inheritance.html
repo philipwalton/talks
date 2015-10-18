@@ -1,0 +1,45 @@
+<template>
+  <style>
+    :host {
+      display: flex;
+      max-width: 32em;
+    }
+    figure {
+      flex: 0 0 auto;
+      margin: 0 1.5em 0 0;
+    }
+    div {
+      flex: 1;
+    }
+    ::content h1 {
+      font-size: 1.66em;
+      line-height: 1;
+      margin: 0 0 .3em;
+    }
+  </style>
+  <figure>
+    <content select="img"></content>
+  </figure>
+  <div>
+    <content></content>
+  </div>
+</template>
+
+<script>
+(function(ownerDoc) {
+
+  // Creates a MediaObjectElement class that extends HTMLElement.
+  window.MediaObjectElement = function() {}
+  Object.setPrototypeOf(MediaObjectElement.prototype, HTMLElement.prototype);
+
+  // Creates a shadow root and populates it with the template contents.
+  MediaObjectElement.prototype.createdCallback = function() {
+    var shadowRoot = this.createShadowRoot();
+    shadowRoot.innerHTML = ownerDoc.querySelector('template').innerHTML;
+  };
+
+  // Registers the `<media-object>` element for use.
+  document.registerElement('media-object', MediaObjectElement);
+
+}(document.currentScript.ownerDocument));
+</script>
