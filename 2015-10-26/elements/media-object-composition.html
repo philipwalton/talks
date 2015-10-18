@@ -1,0 +1,37 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="media-object">
+
+  <style>
+    :host {
+      display: flex;
+      max-width: 32em;
+
+      @apply(--media-object);
+    }
+    figure {
+      flex: 0 0 auto;
+      margin: 0 1.5em 0 0;
+    }
+    div {
+      flex: 1;
+    }
+    :host ::content h1 {
+      font-size: 1.66em;
+      line-height: 1;
+      margin: 0 0 .3em;
+    }
+  </style>
+
+  <template>
+    <figure>
+      <content select="img"></content>
+    </figure>
+    <div>
+      <content></content>
+    </div>
+  </template>
+
+  <script>Polymer({is: 'media-object'});</script>
+
+</dom-module>

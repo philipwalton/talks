@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="media-object-composition.html">
+
+<dom-module id="profile-card">
+
+  <style>
+    :host {
+      --media-object: {
+        background: #fff;
+        box-shadow: 0 0 1em rgba(0,0,0,.67);
+        color: #222;
+        font-weight: 300;
+        padding: 1.5em;
+      };
+    }
+    :host ::content header {
+      border-bottom: 1px solid hsl(0, 0%, 90%);
+      margin-bottom: 1em;
+      padding-bottom: 1em;
+    }
+    :host ::content img {
+      display: block;
+      border-radius: 50%;
+    }
+  </style>
+
+  <template>
+    <media-object>
+      <content></content>
+    </media-object>
+  </template>
+
+  <script>Polymer({is: 'profile-card'});</script>
+
+</dom-module>
