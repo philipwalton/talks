@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flex Grid Demo</title>
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link href="../assets/reset.css" rel="stylesheet" >
+  <link href="../elements/flex-grid.html" rel="import" >
+  <link href="../elements/profile-card-composition.html" rel="import" >
+
+  <style is="custom-style">
+    flex-grid {
+      --flex-grid-basis: 22em;
+    }
+    profile-card {
+      --media-object: {
+        font-size: .8em;
+        max-width: 100%;
+      }
+    }
+  </style>
+
+</head>
+<body dark max>
+
+  <flex-grid>
+
+    <profile-card>
+      <header>
+        <h1>Kitty Cat</h1>
+        <em>Feline Software Engineer</em>
+      </header>
+      <img alt="Cat" src="../assets/cat.jpg">
+      <p>Quisque at fringilla erat. Vestibulum lacinia vitae tellus ut congue. Duis bibendum nibh in justo faucibus fringilla. Sed cursus, metus eu commodo.</p>
+    </profile-card>
+
+    <profile-card>
+      <header>
+        <h1>Kitty Cat</h1>
+        <em>Feline Software Engineer</em>
+      </header>
+      <img alt="Cat" src="../assets/cat.jpg">
+      <p>Quisque at fringilla erat. Vestibulum lacinia vitae tellus ut congue. Duis bibendum nibh in justo faucibus fringilla. Sed cursus, metus eu commodo.</p>
+    </profile-card>
+
+    <profile-card>
+      <header>
+        <h1>Kitty Cat</h1>
+        <em>Feline Software Engineer</em>
+      </header>
+      <img alt="Cat" src="../assets/cat.jpg">
+      <p>Quisque at fringilla erat. Vestibulum lacinia vitae tellus ut congue. Duis bibendum nibh in justo faucibus fringilla. Sed cursus, metus eu commodo.</p>
+    </profile-card>
+
+    <profile-card>
+      <header>
+        <h1>Kitty Cat</h1>
+        <em>Feline Software Engineer</em>
+      </header>
+      <img alt="Cat" src="../assets/cat.jpg">
+      <p>Quisque at fringilla erat. Vestibulum lacinia vitae tellus ut congue. Duis bibendum nibh in justo faucibus fringilla. Sed cursus, metus eu commodo.</p>
+    </profile-card>
+
+  </flex-grid>
+
+</body>
+</html>

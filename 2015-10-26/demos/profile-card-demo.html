@@ -2,9 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Profile Card Demo (Inheritance)</title>
+  <title>Profile Card Demo</title>
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="stylesheet" href="../assets/reset.css">
-  <link rel="import" href="../elements/profile-card-inheritance.html">
+  <link rel="import" href="../elements/profile-card.html">
+
+  <style is="custom-style">
+    profile-card {
+      --profile-card: {
+        outline: 5px dotted blue;
+      };
+    }
+  </style>
 </head>
 <body dark max center>
 
