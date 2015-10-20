@@ -1,13 +1,8 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-
-<dom-module id="media-object">
+<template>
 
   <style>
     :host {
       display: flex;
-      max-width: 32em;
-
-      @apply(--media-object);
     }
     figure {
       flex: 0 0 auto;
@@ -16,22 +11,37 @@
     div {
       flex: 1;
     }
-    :host ::content h1 {
+    ::content h1 {
       font-size: 1.66em;
       line-height: 1;
       margin: 0 0 .3em;
     }
   </style>
 
-  <template>
-    <figure>
-      <content select="img"></content>
-    </figure>
-    <div>
-      <content></content>
-    </div>
-  </template>
+  <figure>
+    <content select="img"></content>
+  </figure>
+  <div>
+    <content></content>
+  </div>
 
-  <script>Polymer({is: 'media-object'});</script>
+</template>
 
-</dom-module>
+<script>
+(function(ownerDoc) {
+
+  // Creates a MediaObjectElement class that extends HTMLElement.
+  window.MediaObjectElement = function() {}
+  Object.setPrototypeOf(MediaObjectElement.prototype, HTMLElement.prototype);
+
+  // Creates a shadow root and populates it with the template contents.
+  MediaObjectElement.prototype.createdCallback = function() {
+    var shadowRoot = this.createShadowRoot();
+    shadowRoot.innerHTML = ownerDoc.querySelector('template').innerHTML;
+  };
+
+  // Registers the `<media-object>` element for use.
+  document.registerElement('media-object', MediaObjectElement);
+
+}(document.currentScript.ownerDocument));
+</script>
