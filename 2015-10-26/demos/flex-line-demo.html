@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flex Line Demo</title>
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="stylesheet" href="../assets/reset.css">
+  <link rel="import" href="../elements/flex-line.html">
+
+  <style is="custom-style">
+    flex-line {
+      --flex-line-gutter: 1.5em;
+    }
+    .demo-box {
+      background: hsl(0, 0%, 33%);
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      padding: 1em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <flex-line column>
+
+    <div class="demo-box">Header</div>
+
+    <flex-line flex>
+      <div class="demo-box">Sidebar</div>
+      <div class="demo-box" flex>Content</div>
+      <div class="demo-box">Sidebar</div>
+    </flex-line>
+
+    <flex-line>
+      <div class="demo-box" flex>Ads</div>
+      <div class="demo-box" flex>Ads</div>
+      <div class="demo-box" flex>Ads</div>
+    </flex-line>
+
+    <div class="demo-box">Footer</div>
+
+  </flex-line>
+
+</body>
+</html>

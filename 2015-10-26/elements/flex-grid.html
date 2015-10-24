@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="flex-grid">
+  <style>
+    :host {
+      --flex-grid-gutter: 1em;
+      --flex-grid-basis: 16em;
+      display: block;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 0 -var(--flex-grid-gutter) -var(--flex-grid-gutter);
+      padding: 0;
+    }
+    .container ::content > * {
+      flex: 1 0 var(--flex-grid-basis);
+      margin: 0 0 var(--flex-grid-gutter) var(--flex-grid-gutter);
+
+      @apply(--flex-grid-item);
+    }
+    .placeholder {
+      flex: 1 0 var(--flex-grid-basis);
+
+      @apply(--flex-grid-item);
+
+      margin: 0 0 0 var(--flex-grid-gutter);
+      height: 0;
+    }
+  </style>
+  <template>
+    <div class="container">
+      <content></content>
+
+      <!-- Placeholder divs to solve the "last-line" issue with
+      multiline flexboxes. -->
+      <template is="dom-repeat" items="{{flexGridItems}}">
+        <div class="placeholder"></div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'flex-grid',
+      ready: function() {
+        var content = Polymer.dom(this.root).querySelector('content');
+        var distributedNodes = Polymer.dom(content).getDistributedNodes();
+        this.flexGridItems = distributedNodes.filter(function(node) {
+          return node.nodeType == 1;
+        }).slice(1);
+      }
+    });
+  </script>
+</dom-module>
