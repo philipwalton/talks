@@ -167,8 +167,9 @@
     </a-slide>
 
     <a-slide>
-      <p class="big">The problem isn't that our CSS is bad, the problem is it's operating on far too much markup.</p>
-      <p part class="big">The real question isn't "how do I write good CSS?" its "how should we change CSS to make it harder to screw up?"</p>
+      <p>The problem isn't that our CSS is bad, the problem is it's operating on far too much DOM.</p>
+      <p part>The real question isn't "how do I write good CSS?" It's:</p>
+      <p part class="big">How should we change CSS to make it harder to screw up?</p>
     </a-slide>
 
     <a-slide>
@@ -193,7 +194,8 @@
           <span class="small">ITCSS /
           <span class="small">FUNCSS /
           <span class="small">ACSS /
-          <span class="small">WTFCSS&hellip;
+          <span class="small">WTFCSS /
+          <span class="small">ETCCSS&hellip;
           </span></span></span></span></span></span>
         </li>
       </ul>
@@ -266,9 +268,9 @@
 
     <a-slide>
       <h2>Custom Elements</h2>
-      <p>Custom elements are created as JavaScript classes.</p>
-      <p>They extend <code>HTMLElement</code> and then get registered for use as a specific HTML tag.</p>
-      <p>Custom elements typically create their Shadow DOM in the <code>createdCallback</code> lifecycle method.</p>
+      <p>Custom elements are initially defined as JavaScript classes.</p>
+      <p>They extend <code>HTMLElement</code> and then get registered on the document for use as a specific HTML tag.</p>
+      <p>Custom elements typically create a shadow root in their <code>createdCallback</code> lifecycle method.</p>
     </a-slide>
 
 
@@ -404,14 +406,35 @@
 
     <a-slide>
       <h3>Inheritance with Web Components</h3>
-      <p>The extending will:
+      <p>The extending component will typically:
       <ul>
         <li>Include the base component.</li>
         <li>Call the base components <code>createdCallback</code> to create the base shadow root.</li>
         <li>Create a new style tag with additional styles and append it to the shadow root.</li>
       </ul>
-      <p>
-        <small>
+    </a-slide>
+
+    <a-slide>
+      <p><code>&lt;profile-card&gt;</code> extends <code>&lt;media-object&gt;</code>:</p>
+      <code-block language="html">
+        &lt;link rel="import" href="media-object.html"&gt;
+
+        <template>
+          <style>/* Additional, profile-card-only styles. */</style>
+        </template>
+
+        &lt;script>
+          class ProfileCardElement extends MediaObjectElement {
+            createdCallback() {
+              super.createdCallback();
+              this.shadowRoot.innerHTML +=
+                  document.querySelector('template').innerHTML;
+            }
+          }
+          document.registerElement('profile-card', ProfileCardElement);
+        &lt;/script>
+      </code-block>
+      <small>
           <a href="demos/media-object-demo.html" target="_blank">
             Media object demo
           </a>
@@ -420,9 +443,7 @@
             Profile card demo
           </a>
         </small>
-      </p>
     </a-slide>
-
 
     <a-slide>
       <h2>Composition</h2>
@@ -596,24 +617,24 @@
         <div flex auto>
           <p>The main DOM:</p>
           <code-block language="html">
-            <profile-grid-gallery>
+            <profile-card-gallery>
               <profile-card>~~&hellip;~~</profile-card>
               <profile-card>~~&hellip;~~</profile-card>
               <profile-card>~~&hellip;~~</profile-card>
               <profile-card>~~&hellip;~~</profile-card>
-            </profile-grid-gallery>
+            </profile-card-gallery>
           </code-block>
         </div>
         <div flex auto>
           <p>The shadow DOM:</p>
           <code-block language="html">
-            <profile-grid-gallery>
+            <profile-card-gallery>
               <flex-grid>
                 <content
                   select="profile-card">
                 </content>
               </flex-grid>
-            </profile-grid-gallery>
+            </profile-card-gallery>
           </code-block>
         </div>
       </flex-line>
@@ -627,14 +648,14 @@
     <a-slide>
       <h3>The final, composed DOM tree</h3>
       <code-block language="html">
-        <profile-grid-gallery>
+        <profile-card-gallery>
           ~~<flex-grid>~~
             <profile-card>~~[media-object]~~</profile-card>
             <profile-card>~~[media-object]~~</profile-card>
             <profile-card>~~[media-object]~~</profile-card>
             <profile-card>~~[media-object]~~</profile-card>
           ~~</flex-grid>~~
-        </profile-grid-gallery>
+        </profile-card-gallery>
       </code-block>
     </a-slide>
 
@@ -666,18 +687,63 @@
         <!-- Inside <date-range-picker> element definition. -->
         <template>
           <div>
-            <input part="start-date" type="date">
-            <input part="end-date" type="date">
+            <input **part="start-date"** type="date">
+            <input **part="end-date"** type="date">
           </div>
         </template>
       </code-block>
       <p>Referencing custom pseudo-elements in external CSS:</p>
       <code-block language="css">
-        date-range-picker::part(start-date),
-        date-range-picker::part(end-date) {
+        date-range-picker**::part(start-date)**,
+        date-range-picker**::part(end-date)** {
           font-size: 1.5em;
         }
       </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h2>Wrapping up</h2>
+    </a-slide>
+
+    <a-slide>
+      <h3>Writing scalable CSS today is challenging</h3>
+      <p>All CSS rules are global and they often conflict with other rules in unexpected ways.
+      <p>Managing the global nature of CSS at scale usually involves littering the HTML with implementation details.</p>
+      <p>Abstracting away these implementation details often requires complex build processes or templating systems that raise the barrier to entry for new developers.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Web Components solve all of these problems</h3>
+      <p>And they solve them at the platform level, so the barrier to entry is not significantly raised.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Web Components will change how we think about modularizing our CSS.</h3>
+      <p>Verbose naming conventions will go away; they'll no longer be necessary.</p>
+      <p>CSS files will become smaller, self-contained style declarations that do one thing and one thing only.</p>
+      <p>Components will be styled by composing and extending existing styles.</p>
+      <p>Third-party components will no longer be themed by overriding style rules. It will be opt-in and selectively allowed by the component author.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Web Components are happening and they're happening soon.</h3>
+      <p>You can already use most Web Components features (with the exception of Shadow DOM) via the webcomponents.js polyfill.</p>
+      <p>I predict that Shadow DOM v1 will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
+      <p><strong>#shadowdom2016</strong></p>
+    </a-slide>
+
+    <a-slide>
+      <h3>You can prepare for Web Components today</h3>
+      <p>Start (or continue) thinking about your site design in terms of reusable components.</p>
+      <p>Use a methodology like BEM, which will make the transition very natural.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>I hate your Web Components,<br>and your face, and you!</h3>
+      <p>The web platform will continue to work as it does today long into the future.</p>
+      <p>If Web Components aren't the best solution to your problem, feel free to use another solution.</p>
+      <p>Speaking for myself, I can't wait for a world in which Web Components, ES6 modules, and HTTP2 are fully supported everywhere.</p>
+      <p>The future is bright!</p>
     </a-slide>
 
     <a-slide>
