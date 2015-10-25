@@ -1,0 +1,47 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="demo-box.html">
+<link rel="import" href="flex-line.html">
+
+<dom-module id="holy-grail">
+
+  <style>
+    :host {
+      box-sizing: border-box;
+      display: flex;
+      height: 100%;
+    }
+    flex-line {
+      flex: 1;
+    }
+    @media (min-width: 600px) {
+      flex-line demo-box:nth-child(2) {
+        order: -1;
+      }
+    }
+  </style>
+
+  <template>
+    <flex-line column>
+      <demo-box>
+        <content select="header"></content>
+      </demo-box>
+      <flex-line flex>
+        <demo-box flex>
+          <content select="main"></content>
+        </demo-box>
+        <demo-box>
+          <content select="nav"></content>
+        </demo-box>
+        <demo-box>
+          <content select="aside"></content>
+        </demo-box>
+      </flex-line>
+      <demo-box>
+        <content select="footer"></content>
+      </demo-box>
+    </flex-line>
+  </template>
+
+  <script>Polymer({is: 'holy-grail'});</script>
+
+</dom-module>

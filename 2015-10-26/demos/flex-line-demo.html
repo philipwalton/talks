@@ -5,41 +5,28 @@
   <title>Flex Line Demo</title>
   <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="stylesheet" href="../assets/reset.css">
+  <link rel="import" href="../elements/demo-box.html">
   <link rel="import" href="../elements/flex-line.html">
-
-  <style is="custom-style">
-    flex-line {
-      --flex-line-gutter: 1.5em;
-    }
-    .demo-box {
-      background: hsl(0, 0%, 33%);
-      border-radius: 4px;
-      color: #fff;
-      font-weight: 700;
-      padding: 1em;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
 
   <flex-line column>
 
-    <div class="demo-box">Header</div>
+    <demo-box>Header</demo-box>
 
     <flex-line flex>
-      <div class="demo-box">Sidebar</div>
-      <div class="demo-box" flex>Content</div>
-      <div class="demo-box">Sidebar</div>
+      <demo-box>Sidebar</demo-box>
+      <demo-box flex>Content</demo-box>
+      <demo-box>Sidebar</demo-box>
     </flex-line>
 
     <flex-line>
-      <div class="demo-box" flex>Ads</div>
-      <div class="demo-box" flex>Ads</div>
-      <div class="demo-box" flex>Ads</div>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
     </flex-line>
 
-    <div class="demo-box">Footer</div>
+    <demo-box>Footer</demo-box>
 
   </flex-line>
 

@@ -4,22 +4,40 @@
   box-sizing: inherit;
 }
 
-a,
-body,
-code,
-em,
+html {
+  background: #fff;
+  box-sizing: border-box;
+  color: #333;
+  font: 1em/1.333 'Helvetica Neue', sans-serif;
+}
+
+html[dark] {
+  background: #444;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  padding: 1.5em;
+}
+
+body[center] {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+body[center] > * {
+  flex-basis: 32em;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-html,
-ol,
-p,
-pre,
-strong,
-ul {
+p {
   border: 0;
   font: inherit;
   list-style: none;
@@ -28,24 +46,4 @@ ul {
   vertical-align: baseline;
 }
 
-html {
-  background: #fff;
-  box-sizing: border-box;
-  color: #333;
-  font: 1em/1.333 'Helvetica Neue', sans-serif;
-}
 
-body {
-  padding: 1.5em;
-}
-
-body[center] {
-  align-items: center;
-  display: flex;
-  height: 100vh;
-  justify-content: center;
-}
-
-body[center] > * {
-  flex-basis: 32em;
-}

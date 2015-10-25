@@ -5,34 +5,19 @@
   <title>Flex Grid Demo</title>
   <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="stylesheet" href="../assets/reset.css">
+  <link rel="import" href="../elements/demo-box.html">
   <link rel="import" href="../elements/flex-grid.html">
-
-  <style is="custom-style">
-    flex-grid {
-      --flex-grid-basis: 16em;
-      --flex-grid-gutter: 1.5em;
-    }
-    .demo-box {
-      background: hsl(0, 0%, 33%);
-      border-radius: 4px;
-      color: #fff;
-      font-weight: 700;
-      line-height: 7em;
-      padding: 1em;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
 
   <flex-grid>
-    <div class="demo-box">One</div>
-    <div class="demo-box">Two</div>
-    <div class="demo-box">Three</div>
-    <div class="demo-box">Four</div>
-    <div class="demo-box">Five</div>
-    <div class="demo-box">Six</div>
-    <div class="demo-box">Seven</div>
+    <demo-box>One</demo-box>
+    <demo-box>Two</demo-box>
+    <demo-box>Three</demo-box>
+    <demo-box>Four</demo-box>
+    <demo-box>Five</demo-box>
+    <demo-box>Six</demo-box>
+    <demo-box>Seven</demo-box>
   </flex-grid>
 
 </body>

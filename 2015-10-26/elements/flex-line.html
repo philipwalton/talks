@@ -24,6 +24,9 @@
     .container ::content > [flex] {
       flex: 1;
     }
+    .container ::content > [auto] {
+      flex-basis: auto;
+    }
     @media (min-width: 600px) {
       :host(:not([column])) .container {
         flex-direction: row;
