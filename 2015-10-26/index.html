@@ -38,14 +38,14 @@
       <h2>The good news</h2>
       <p part>For a long time Web Components were primarily a Google effort, but now all browser vendors are on board.</p>
       <p part>Web Components will likely work natively in all browsers sometime in 2016.</p>
-      <p part><strong>#shadowdom2016</strong> <emoji-con name="hand-with-first-and-second-fingers-crossed"></emoji-con></p>
     </a-slide>
 
     <a-slide>
       <h2>The bad news</h2>
-      <p part>In order for everyone to come to agreement, the spec had to change.</p>
-      <p part>When I submitted this talk proposal, Chrome had a native implementation of all Web Component features.</p>
-      <p part>Now none of the browsers do. <emoji-con name="disappointed-face"></emoji-con></p>
+      <p part>When I submitted this talk proposal, Chrome had a native implementation of all the Web Component features.</p>
+      <p part>But in order to reach consensus, the spec had to change.</p>
+      <p part>That means, unfortunately, no browsers currently implement the latest standards.</p>
+      <p part><emoji-con name="disappointed-face"></emoji-con></p>
     </a-slide>
 
     <a-slide>
@@ -56,13 +56,6 @@
         <li part>The <code>&lt;content select&gt;</code> element has been renamed to <code>&lt;slot name&gt;</code>, and the <code>::content</code> pseudo-element to <code>::slotted</code>.</li>
         <li part>The shadow piercing combinators and pseudo-elements (e.g. <code>/deep/</code>, <code>>>></code>, <code>::shadow</code>) have been removed.</li>
       </ul>
-    </a-slide>
-
-    <a-slide>
-      <h3>A note about the demos</h3>
-      <p part>Because the spec is currently in flux, I couldn't have working demos that also used current standards.</p>
-      <p part>I choose to show working demos, so people could download them and experiment themselves.</p>
-      <p part>Keep in mind the syntax has changed slightly. <span part>Luckily, the underlying, fundamental concepts are still the same. And that's the important part.</span></p>
     </a-slide>
 
     <a-slide>
@@ -134,15 +127,13 @@
     </a-slide>
 
     <a-slide>
-      <h3>Okay, but my selectors aren't <em>that</em> bad.</h3>
-      <p part>Yes, they are.</p>
-      <p part>In my experience, pretty much all selectors are bad.</p>
-      <p part>The only selectors that even kind of scale are selectors that target a single class.</p>
+      <h3>But my selectors aren't <em>that</em> bad.</h3>
+      <p part>Sure, maybe not.</p>
+      <p part>Maybe you're using a naming convention, or a linter, or something else that ensure your specificity is low and you're only targetting classes&hellip;</p>
     </a-slide>
 
     <a-slide>
-      <h3>But that means adding a lot of classes to your markup.</h3>
-      <p part>Which too often ends up looking like this:</p>
+      <h3>But even doing that has its problems</h3>
       <div part>
         <code-block language="html">
           <nav class="navbar navbar-default">
@@ -169,7 +160,7 @@
     <a-slide>
       <p>The problem isn't that our CSS is bad, the problem is it's operating on far too much DOM.</p>
       <p part>The real question isn't "how do I write good CSS?" It's:</p>
-      <p part class="big">How should we change CSS to make it harder to screw up?</p>
+      <h3 part>How should we change CSS to make it harder to screw up?</h3>
     </a-slide>
 
     <a-slide>
@@ -177,9 +168,10 @@
       <p part>If I could change anything about HTML and CSS to make these problems easier to solve, what would it be?</p>
       <ul>
         <li part>The ability to scope or isolate styles to a particular set of DOM nodes.</li>
-        <li part>The ability to hide away implementation details.</li>
+        <li part>The ability to bundle a set of styles with the markup and logic that depends on them.</li>
+        <li part>The ability to abstract away implementation details.</li>
       </ul>
-      <p part>As it turns out, Web Components (specifically Shadow DOM) gives us both of these.</p>
+      <p part>As it turns out, Web Components gives us all of these.</p>
     </a-slide>
 
     <a-slide>
@@ -231,10 +223,10 @@
     <a-slide>
       <h2>The Anatomy of a Web Component</h2>
       <ul>
-        <li><strong>A Custom Element</strong>: defines the component as an HTML tag.</li>
-        <li><strong>HTML Imports</strong>: declares any other element or asset dependencies.</li>
-        <li><strong>Shadow DOM</strong>: Defines the private DOM and the insertion points for the main DOM.</li>
-        <li><strong>Template Element</strong>: a Shadow DOM is usually created by cloning a template element.</li>
+        <li>Shadow DOM</li>
+        <li>Custom Elements</li>
+        <li>HTML Imports</li>
+        <li>The template element</li>
       </ul>
     </a-slide>
 
@@ -288,19 +280,19 @@
         // Registers the `&lt;media-object&gt;` element for use.
         document.registerElement('media-object', MediaObjectElement);
       </code-block>
-      <p part>Note, the other lifecycle methods are <code>attachedCallback</code>, <code>detachedCallback</code>, and <code>attributeChangedCallback</code>.</p>
+      <small>Note: the other lifecycle methods are <code>attachedCallback</code>, <code>detachedCallback</code>, and <code>attributeChangedCallback</code>.</small>
     </a-slide>
 
     <a-slide>
       <h2>HTML Imports</h2>
       <p>HTML Imports are a way to package up a custom element and any of its dependencies into a single file.</p>
       <p part>You no longer need to manage a component's HTML, CSS, and JavaScript dependencies separately.</p>
-      <p part>Other custom elements (or the main document) and then "import" the imports before using them.</p>
+      <p part>Other custom elements (or the main document) can then "import" the imports before using them.</p>
     </a-slide>
 
     <a-slide>
       <h2>Templates</h2>
-      <p>Template are inert bits of DOM. By "inert" I mean their contents aren't processed by the browser.</p>
+      <p part>Template are inert bits of DOM. By "inert" I mean their contents aren't processed by the browser.</p>
       <p part>Templates are typically used to define a reusable bit of DOM that can be cloned and inserted into the main DOM.</p>
       <p part>Templates are typically used to store an elements Shadow DOM contents before it's created and added to the page.</p>
     </a-slide>
@@ -330,32 +322,32 @@
 
     <a-slide>
       <h3>How does Shadow DOM interact with the main DOM?</h3>
-      <p>Shadow DOM uses the <code>&lt;content&gt;</code> element to define insertion points. The insertion points house the main DOM.</p>
-
-      <flex-line>
-        <div flex>
-          <p>The main DOM:</p>
-          <code-block language="html">
-            <media-object>
-              <h1>&hellip;</h1>
-              <img>
-              <p>&hellip;</p>
-            </media-object>
-          </code-block>
-        </div>
-        <div>
-          <p>Shadow DOM:</p>
-          <code-block language="html">
-            <figure>
-              <content select="img"></content>
-            </figure>
-            <div>
-              <content></content>
-            </div>
-          </code-block>
-        </div>
-      </flex-line>
-
+      <div part>
+        <p>Shadow DOM uses the <code>&lt;content&gt;</code> element to define insertion points. The insertion points house the main DOM.</p>
+        <flex-line>
+          <div flex>
+            <p>The main DOM:</p>
+            <code-block language="html">
+              <media-object>
+                <h1>&hellip;</h1>
+                <img>
+                <p>&hellip;</p>
+              </media-object>
+            </code-block>
+          </div>
+          <div>
+            <p>Shadow DOM:</p>
+            <code-block language="html">
+              <figure>
+                <content select="img"></content>
+              </figure>
+              <div>
+                <content></content>
+              </div>
+            </code-block>
+          </div>
+        </flex-line>
+      </div>
     </a-slide>
 
     <a-slide>
@@ -408,9 +400,9 @@
       <h3>Inheritance with Web Components</h3>
       <p>The extending component will typically:
       <ul>
-        <li>Include the base component.</li>
-        <li>Call the base components <code>createdCallback</code> to create the base shadow root.</li>
-        <li>Create a new style tag with additional styles and append it to the shadow root.</li>
+        <li part>Include the base component.</li>
+        <li part>Call the base components <code>createdCallback</code> to create the base shadow root.</li>
+        <li part>Create a new style tag with additional styles and append it to the shadow root.</li>
       </ul>
     </a-slide>
 
@@ -468,22 +460,22 @@
 
     <a-slide>
       <h3>Composition with Web Components</h3>
-      <p>The composing component will:
+      <p>The composing component will typically:
       <ul>
-        <li>Include the base component.</li>
-        <li>Use the base component elements in its shadow DOM.</li>
+        <li part>Include one or more components.</li>
+        <li part>Use those components in its shadow DOM.</li>
       </ul>
-      <p>Composition usually involves building a complex element from one or more base elements.</p>
+      <p part>Composition usually involves building a complex element from simpler or "base" elements.</p>
     </a-slide>
 
     <a-slide>
-      <h3>Base elements</h3>
+      <h3>What is a base element?</h3>
       <p>The media object is a classic OOCSS base element.</p>
       <p>Base elements typically define layout and positioning while leaving color and ornamentation unspecified.</p>
     </a-slide>
 
     <a-slide>
-      <h3>Example layout primitives</h3>
+      <h3>Example layout base elements</h3>
       <flex-line>
         <div flex>
           <p>The <code>&lt;flex-grid&gt;</code> element:</p>
@@ -528,7 +520,7 @@
       <h3>Building layouts from composable primitives.</h3>
       <p part><code>&lt;flex-line&gt;</code> and <code>&lt;flex-grid&gt;</code> are very presentational, so you might not want to have them appear in your main document source.</p>
       <p part>Luckily, you don't have to.</p>
-      <p part>The next example uses <code>&lt;flex-line&gt;</code> in its shadow DOM to build the classic "Holy Grail" layout.</p>
+      <p part>The next example composes <code>&lt;flex-line&gt;</code> in its shadow DOM to build the classic "Holy Grail" layout.</p>
     </a-slide>
 
 
@@ -603,7 +595,7 @@
 
     <a-slide>
       <h3>Composition + inheritance</h3>
-      <p>Building a <code>&lt;profile-card-gallary&gt;</code> element from:
+      <p>And example <code>&lt;profile-card-gallary&gt;</code> element, built using:
       <ul>
         <li><code>&lt;profile-card&gt;</code></li>
         <li><code>&lt;media-object&gt;</code></li>
@@ -707,43 +699,42 @@
 
     <a-slide>
       <h3>Writing scalable CSS today is challenging</h3>
-      <p>All CSS rules are global and they often conflict with other rules in unexpected ways.
-      <p>Managing the global nature of CSS at scale usually involves littering the HTML with implementation details.</p>
-      <p>Abstracting away these implementation details often requires complex build processes or templating systems that raise the barrier to entry for new developers.</p>
+      <p part>All CSS rules are global and they often conflict with other rules in unexpected ways.
+      <p part>Managing the global nature of CSS at scale usually involves littering the HTML with implementation details.</p>
+      <p part>Abstracting away these implementation details often requires complex build processes or templating systems that raise the barrier to entry for new developers.</p>
     </a-slide>
 
     <a-slide>
-      <h3>Web Components solve all of these problems</h3>
-      <p>And they solve them at the platform level, so the barrier to entry is not significantly raised.</p>
+      <h3>Web Components address all of these problems</h3>
+      <p part>And they do so at the platform level, so the barrier to entry is not significantly raised.</p>
     </a-slide>
 
     <a-slide>
       <h3>Web Components will change how we think about modularizing our CSS.</h3>
-      <p>Verbose naming conventions will go away; they'll no longer be necessary.</p>
-      <p>CSS files will become smaller, self-contained style declarations that do one thing and one thing only.</p>
-      <p>Components will be styled by composing and extending existing styles.</p>
-      <p>Third-party components will no longer be themed by overriding style rules. It will be opt-in and selectively allowed by the component author.</p>
+      <p part>Verbose naming conventions will go away; they'll no longer be necessary.</p>
+      <p part>CSS files will become smaller, self-contained style declarations that do one thing and one thing only.</p>
+      <p part>Components will be styled by composing and extending existing styles.</p>
+      <p part>Third-party component theming will be opt-in.</p>
     </a-slide>
 
     <a-slide>
       <h3>Web Components are happening and they're happening soon.</h3>
-      <p>You can already use most Web Components features (with the exception of Shadow DOM) via the webcomponents.js polyfill.</p>
-      <p>I predict that Shadow DOM v1 will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
-      <p><strong>#shadowdom2016</strong></p>
+      <p part>You can already use most Web Components features (with the exception of Shadow DOM) via the <a href="https://github.com/webcomponents/webcomponentsjs">webcomponents.js</a> polyfill.</p>
+      <p part>I predict that Shadow DOM v1 will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
+      <p part><strong>#shadowdom2016</strong> <emoji-con name="hand-with-first-and-second-fingers-crossed"></emoji-con></p>
     </a-slide>
 
     <a-slide>
       <h3>You can prepare for Web Components today</h3>
-      <p>Start (or continue) thinking about your site design in terms of reusable components.</p>
-      <p>Use a methodology like BEM, which will make the transition very natural.</p>
+      <p part>Start (or continue) thinking about your site design in terms of reusable components.</p>
+      <p part>Use a methodology like BEM, which will make the transition very natural.</p>
     </a-slide>
 
     <a-slide>
-      <h3>I hate your Web Components,<br>and your face, and you!</h3>
-      <p>The web platform will continue to work as it does today long into the future.</p>
-      <p>If Web Components aren't the best solution to your problem, feel free to use another solution.</p>
-      <p>Speaking for myself, I can't wait for a world in which Web Components, ES6 modules, and HTTP2 are fully supported everywhere.</p>
-      <p>The future is bright!</p>
+      <h3>Final thoughts</h3>
+      <p part>The web platform will continue to work as it does today, long into the future. If Web Components aren't the best solution for your problem, feel free to use another solution.</p>
+      <p part>Speaking for myself, I can't wait for a world in which Web Components, ES6 modules, and HTTP2 are all fully supported everywhere.</p>
+      <p part>The future is bright!</p>
     </a-slide>
 
     <a-slide>
