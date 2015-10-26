@@ -106,8 +106,8 @@
     </a-slide>
 
     <a-slide>
-      <h3>Your selectors are the biggest determining factor in how scalable your code is.</h3>
-      <p part>Selectors are globals. It’s hard to write predictable code when any rule you write could potentially conflict with another rule you didn’t know existed.</p>
+      <h3>In CSS, your selectors are the biggest determining factor in how scalable your code is.</h3>
+      <p part>Selectors are globals. It's hard to write predictable code when any rule you write could potentially conflict with another rule you didn't know existed.</p>
       <p part>Writing bad selectors today will likely cripple your ability to makes changes to the front-end in the future.</p>
     </a-slide>
 
@@ -122,18 +122,17 @@
             width: 50%;
           }
         </code-block>
-        <p>This is not a joke. This actually happened.</p>
+        <p part>This is not a joke. This actually happened. <emoji-con name="pile-of-poo"></emoji-con></p>
       </div>
     </a-slide>
 
     <a-slide>
       <h3>But my selectors aren't <em>that</em> bad.</h3>
-      <p part>Sure, maybe not.</p>
       <p part>Maybe you're using a naming convention, or a linter, or something else that ensure your specificity is low and you're only targeting classes&hellip;</p>
     </a-slide>
 
     <a-slide>
-      <h3>But even doing that has its problems</h3>
+      <h3>But even doing that has its own problems</h3>
       <div part>
         <code-block language="html">
           <nav class="navbar navbar-default">
@@ -168,8 +167,8 @@
       <p part>If I could change anything about HTML and CSS to make these problems easier to solve, what would it be?</p>
       <ul>
         <li part>The ability to scope or isolate styles to a particular set of DOM nodes.</li>
-        <li part>The ability to bundle a set of styles with the markup and logic that depends on them.</li>
         <li part>The ability to abstract away implementation details.</li>
+        <li part>The ability to bundle a set of styles with the markup and logic that depends on them.</li>
       </ul>
       <p part>As it turns out, Web Components gives us all of these.</p>
     </a-slide>
@@ -235,7 +234,7 @@
       <p class="big">What is it, and how can I get me some?</p>
       <p part>Shadow DOM is a subtree of DOM nodes that you can create on any HTML element.</p>
       <p part>The shadow DOM subtree gets merged into the main DOM, but unlike the main DOM tree, shadow nodes can't be styled from outside.</p>
-      <p part>In short, shadow nodes are private.</p>
+      <p part>In short, shadow nodes are private. <emoji-con name="heavy-black-heart"></emoji-con></p>
     </a-slide>
 
     <a-slide>
@@ -293,13 +292,12 @@
     <a-slide>
       <h2>Templates</h2>
       <p part>Template are inert bits of DOM. By "inert" I mean their contents aren't processed by the browser.</p>
-      <p part>Templates are typically used to define a reusable bit of DOM that can be cloned and inserted into the main DOM.</p>
-      <p part>Templates are typically used to store an element's Shadow DOM contents before it's created and added to the page.</p>
+      <p part>Templates are typically used to define a reusable bit of DOM that can be cloned and assign to another DOM node.</p>
     </a-slide>
 
     <a-slide>
       <h3>A template and import example:</h3>
-      <p>A <code>super-element.html</code> component definition:</p>
+      <p><code>super-element.html</code> component definition:</p>
       <code-block language="html">
         &lt;link rel="import" href="dependent-element.html"&gt;
 
@@ -465,7 +463,7 @@
         <li part>Include one or more components.</li>
         <li part>Use those components in its shadow DOM.</li>
       </ul>
-      <p part>Composition usually involves building a complex element from simpler or "base" elements.</p>
+      <p part>Composition usually involves building a complex element from simpler elements, or "base" elements.</p>
     </a-slide>
 
     <a-slide>
@@ -547,23 +545,23 @@
           <p>The shadow DOM:</p>
           <code-block language="html">
             <flex-line column>
-              <demo-box>
+              <div>
                 <content select="header"></content>
-              </demo-box>
+              </div>
               <flex-line flex>
-                <demo-box flex>
+                <div flex>
                   <content select="main"></content>
-                </demo-box>
-                <demo-box>
+                </div>
+                <div>
                   <content select="nav"></content>
-                </demo-box>
-                <demo-box>
+                </div>
+                <div>
                   <content select="aside"></content>
-                </demo-box>
+                </div>
               </flex-line>
-              <demo-box>
+              <div>
                 <content select="footer"></content>
-              </demo-box>
+              </div>
             </flex-line>
           </code-block>
         </div>
@@ -652,19 +650,37 @@
     </a-slide>
 
     <a-slide>
-      <h3>Custom component style</h3>
-      <p>The <code>&lt;profile-card-gallery&gt;</code> component uses CSS custom properties to pass style data to the <code>&lt;flex-grid&gt;</code> element inside it's shadow DOM.</p>
+      <h3>Theming with custom properties</h3>
+      <p>The <code>&lt;profile-card-gallery&gt;</code> component uses CSS custom properties to pass style data to the <code>&lt;flex-grid&gt;</code> element inside its shadow DOM.</p>
 
-      <code-block language="html">
-        <style>
-          flex-grid {
-            --flex-grid-basis: 26em;
-            --flex-grid-gutter: 1.5em;
-          }
-        </style>
+      <code-block language="css">
+        flex-grid {
+          --flex-grid-basis: 26em;
+          --flex-grid-gutter: 1.5em;
+        }
       </code-block>
 
       <p>Custom properties replace the shadow piercing combinators as the de facto way to style third-party components.</p>
+    </a-slide>
+
+    <a-slide>
+      <p>In some cases, it's unreasonable to create custom properties for all the possible CSS properties someone may want to style.</p>
+      <p>The <code>@apply</code> rule allows component authors to opt-in to letting users of their component add any styles they want.</p>
+
+      <code-block language="css">
+        /* In the main document CSS */
+        :root {
+          --flex-grid-styles: {
+            border: 1px dotted;
+            margin: 1em;
+          }
+        }
+
+        /* In the component's shadow DOM */
+        flex-grid {
+          @apply --flex-grid-styles;
+        }
+      </code-block>
     </a-slide>
 
     <a-slide>
@@ -706,7 +722,7 @@
 
     <a-slide>
       <h3>Web Components address all of these problems</h3>
-      <p part>And they do so at the platform level, so the barrier to entry is not significantly raised.</p>
+      <p part>And they do so at the platform level, so the barrier to entry remains low.</p>
     </a-slide>
 
     <a-slide>
@@ -720,14 +736,14 @@
     <a-slide>
       <h3>Web Components are happening and they're happening soon.</h3>
       <p part>You can already use most Web Components features (with the exception of Shadow DOM) via the <a href="https://github.com/webcomponents/webcomponentsjs">webcomponents.js</a> polyfill.</p>
-      <p part>I predict that Shadow DOM v1 will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
+      <p part>I going to make a prediction that Shadow DOM will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
       <p part><strong>#shadowdom2016</strong> <emoji-con name="hand-with-first-and-second-fingers-crossed"></emoji-con></p>
     </a-slide>
 
     <a-slide>
       <h3>You can prepare for Web Components today</h3>
       <p part>Start (or continue) thinking about your site design in terms of reusable components.</p>
-      <p part>Use a methodology like BEM, which will make the transition very natural.</p>
+      <p part>Use a methodology like BEM, SMACSS, or OOCSS, which will make the transition very natural.</p>
     </a-slide>
 
     <a-slide>
