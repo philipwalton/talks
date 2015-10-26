@@ -1,0 +1,22 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="flex-grid.html">
+<link rel="import" href="profile-card.html">
+
+<dom-module id="profile-card-gallery">
+
+  <style>
+    flex-grid {
+      --flex-grid-basis: 26em;
+      --flex-grid-gutter: 1.5em;
+    }
+  </style>
+
+  <template>
+    <flex-grid>
+      <content select="profile-card"></content>
+    </flex-grid>
+  </template>
+
+  <script>Polymer({is: 'profile-card-gallery'});</script>
+
+</dom-module>

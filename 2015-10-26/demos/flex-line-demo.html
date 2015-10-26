@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flex Line Demo</title>
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="stylesheet" href="../assets/reset.css">
+  <link rel="import" href="../elements/demo-box.html">
+  <link rel="import" href="../elements/flex-line.html">
+</head>
+<body>
+
+  <flex-line column>
+
+    <demo-box>Header</demo-box>
+
+    <flex-line flex>
+      <demo-box>Sidebar</demo-box>
+      <demo-box flex>Content</demo-box>
+      <demo-box>Sidebar</demo-box>
+    </flex-line>
+
+    <flex-line>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
+      <demo-box flex>Ads</demo-box>
+    </flex-line>
+
+    <demo-box>Footer</demo-box>
+
+  </flex-line>
+
+</body>
+</html>

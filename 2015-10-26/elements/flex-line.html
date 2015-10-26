@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="flex-line">
+  <style>
+    :host {
+      --flex-line-gutter: 1em;
+      display: flex;
+    }
+    :host([column]) {
+      min-height: 100%;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      margin: -var(--flex-line-gutter) 0 0 -var(--flex-line-gutter);
+      width: calc(100% + var(--flex-line-gutter));
+    }
+    .container ::content > * {
+      margin: var(--flex-line-gutter) 0 0 var(--flex-line-gutter);
+    }
+    .container ::content > :not([flex]) {
+      flex: 0 0 auto;
+    }
+    .container ::content > [flex] {
+      flex: 1;
+    }
+    .container ::content > [auto] {
+      flex-basis: auto;
+    }
+    @media (min-width: 600px) {
+      :host(:not([column])) .container {
+        flex-direction: row;
+      }
+    }
+  </style>
+  <template>
+    <div class="container">
+      <content></content>
+    </div>
+  </template>
+  <script>Polymer({is: 'flex-line'});</script>
+</dom-module>

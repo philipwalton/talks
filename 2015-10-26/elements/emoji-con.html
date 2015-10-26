@@ -1,0 +1,39 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="emoji-con">
+  <style>
+    :host {
+      display: inline-block;
+      height: 1em;
+      position: relative;
+      width: 1.5em;
+    }
+    img {
+      height: 1.5em;
+      left: 0;
+      position: absolute;
+      top: -0.15em;
+      width: 1.5em;
+    }
+  </style>
+  <template>
+    <img src=[[iconFilePath(name)]]>
+  </template>
+  <script>
+  (function() {
+
+    var BASE_PATH = '../assets/';
+    var ICON_EXT = '.png';
+
+    Polymer({
+      is: 'emoji-con',
+      properties: {
+        name: String
+      },
+      iconFilePath: function(name) {
+        return this.name ? (BASE_PATH + name + ICON_EXT) : '';
+      }
+    });
+  }());
+  </script>
+</dom-module>

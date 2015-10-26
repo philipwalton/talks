@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Web Components and the future of Modular CSS &mdash; CSSDevConf (Oct. 16, 2015)</title>
+
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="bower_components/slide-deck/a-slide-deck.html">
+  <link rel="import" href="bower_components/slide-deck/a-slide.html">
+  <link rel="import" href="bower_components/slide-deck/code-block.html">
+
+  <link rel="import" href="elements/emoji-con.html">
+  <link rel="import" href="elements/flex-line.html">
+
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body unresolved>
+
+  <a-slide-deck width="1024" height="768">
+
+    <a-slide>
+      <hgroup>
+        <h1>Web Components</h1>
+        <h2>And the future of Modular CSS</h2>
+      </hgroup>
+      <p>
+        <a href="http://philipwalton.com">Philip Walton</a> /
+        <a href="https://twitter.com/philwalton">@philwalton</a>
+      </p>
+    </a-slide>
+
+    <a-slide>
+      <h2>I have good news <span part><br>and bad news</span></h2>
+    </a-slide>
+
+    <a-slide>
+      <h2>The good news</h2>
+      <p part>For a long time Web Components were primarily a Google effort, but now all browser vendors are on board.</p>
+      <p part>Web Components will likely work natively in all browsers sometime in 2016.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>The bad news</h2>
+      <p part>When I submitted this talk proposal, Chrome had a native implementation of all the Web Component features.</p>
+      <p part>But in order to reach consensus, the spec had to change.</p>
+      <p part>That means, unfortunately, no browsers currently implement the latest standards.</p>
+      <p part><emoji-con name="disappointed-face"></emoji-con></p>
+    </a-slide>
+
+    <a-slide>
+      <h3>What has changed?</h3>
+      <ul>
+        <li part>The <code>createShadowRoot()</code> method has been renamed to <code>attachShadow(mode)</code>.</li>
+        <li part>Multiple shadow roots have gone away (for now).</li>
+        <li part>The <code>&lt;content select&gt;</code> element has been renamed to <code>&lt;slot name&gt;</code>, and the <code>::content</code> pseudo-element to <code>::slotted</code>.</li>
+        <li part>The shadow piercing combinators and pseudo-elements (e.g. <code>/deep/</code>, <code>>>></code>, <code>::shadow</code>) have been removed.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Why should CSS developers care about Web Components?</h2>
+      <p part class="big">I actually think CSS Developers have the <strong>most</strong> reason to care!</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>To understand why, let's first look at what makes CSS hard today.</h3>
+      <flex-line>
+        <ul>
+          <li part>Managing global names</li>
+          <li part>Scoping/isolating styles</li>
+          <li part>Specificity conflicts</li>
+        </ul>
+        <ul>
+          <li part>Unpredictable matching</li>
+          <li part>Managing style dependencies</li>
+          <li part>Removing unused code</li>
+        </ul>
+      </flex-line>
+    </a-slide>
+
+    <a-slide>
+      <h3>What do all these have in common?</h3>
+      <flex-line>
+        <div flex part>
+          <p>Hint, it's not these&hellip;</p>
+          <code-block>
+            ~~#sidebar ul li a {~~
+              color: blue;
+              display: block;
+              padding: 1em;
+            ~~}~~
+          </code-block>
+        </div>
+        <div flex part>
+          <p>&hellip;it's these</p>
+          <code-block>
+            #sidebar ul li a {
+              ~~color: blue;
+              display: block;
+              padding: 1em;~~
+            }
+          </code-block>
+        </div>
+      </flex-line>
+    </a-slide>
+
+    <a-slide>
+      <h3>In CSS, your selectors are the biggest determining factor in how scalable your code is.</h3>
+      <p part>Selectors are globals. It's hard to write predictable code when any rule you write could potentially conflict with another rule you didn't know existed.</p>
+      <p part>Writing bad selectors today will likely cripple your ability to makes changes to the front-end in the future.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>What are bad selectors?</h3>
+      <p part>Selectors that cast a wide net increase the chances of unintended matches.</p>
+      <p part>And for whatever reason, people who write CSS like to live dangerously!</p>
+      <div part>
+        <code-block language="css">
+          #main #content div div div {
+            float: left;
+            width: 50%;
+          }
+        </code-block>
+        <p part>This is not a joke. This actually happened. <emoji-con name="pile-of-poo"></emoji-con></p>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h3>But my selectors aren't <em>that</em> bad.</h3>
+      <p part>Maybe you're using a naming convention, or a linter, or something else that ensure your specificity is low and you're only targeting classes&hellip;</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>But even that has problems</h3>
+      <div part>
+        <code-block language="html">
+          <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                  <!-- ... -->
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </code-block>
+        <p>Are all these classes needed? What do they do? If I remove one of them will everything break? WTF is going on?</p>
+        <p part><strong>#implementationdetails</strong> <emoji-con name="see-no-evil-monkey"></emoji-con></p>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h2>So what is the answer?</h2>
+      <p part class="big">If selectors that depend the markup structure is bad,
+        <span part>and if markup full of implementation details is bad,</span>
+        <span part>how should we be writing CSS?</span></p>
+    </a-slide>
+
+    <a-slide>
+      <p>The problem isn't that our CSS is bad, the problem is it's operating on far too much DOM.</p>
+      <p part>The real question isn't "how do I write good CSS?" It's:</p>
+      <h3 part>How should we change CSS to make it harder to screw up?</h3>
+    </a-slide>
+
+    <a-slide>
+      <h2>What is CSS missing?</h2>
+      <p part>If I could change anything about HTML and CSS to make these problems easier to solve, what would it be?</p>
+      <ul>
+        <li part>The ability to scope or isolate styles to a particular set of DOM nodes.</li>
+        <li part>The ability to abstract away implementation details.</li>
+        <li part>The ability to bundle a set of styles with the markup and logic that depends on them.</li>
+      </ul>
+      <p part>As it turns out, Web Components gives us all of these.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>But wait!</h2>
+      <p part class="big">Why should we change CSS? Aren't these problems already solved by:</p>
+      <ul>
+        <li part>React</li>
+        <li part>Inline styles</li>
+        <li part>CSS Modules</li>
+        <li part>BEM / SMACSS / OOCSS /
+          <span class="small">AMCSS /
+          <span class="small">ITCSS /
+          <span class="small">FUNCSS /
+          <span class="small">ACSS /
+          <span class="small">WTFCSS /
+          <span class="small">ETCCSS&hellip;
+          </span></span></span></span></span></span>
+        </li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h1><div class="big center">NO!</div></h1>
+    </a-slide>
+
+    <a-slide>
+      <h3>Ok, maybe a little bit&hellip;</h3>
+      <p>But there are some key differences between the current solutions and Web Components:</p>
+      <ul>
+        <li part>Existing solutions leverage tools and conventions to address the problems.</li>
+        <li part>Tools and conventions take time to learn and raise the barrier to entry.</li>
+        <li part>And they only address the symptoms of the problem. They don't address the underlying cause. They can't.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>What are the benefits of a platform-based solution?</h3>
+      <ul>
+        <li part>No extra knowledge required. If you could write CSS five years ago, you can write it today with Web Components.</li>
+        <li part>No framework, library, or build tool dependencies.</li>
+        <li part>Interoperability. We can finally write components that aren't <code>jquery-*</code>, <code>react-*</code>, or <code>angular-*</code> plugins.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <p class="center big">Sold yet? <span part>Ok, let's dive in!</span></p>
+    </a-slide>
+
+    <a-slide>
+      <h2>The Anatomy of a Web Component</h2>
+      <ul>
+        <li>Shadow DOM</li>
+        <li>Custom Elements</li>
+        <li>HTML Imports</li>
+        <li>The template element</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Shadow DOM</h2>
+      <p class="big">What is it, and how can I get me some?</p>
+      <p part>Shadow DOM is a subtree of DOM nodes that you can create on any HTML element.</p>
+      <p part>The shadow DOM subtree gets merged into the main DOM, but unlike the main DOM tree, shadow nodes can't be styled from outside.</p>
+      <p part>In short, shadow nodes are private. <emoji-con name="heavy-black-heart"></emoji-con></p>
+    </a-slide>
+
+    <a-slide>
+      <h3>A simple example:</h3>
+      <code-block language="js">
+        // Creates a new paragraph element and adds it to the DOM.
+        var p = document.createElement('p');
+        document.body.appendChild(p);
+
+        // Creates a shadow root on an the paragraph.
+        **p.createShadowRoot()**;
+
+        // Sets the paragraph's shadow root's HTML contents.
+        **p.shadowRoot.innerHTML** = 'Sweet <em>sweet</em> contents...';
+      </code-block>
+      <small>
+        <a href="demos/shadow-dom-demo.html" target="_blank">
+          Shadow DOM demo &#8594
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h2>Custom Elements</h2>
+      <p>Custom elements are initially defined as JavaScript classes.</p>
+      <p>They extend <code>HTMLElement</code> and then get registered on the document for use as a specific HTML tag.</p>
+      <p>Custom elements typically create a shadow root in their <code>createdCallback</code> lifecycle method.</p>
+    </a-slide>
+
+
+    <a-slide>
+      <h3>A simple example:</h3>
+      <code-block language="js">
+        // Creates a MediaObjectElement class that extends HTMLElement.
+        class MediaObjectElement extends HTMLElement {
+          createdCallback() {
+            var shadowRoot = this.createShadowRoot();
+            shadowRoot.innerHTML = 'Shadow DOM contents...';
+          }
+        }
+
+        // Registers the `&lt;media-object&gt;` element for use.
+        document.registerElement('media-object', MediaObjectElement);
+      </code-block>
+      <small>Note: the other lifecycle methods are <code>attachedCallback</code>, <code>detachedCallback</code>, and <code>attributeChangedCallback</code>.</small>
+    </a-slide>
+
+    <a-slide>
+      <h2>HTML Imports</h2>
+      <p>HTML Imports are a way to package up a custom element and any of its dependencies into a single file.</p>
+      <p part>You no longer need to manage a component's HTML, CSS, and JavaScript dependencies separately.</p>
+      <p part>Other custom elements (or the main document) can then "import" the imports before using them.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Templates</h2>
+      <p part>Template are inert bits of DOM. By "inert" I mean their contents aren't processed by the browser.</p>
+      <p part>Templates are typically used to define a reusable bit of DOM that can be cloned and assign to another DOM node.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>A template and import example:</h3>
+      <p><code>super-element.html</code> component definition:</p>
+      <code-block language="html">
+        &lt;link rel="import" href="dependent-element.html"&gt;
+
+        <template>
+          <style>/* Shadow DOM styles */</style>
+          <dependent-element></dependent-element>
+        </template>
+
+        &lt;script>
+          class SuperElement extends HTMLElement {
+            createdCallback() {
+              this.createShadowRoot().innerHTML =
+                  document.querySelector('template').innerHTML;
+            }
+          }
+          document.registerElement('super-element', SuperElement);
+        &lt;/script>
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>How does Shadow DOM interact with the main DOM?</h3>
+      <div part>
+        <p>Shadow DOM uses the <code>&lt;content&gt;</code> element to define insertion points. The insertion points house the main DOM.</p>
+        <flex-line>
+          <div flex>
+            <p>The main DOM:</p>
+            <code-block language="html">
+              <media-object>
+                <h1>&hellip;</h1>
+                <img>
+                <p>&hellip;</p>
+              </media-object>
+            </code-block>
+          </div>
+          <div>
+            <p>Shadow DOM:</p>
+            <code-block language="html">
+              <figure>
+                <content select="img"></content>
+              </figure>
+              <div>
+                <content></content>
+              </div>
+            </code-block>
+          </div>
+        </flex-line>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h3>The final, composed DOM tree</h3>
+
+      <code-block language="html">
+        <media-object>
+          ~~<figure>~~
+            <img>
+          ~~</figure>~~
+          ~~<div>~~
+            <h1>&hellip;</h1>
+            <p>&hellip;</p>
+          ~~</div>~~
+        </media-object>
+      </code-block>
+
+    </a-slide>
+
+
+    <a-slide>
+      <h3>What does modular CSS with Shadow DOM look like?</h3>
+      <p part>Most software development techniques for modularity and code reuse center around two principles.</p>
+      <ul>
+        <li part>Inheritance</li>
+        <li part>Composition</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Inheritance</h2>
+      <p>Inheritance generally establishes an <strong>is-a</strong> relationship.</p>
+      <code-block language="html">
+        <!-- Inheritance in OOCSS: -->
+        <div class="media-object profile-card"></div>
+      </code-block>
+
+      <code-block language="scss">
+        // Inheritance in Sass
+        .profile-card {
+          @extends .media-object;
+          /* ... */
+        }
+
+        // Usage: <div class="profile-card"></div>
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Inheritance with Web Components</h3>
+      <p>The extending component will typically:
+      <ul>
+        <li part>Import the base component.</li>
+        <li part>Call the base components <code>createdCallback</code> to create the base shadow root.</li>
+        <li part>Create a new style tag with additional styles and append it to the shadow root.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <p><code>&lt;profile-card&gt;</code> extends <code>&lt;media-object&gt;</code>:</p>
+      <code-block language="html">
+        &lt;link rel="import" href="media-object.html"&gt;
+
+        <template>
+          <style>/* Additional, profile-card-only styles. */</style>
+        </template>
+
+        &lt;script>
+          class ProfileCardElement extends MediaObjectElement {
+            createdCallback() {
+              super.createdCallback();
+              this.shadowRoot.innerHTML +=
+                  document.querySelector('template').innerHTML;
+            }
+          }
+          document.registerElement('profile-card', ProfileCardElement);
+        &lt;/script>
+      </code-block>
+      <small>
+          <a href="demos/media-object-demo.html" target="_blank">
+            Media object demo
+          </a>
+          &nbsp;|&nbsp;
+          <a href="demos/profile-card-demo.html" target="_blank">
+            Profile card demo
+          </a>
+        </small>
+    </a-slide>
+
+    <a-slide>
+      <h2>Composition</h2>
+      <p>Composition generally establishes a <strong>has-a</strong> relationship.</p>
+      <code-block language="html">
+        <!-- Composition in BEM: -->
+        <div class="Catalog">
+          <div class="Grid">
+            <div class="Grid-cell">
+              <div class="Catelog-item">&hellip;</div>
+            </div>
+            <div class="Grid-cell">
+              <div class="Catelog-item">&hellip;</div>
+            </div>
+            <div class="Grid-cell">
+              <div class="Catelog-item">&hellip;</div>
+            </div>
+          </div>
+        </div>
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Composition with Web Components</h3>
+      <p>The composing component will typically:
+      <ul>
+        <li part>Import one or more components.</li>
+        <li part>Use those components in its shadow DOM.</li>
+      </ul>
+      <p part>Composition usually involves building a complex element from simpler elements, or "base" elements.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>What is a base element?</h3>
+      <p>The media object is a classic OOCSS base element.</p>
+      <p>Base elements typically define layout and positioning while leaving color and ornamentation unspecified.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Example layout base elements</h3>
+      <flex-line>
+        <div flex>
+          <p>The <code>&lt;flex-grid&gt;</code> element:</p>
+          <code-block language="html">
+            <flex-grid>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+              <div>&hellip;</div>
+            </flex-grid>
+          </code-block>
+          <small>
+            <a href="demos/flex-grid-demo.html" target="_blank">
+              Flex grid demo &#8594;
+            </a>
+          </small>
+        </div>
+        <div flex>
+          <p>The <code>&lt;flex-line&gt;</code> element:</p>
+          <code-block language="html">
+            <flex-line>
+              <div>&hellip;</div>
+              <div flex>&hellip;</div>
+              <flex-line column>
+                <div flex>&hellip;</div>
+                <div flex>&hellip;</div>
+              </flex-line>
+            </flex-line>
+          </code-block>
+          <small>
+            <a href="demos/flex-line-demo.html" target="_blank">
+              Flex line demo &#8594;
+            </a>
+          </small>
+        </div>
+      </flex-line>
+    </a-slide>
+
+    <a-slide>
+      <h3>Building layouts from composable primitives.</h3>
+      <p part><code>&lt;flex-line&gt;</code> and <code>&lt;flex-grid&gt;</code> are very presentational, so you might not want to have them appear in your main document source.</p>
+      <p part>Luckily, you don't have to.</p>
+      <p part>The next example composes <code>&lt;flex-line&gt;</code> in its shadow DOM to build the classic "Holy Grail" layout.</p>
+    </a-slide>
+
+
+    <a-slide>
+      <flex-line>
+        <div flex auto>
+          <p>The main DOM:</p>
+          <code-block language="html">
+            <holy-grail>
+              <header>&hellip;</header>
+              <main>&hellip;</main>
+              <nav>&hellip;</nav>
+              <aside>&hellip;</aside>
+              <footer>&hellip;</footer>
+            </holy-grail>
+          </code-block>
+          <small>
+            <a href="demos/holy-grail-demo.html" target="_blank">
+              Holy grid demo &#8594;
+            </a>
+          </small>
+        </div>
+        <div flex auto>
+          <p>The shadow DOM:</p>
+          <code-block language="html">
+            <flex-line column>
+              <div>
+                <content select="header"></content>
+              </div>
+              <flex-line flex>
+                <div flex>
+                  <content select="main"></content>
+                </div>
+                <div>
+                  <content select="nav"></content>
+                </div>
+                <div>
+                  <content select="aside"></content>
+                </div>
+              </flex-line>
+              <div>
+                <content select="footer"></content>
+              </div>
+            </flex-line>
+          </code-block>
+        </div>
+      </flex-line>
+    </a-slide>
+
+    <a-slide>
+      <h3>The final, composed DOM tree</h3>
+      <code-block language="html">
+        <holy-grail>
+          ~~<flex-line column>~~
+            ~~<div>~~<header>&hellip;</header>~~</div>~~
+            ~~<flex-line flex>~~
+              ~~<div flex>~~
+                <main>&hellip;</main>~~
+              </div>~~
+              ~~<div>~~
+                <nav>&hellip;</nav>~~
+              </div>~~
+              ~~<div>~~
+                <aside>&hellip;</aside>~~
+              </div>~~
+            ~~</flex-line>~~
+            ~~<div>~~<footer>&hellip;</footer>~~</div>~~
+          ~~</flex-line>~~
+        </holy-grail>
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Composition + inheritance</h3
+      <p>And example <code>&lt;profile-card-gallery&gt;</code> element, built using:
+      <ul>
+        <li><code>&lt;profile-card&gt;</code></li>
+        <li><code>&lt;media-object&gt;</code></li>
+        <li><code>&lt;flex-grid&gt;</code></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>The profile card structure</h3>
+      <flex-line>
+        <div flex auto>
+          <p>The main DOM:</p>
+          <code-block language="html">
+            <profile-card-gallery>
+              <profile-card>~~&hellip;~~</profile-card>
+              <profile-card>~~&hellip;~~</profile-card>
+              <profile-card>~~&hellip;~~</profile-card>
+              <profile-card>~~&hellip;~~</profile-card>
+            </profile-card-gallery>
+          </code-block>
+        </div>
+        <div flex auto>
+          <p>The shadow DOM:</p>
+          <code-block language="html">
+            <profile-card-gallery>
+              <flex-grid>
+                <content
+                  select="profile-card">
+                </content>
+              </flex-grid>
+            </profile-card-gallery>
+          </code-block>
+        </div>
+      </flex-line>
+      <small>
+        <a href="demos/profile-card-gallery-demo.html" target="_blank">
+          Profile card gallery demo &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h3>The final, composed DOM tree</h3>
+      <code-block language="html">
+        <profile-card-gallery>
+          ~~<flex-grid>~~
+            <profile-card>~~[media-object]~~</profile-card>
+            <profile-card>~~[media-object]~~</profile-card>
+            <profile-card>~~[media-object]~~</profile-card>
+            <profile-card>~~[media-object]~~</profile-card>
+          ~~</flex-grid>~~
+        </profile-card-gallery>
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Theming with custom properties</h3>
+      <p>The <code>&lt;profile-card-gallery&gt;</code> component uses CSS custom properties to pass style data to the <code>&lt;flex-grid&gt;</code> element inside its shadow DOM.</p>
+
+      <code-block language="css">
+        flex-grid {
+          --flex-grid-basis: 26em;
+          --flex-grid-gutter: 1.5em;
+        }
+      </code-block>
+
+      <p>Custom properties replace the shadow piercing combinators as the de facto way to style third-party components.</p>
+    </a-slide>
+
+    <a-slide>
+      <p>In some cases, it's unreasonable to create custom properties for all the possible CSS properties someone may want to style.</p>
+      <p>The <code>@apply</code> rule allows component authors to opt-in to letting users of their component add any styles they want.</p>
+
+      <code-block language="css">
+        /* In the main document CSS */
+        :root {
+          --flex-grid-styles: {
+            border: 1px dotted;
+            margin: 1em;
+          }
+        }
+
+        /* In the component's shadow DOM */
+        flex-grid {
+          @apply --flex-grid-styles;
+        }
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Custom pseudo-elements</h3>
+      <p>Custom properties work very well as a way to pass data through the shadow boundary in a way that a component can opt-in to receiving.</p>
+      <p>In addition to custom properties, a future spec will likely define custom pseudo-elements for more direct third-party styling.</p>
+    </a-slide>
+
+    <a-slide>
+      <p>Defining custom pseudo-elements in the Shadow DOM:</p>
+      <code-block language="html">
+        <!-- Inside <date-range-picker> element definition. -->
+        <template>
+          <div>
+            <input **part="start-date"** type="date">
+            <input **part="end-date"** type="date">
+          </div>
+        </template>
+      </code-block>
+      <p>Referencing custom pseudo-elements in external CSS:</p>
+      <code-block language="css">
+        date-range-picker**::part(start-date)**,
+        date-range-picker**::part(end-date)** {
+          font-size: 1.5em;
+        }
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h2>Wrapping up</h2>
+    </a-slide>
+
+    <a-slide>
+      <h3>Writing scalable CSS today is challenging</h3>
+      <p part>All CSS rules are global and they often conflict with other rules in unexpected ways.
+      <p part>Managing the global nature of CSS at scale usually involves littering the HTML with implementation details.</p>
+      <p part>Abstracting away these implementation details often requires complex build processes or templating systems that raise the barrier to entry for new developers.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Web Components address all of these problems</h3>
+      <p part>And they do so at the platform level, so the barrier to entry remains low.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Web Components will change how we think about modularizing our CSS.</h3>
+      <p part>Verbose naming conventions will go away; they'll no longer be necessary.</p>
+      <p part>CSS files will become smaller, self-contained style declarations that do one thing and one thing only.</p>
+      <p part>Components will be styled by composing and extending existing styles.</p>
+      <p part>Third-party component theming will be opt-in.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Web Components are happening and they're happening soon.</h3>
+      <p part>You can already use most Web Components features (with the exception of Shadow DOM) via the <a href="https://github.com/webcomponents/webcomponentsjs">webcomponents.js</a> polyfill.</p>
+      <p part>I going to make a prediction that Shadow DOM will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
+      <p part><strong>#shadowdom2016</strong> <emoji-con name="hand-with-first-and-second-fingers-crossed"></emoji-con></p>
+    </a-slide>
+
+    <a-slide>
+      <h3>You can prepare for Web Components today</h3>
+      <p part>Start (or continue) thinking about your site design in terms of reusable components.</p>
+      <p part>Use a methodology like BEM, SMACSS, or OOCSS, which will make the transition very natural.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Final thoughts</h3>
+      <p part>The web platform will continue to work as it does today, long into the future. If Web Components aren't the best solution to your problem, feel free to use another solution.</p>
+      <p part>Speaking for myself, I can't wait for a world in which Web Components, ES6 modules, and HTTP2 are all fully supported everywhere.</p>
+      <p part>The future is bright!</p>
+    </a-slide>
+
+    <a-slide>
+      <h1>The End</h1>
+      <dl>
+        <dt>Twitter</dt>
+        <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>
+        <dt>Website</dt>
+        <dd><a href="http://philipwalton.com">philipwalton.com</a></dd>
+        <dt>Slides</dt>
+        <dd><a href="https://github.com/philipwalton/talks">github.com/philipwalton/talks</a></dd>
+      </dl>
+      <p>To vote for this talk, text <strong>(504) 229-6828</strong><br>
+      and use the hashtag <strong>#webmod</strong>.</p>
+      <blockquote>
+        <tt>#webmod 5 Shadow DOM 2016!</tt>
+      </blockquote>
+    </a-slide>
+
+  </a-slide-deck>
+
+</body>
+</html>
