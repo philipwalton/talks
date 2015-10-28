@@ -711,6 +711,23 @@
     </a-slide>
 
     <a-slide>
+      <h3>Mixing in common styles:</h3>
+      <p>In many cases, a component will need to depend on a set of styles that don't make sense as individual Web Components.<p>
+      <p>To include those styles, add their contents to a style tag in the element's Shadow DOM.</p>
+      <code-block language="html">
+        <template>
+          <style>{{ include "./normalize.css" }}</style>
+          <style>{{ include "./layout-utils.css" }}</style>
+          <style>
+            /* Additional component styles... */
+          </style>
+          <!-- Additional Shadow DOM elements... -->
+        </template>
+      </code-block>
+
+    </a-slide>
+
+    <a-slide>
       <h2>Wrapping up</h2>
     </a-slide>
 
@@ -737,7 +754,7 @@
     <a-slide>
       <h3>Web Components are happening and they're happening soon.</h3>
       <p part>You can already use most Web Components features (with the exception of Shadow DOM) via the <a href="https://github.com/webcomponents/webcomponentsjs">webcomponents.js</a> polyfill.</p>
-      <p part>I going to make a prediction that Shadow DOM will be available in all browsers within one year from today (it will happen when Safari 10 is released).</p>
+      <p part>I predict Shadow DOM will be available in all browsers within one year from today.</p>
       <p part><strong>#shadowdom2016</strong> <emoji-con name="hand-with-first-and-second-fingers-crossed"></emoji-con></p>
     </a-slide>
 
@@ -761,14 +778,11 @@
         <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>
         <dt>Website</dt>
         <dd><a href="http://philipwalton.com">philipwalton.com</a></dd>
+        <dt>Github</dt>
+        <dd><a href="https://github.com/philipwalton">github.com/philipwalton</a></dd>
         <dt>Slides</dt>
         <dd><a href="https://github.com/philipwalton/talks">github.com/philipwalton/talks</a></dd>
       </dl>
-      <p>To vote for this talk, text <strong>(504) 229-6828</strong><br>
-      and use the hashtag <strong>#webmod</strong>.</p>
-      <blockquote>
-        <tt>#webmod 5 Shadow DOM 2016!</tt>
-      </blockquote>
     </a-slide>
 
   </a-slide-deck>
