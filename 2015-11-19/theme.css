@@ -1,0 +1,150 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
+
+body {
+  background: hsl(200, 95%, 45%);
+  color: #fff;
+  font: 400 36px/1.1 Montserrat, 'Helvetica Neue', sans-serif;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-rendering: optimizeLegibility;
+  text-shadow: 0 0 2px hsla(0,0%,0%,.3);
+}
+
+a {
+  background-color: hsla(0,0%,0%,.1);
+  color: hsl(200, 95%, 90%);
+  display: inline-block;
+  padding: .2em .4em;
+  text-decoration: none;
+  transition: all .2s;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: #fff;
+  background-color: hsla(0,0%,0%,.3);
+}
+
+h1,
+h2 {
+  font-weight: 700;
+  font-family: Montserrat;
+  letter-spacing: -.05em;
+  line-height: 1;
+}
+
+h1 {
+  font-size: 2.667em;
+  margin: 0 0 calc(1em / 2.667);
+}
+
+h2 {
+  font-size: 2em;
+  margin: 0 0 calc(1em / 2);
+}
+
+h3 {
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin: 0 0 calc(1em / 1.5);
+}
+
+hgroup h1 {
+  margin-bottom: calc(1em / 2.667);
+}
+
+hgroup h2,
+hgroup h3 {
+  font-size: 1.333em;
+  font-weight: 400;
+  line-height: inherit;
+  margin: 0 0 calc(1em / 1.333);
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+ul {
+  list-style: square;
+}
+
+li {
+  margin-bottom: .5em;
+}
+
+code {
+  background: hsl(0,0%,95%);
+  border-radius: .2em;
+  color: #008080; /* hsl(345, 90%, 40%); */
+  display: inline-block;
+  font: .85em Menlo, Monaco, monospace;
+  padding: .1em .2em 0em;
+}
+
+code-block {
+  color: #333;
+  background: #fff;
+  background-clip: padding-box;
+  border: .333em solid hsla(0,0%,0%,.1);
+  font-family: 'Source Code Pro';
+  margin: 0 -.333em;
+  xpadding: .333em;
+}
+
+blockquote {
+  background: #eee;
+  border-left: .15em solid #ccc;
+  color: #555;
+  font-size: .9em;
+  font-style: italic;
+  margin: 0 0 1em;
+  padding: 1em;
+}
+
+button {
+  background: linear-gradient(to bottom, hsl(0,0%,95%), hsl(0,0%,85%));
+  border: 1px solid hsl(0,0%,75%);
+  border-top-color: hsl(0,0%,80%);
+  border-bottom-color: hsl(0,0%,70%);
+  border-radius: .2em;
+  box-shadow: inset 0px 1px 0px #fff;
+  font: inherit;
+  padding: .5em 1em;
+  text-shadow: 0 1px 0 #fff;
+}
+
+dl {
+  display: flex;
+  flex-wrap: wrap;
+}
+dt {
+  margin: 0;
+  width: 4.5em;
+}
+dd {
+  margin: 0 0 .25em;
+  width: calc(100% - 4.5em);
+}
+
+tt {
+  font-family: Menlo, Monaco, monospace;
+}
+
+.big {
+  font-size: 1.5em;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.small {
+  font-size: 0.8em;
+}
+
+.center {
+  text-align: center;
+}
