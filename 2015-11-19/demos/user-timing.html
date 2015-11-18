@@ -1,0 +1,55 @@
+<style>
+  body {
+    font: 400 1em/1.4 sans-serif;
+  }
+  .wf-active body {
+    font-family: Anton, sans-serif;
+  }
+  em {
+    font-family: serif;
+  }
+  .wf-active em {
+    font-family: Lobster, serif;
+  }
+</style>
+
+<h1>Fonts <em>are</em> fun!</h1>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics_debug.js','ga');
+
+ga('create', 'UA-12345-1', 'auto');
+
+// Tracks the font load start time.
+performance.mark('fonts:start');
+
+WebFontConfig = {
+  google: {
+    families: [
+      'Lobster::latin',
+      'Anton::latin'
+    ]
+  },
+  active: function() {
+      performance.mark('fonts:end');
+      performance.measure('fonts:load', 'fonts:start', 'fonts:end')
+      var fontsLoad = performance.getEntriesByName('fonts:load')[0];
+      // Tracks how long it took to load the fonts including
+      // the time it tooks to download the webfont.js script.
+      ga('send', 'timing', 'Fonts', 'load',
+          fontsLoad.duration, 'fonts.googleapis.com');
+  },
+  inactive: function() {
+    // Tracks when load errors occur.
+    ga('send', 'event', 'Fonts', 'error', 'fonts.googleapis.com', {
+      nonInteraction: true
+    });
+  },
+  timeout: 10000
+};
+</script>
+
+<script async src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
