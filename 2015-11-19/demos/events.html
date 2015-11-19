@@ -1,5 +1,4 @@
-<h2><a href="/">Local link</a></h2>
-<h2><a href="http://www.example.com">Outbound link</a></h2>
+<p><a href="http://www.example.com">Outbound link</a></p>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
@@ -9,6 +8,7 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics_debug.js','ga');
 
 ga('create', 'UA-12345-1', 'auto');
+ga('set', 'transport', 'beacon');
 
 $(document).on('click', 'a', function() {
   if (this.hostname != location.hostname) {
@@ -16,9 +16,7 @@ $(document).on('click', 'a', function() {
     // If the "beacon" transport isn't supported, open in a new tab.
     if (!navigator.sendBeacon) this.target = '_blank';
 
-    ga('send', 'event', 'Outbound Link', 'click', this.href, {
-      transport: 'beacon'
-    });
+    ga('send', 'event', 'Outbound Link', 'click', this.href);
   }
 });
 </script>
