@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Google Analytics for Web Developers &mdash; Google Experts Summit (Nov. 19, 2015)</title>
+
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="bower_components/slide-deck/a-slide-deck.html">
+  <link rel="import" href="bower_components/slide-deck/a-slide.html">
+  <link rel="import" href="bower_components/slide-deck/code-block.html">
+
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body unresolved>
+
+  <a-slide-deck width="1140" height="720">
+
+    <a-slide>
+      <hgroup>
+        <h1>Google Analytics<br>for Web Developers</h1>
+        <h2>The features you're not using,<br>
+          but probably should be.</h2>
+      </hgroup>
+      <p class="small">
+        <a href="http://philipwalton.com">Philip Walton</a> /
+        <a href="http://philipwalton.com">philipwalton.com</a> /
+        <a href="https://twitter.com/philwalton">@philwalton</a>
+      </p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Question:</h2>
+      <p part>How many people here use Google Analytics?</p>
+      <p part>How many of you do more than just copy and paste the JavaScript tracking snippet?</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>How did we get here?</h2>
+      <p part>Websites used to be so simple.<br>
+        One request. One pageview. The End.
+      <p>
+      <p part>Now the web stack is extremely complex, and sites are more interactive than ever.</p>
+      <p part>Yet most developers still just copy and paste the snippet, which only tracks a few basic metrics.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>The goals of this talk</h2>
+      <p part>I know I can't possibly teach you everything about Google Analytics in 45 minutes.</p>
+      <p part>Instead, I hope to get you thinking, show you some things you may not have seen, and inspire you to learn more on your own.</p>
+    </a-slide>
+
+    <a-slide>
+      <h1>Fundamentals</h1>
+    </a-slide>
+
+    <a-slide>
+      <h2>The Analytics Data Model</h2>
+      <p>Users &nbsp;&#8594;&nbsp; Sessions &nbsp;&#8594;&nbsp; Hits</p>
+
+      <ul>
+        <li part>A <a href="https://support.google.com/analytics/answer/2992042?hl=en">user</a> is an individual who visits your site or application.</li>
+        <li part>A <a href="https://support.google.com/analytics/answer/2731565?hl=en">session</a> is one or more interactions (or hits) that take place on your site within a given time frame.</li>
+        <li part>A <a href="https://support.google.com/analytics/answer/6086082?hl=en">hit</a> is a single user interaction. All data that gets since to Google Analytics is in the form of hits.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <p>One or more <strong>hits</strong> belong to a session, and one or more <strong>sessions</strong> belong to a <strong>user</strong>.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>What does a hit look like?</h3>
+      <div part>
+        <p>Hits are HTTP requests sent to the <a href="https://developers.google.com/analytics/devguides/collection/protocol/">Measurement Protocol</a>:</p>
+        <pre>https://www.google-analytics.com/collect</pre>
+      </div>
+      <div part>
+        <p>For example:</p>
+        <pre>https://www.google-analytics.com/collect?v=1&t=pageview&tid=UA-70063124-1&cid=1715546980.1443552756&dl=http%3A%2F%2Fwww.example.com&ul=en-us&de=UTF-8&dt=Test%20Page&sd=24-bit&sr=2560x1600&vp=1265x869&je=1&fl=19.0%20r0</pre>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h2>Dimensions &amp; Metrics</h2>
+      <p part>A <a href="https://support.google.com/analytics/answer/1033861?hl=en">metric</a> is a quantitative measurement. It's always a numeric type. <small>(Session, Pageviews)</small></p>
+      <p part>A <a href="https://support.google.com/analytics/answer/1033861?hl=en">dimension</a> is a cross-section of a metric. It's usually a string. <small>(Browser, Country)</small></p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Dimensions and metrics can be scoped to a:</h3>
+      <ul>
+        <li part><strong>User</strong> <small>(Users, User Type)</small></li>
+        <li part><strong>Session</strong> <small>(Bounces, Referrer)</small></li>
+        <li part><strong>Hit</strong> <small>(Total Events, Event Category)</small></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h1>Features</h1>
+    </a-slide>
+
+    <a-slide>
+      <h2>Tracking pageviews</h2>
+      <p part>You can use <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/page">pageview tracking</a> to find out what pages people are visiting on your site.</p>
+      <p part>Pageview tracking is included in the JavaScript tracking snippet.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>The JavaScript tracking snippet</h3>
+      <code-block language="javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('send', 'pageview');
+      </code-block>
+      <p>What does this code actually do?</p>
+    </a-slide>
+
+
+    <a-slide>
+      <h3>When in doubt, use the debugger!</h3>
+      <p part>The <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/debugging">debug</a> version of analytics.js makes it easy to see exactly what's going on under the hood:</p>
+      <div part>
+        <code-block language="javascript">
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/**analytics_debug.js**','ga');
+        </code-block>
+        <small>
+          <a href="demos/debugger.html" target="_blank">
+            Debugger demo &#8594;
+          </a>
+        </small>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <p>Cool, so pageview tracking code is included in the default JavaScript tracking snippet, which means I don't have to worry about it<span part>&hellip;right?</span></p>
+      <p part>Dun, dun, dun!</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>What about Single Page Applications?</h3>
+      <p part>The tracking snippet tracks the initial pageview, but does it also listen for changes to the URL and track those?</p>
+      <small part>
+        <a href="demos/spa.html" target="_blank">
+          Let's find out &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <p>When building single page applications, it's important to always update your tracker objects whenever any page-related data changes.</p>
+      <small>
+        <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/single-page-applications" target="_blank">
+          Learn more &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h2>Tracking events</h2>
+      <p part> You can use <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/events">event tracking</a> to capture generic user interactions that happen during a session.</p>
+      <p part>Event hits contain the following dimensions:</p>
+      <ul>
+        <li part><strong>Event category</strong></li>
+        <li part><strong>Event action</strong></li>
+        <li part><strong>Event label</strong></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>Usage</h3>
+      <code-block language="javascript">
+        ga('send', 'event', {
+          eventCategory: 'Outbound link',
+          eventAction: 'click',
+          eventLabel: link.href
+        });
+      </code-block>
+      <p>or...</p>
+      <code-block language="javascript">
+        ga('send', 'event', 'Outbound Link', 'click', link.href);
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>This code tracks click events on links to external sites:</p>
+      <code-block language="javascript">
+        ga('create', 'UA-12345-1', 'auto');
+
+        $(document).on('click', 'a', function() {
+          if (this.hostname != location.hostname) {
+            **ga('send', 'event', 'Outbound Link', 'click', this.href);**
+          }
+        });
+      </code-block>
+      <div part>
+        <p>But actually, there's a problem.</p>
+        <small>
+          <a href="demos/events-broken.html" target="_blank">
+            View the problem &#8594;
+          </a>
+        </small>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <p>Setting the transport to "beacon" will ensure hits are always sent. Fall back to opening in a new tab.</p>
+      <code-block language="javascript">
+        ga('create', 'UA-12345-1', 'auto');
+        **ga('set', 'transport', 'beacon');**
+
+        $(document).on('click', 'a', function() {
+          if (this.hostname != location.hostname) {
+            **if (!navigator.sendBeacon) this.target = '_blank';**
+
+            ga('send', 'event', 'Outbound Link', 'click', this.href);
+          }
+        });
+      </code-block>
+      <small>
+        <a href="demos/events.html" target="_blank">
+          View demo &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h2>Tracking performance</h2>
+      <p>You can use <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/user-timing">user timing tracking</a> to measure how long it takes something to happen.</p>
+      <p part>Timing hits contain the following dimensions:</p>
+      <ul>
+        <li part><strong>Timing category</strong></li>
+        <li part><strong>Timing variable</strong></li>
+        <li part><strong>Timing label</strong></li>
+      </ul>
+      <p part>And the following metric:</p>
+      <ul>
+        <li part><strong>Timing value</strong></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>Usage</h3>
+      <code-block language="javascript">
+        ga('send', 'timing', {
+          timingCategory: 'Fonts',
+          timingVar: 'load',
+          timingValue: elapsedTime, // Up to you to calculate
+          timingLabel: 'fonts.googleapis.com'
+        });
+      </code-block>
+      <p>or...</p>
+      <code-block language="javascript">
+        ga('send', 'timing', 'Fonts', 'load', elapsedTime, 'fonts.googleapis.com');
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>This code tracks how long it takes to load Google Web Fonts on your site using webfont.js:</p>
+      <code-block language="html">
+        &lt;script async src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js">&lt;/script>
+        &lt;script>
+        performance.mark('fonts:start');
+
+        WebFontConfig = {
+          google: { families: ['Lobster::latin'] },
+          active: function() {
+            performance.mark('fonts:end');
+            performance.measure('fonts:load', 'fonts:start', 'fonts:end')
+            var fontsLoad = performance.getEntriesByName('fonts:load')[0];
+
+            **ga('send', 'timing', 'Fonts', 'load', fontsLoad.duration);**
+          }
+        };
+        &lt;/script>
+      </code-block>
+      <small>
+        <a href="demos/user-timing.html" target="_blank">
+          User timing demo &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h2>Tracking exceptions</h2>
+      <p>You can use <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/exceptions">exception tracking</a> to discover when your code fails in unexpected ways.</p>
+      <p part>Exception hits contain the following dimensions:</p>
+      <ul>
+        <li part><strong>Exception description</strong></li>
+        <li part><strong>Exception fatal?</strong></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>Usage</h3>
+      <code-block language="javascript">
+        ga('send', 'exception', {
+          exDescription: error.message
+          exFatal: false // Optional
+        });
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>This code tracks any errors in the following function:</p>
+      <code-block language="javascript">
+        try {
+          someFunctionThatIsKnownToBeFlaky();
+        }
+        catch(error) {
+          **ga('send', 'exception', {exDescription: error.message});**
+        }
+      </code-block>
+      <small>
+        <a href="demos/exceptions.html" target="_blank">
+          Exception demo &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <p>As JavaScript Promises gain popularity, exception tracking for asynchronous code will be as easy as appending a <code>.catch()</code> handler to a promise chain:</p>
+      <code-block language="javascript">
+        fetch('/my-api-endpoint.json')
+          .then(convertResultToTsv())
+          .then(saveDataToTheDataStore())
+          .then(informAnyListeners())
+          .catch(function(error) {
+            **ga('send', 'exception', {exDescription: error.message});**
+          });
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>You can even track "uncaught" exceptions:</p>
+      <code-block language="javascript">
+        window.onerror = function(message, url, line, col) {
+          var desc = message + ' (' + line + ':' + col + ') URL: ' + url;
+          **ga('send', 'exception', {exDescription: desc});**
+        };
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>What if there's something I want to track<br>
+      that's not built in to Google Analytics?</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Defining your own<br>dimensions & metrics</h2>
+      <p>You can create <a href="https://support.google.com/analytics/answer/2709828">custom dimensions & metrics</a> to track and categorize data not already captured by Google Analytics.</p>
+      <p>Custom dimensions & metrics are just like regular dimensions and metrics, but they're user-defined.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Examples of a custom dimension</h3>
+      <ul>
+        <li part>Logged-in status</li>
+        <li part>User demographics (gender, age)</li>
+        <li part>Network status (online, connection type) </li>
+        <li part>Session context (custom media, ambient light)</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>Examples of a custom metric</h3>
+      <ul>
+        <li part>Score in a game</li>
+        <li part>Word count of a comment</li>
+        <li part>Success rate of an action</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Breakpoint tracking</h2>
+      <p>When building a responsive website using media queries, it's important to know what media query is active.</p>
+      <p>This is data that viewport size and device type alone cannot accurately tell you.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>The active media query is just another dimensions you can track!</h3>
+    </a-slide>
+
+    <a-slide>
+      <h3>Using custom dimensions</h3>
+      <ul>
+        <li><strong>Step 1:</strong> define the custom dimension.</li>
+        <li><strong>Step 2:</strong> capture the data and send it to Google Analytics.</li>
+        <li><strong>Step 3:</strong> set up a report to view the results.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <code-block language="javascript">
+        var breakpoints = {
+          sm: '(max-width: 767px)',
+          md: '(min-width: 768px) and (max-width: 991px)',
+          lg: '(min-width: 992px) and (max-width: 1199px)',
+          xl: '(min-width: 1200px)'
+        };
+
+        Object.keys(breakpoints).forEach(function(breakpoint) {
+          var mql = window.matchMedia(breakpoints[breakpoint]);
+          if (mql.matches) {
+            **ga('set', 'dimension1', breakpoint);**
+          }
+        });
+      </code-block>
+      <small>
+        <a href="demos/breakpoints.html" target="_blank">
+          Breakpoint tracking example &#8594;
+        </a>
+        &nbsp;
+        <a href="http://philipwalton.com/articles/measuring-your-sites-responsive-breakpoint-usage/">
+          Learn more &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h2>Custom Reporting</h2>
+      <p>If you're sending custom data to Google Analytics, it's essential that you know how to report on that data.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>Examples</h3>
+      <ul>
+        <li>Outbound link clicks</li>
+        <li>Breakpoint usage</li>
+        <li>Font load times & errors</li>
+        <li>Exceptions</li>
+      </ul>
+      <small>
+        <a href="https://www.google.com/analytics/web">
+          Open Google Analytics &#8594;
+        </a>
+      </small>
+    </a-slide>
+
+    <a-slide>
+      <h3>Filters vs. Segments</h3>
+      <p>A <a href="https://developers.google.com/analytics/devguides/reporting/core/v3/reference#filters">filter</a> eliminates rows from the result set returned by a query.</p>
+      <p>A <a href="https://developers.google.com/analytics/devguides/reporting/core/v3/reference#segment">segment</a> narrows the original data that the query operates on.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Final thoughts</h2>
+      <p part>As the web changes and becomes more complex, it gets harder and harder to rely on one-size-fits-all solutions.</p>
+      <p part>Measuring user interaction is critical to making informed decisions about your site or application.</p>
+      <p part>As you're attending additional talks, and learning about new technologies, keep these analytics concepts in mind.</p>
+    </a-slide>
+
+    <a-slide>
+      <h1>The End</h1>
+      <dl>
+        <dt>Twitter</dt>
+        <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>
+        <dt>Website</dt>
+        <dd><a href="http://philipwalton.com">philipwalton.com</a></dd>
+        <dt>Github</dt>
+        <dd><a href="https://github.com/philipwalton">github.com/philipwalton</a></dd>
+        <dt>Slides</dt>
+        <dd><a href="https://github.com/philipwalton/talks">github.com/philipwalton/talks</a></dd>
+      </dl>
+    </a-slide>
+
+  </a-slide-deck>
+
+</body>
+</html>
