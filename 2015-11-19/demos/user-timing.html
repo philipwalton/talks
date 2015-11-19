@@ -44,9 +44,7 @@ WebFontConfig = {
   },
   inactive: function() {
     // Tracks when load errors occur.
-    ga('send', 'event', 'Fonts', 'error', 'fonts.googleapis.com', {
-      nonInteraction: true
-    });
+    ga('send', 'event', 'Fonts', 'error', 'fonts.googleapis.com');
   },
   timeout: 10000
 };
