@@ -78,22 +78,44 @@ li {
 }
 
 code {
-  background: hsl(0,0%,95%);
+  background: hsla(0,0%,0%,.2);
   border-radius: .2em;
-  color: #008080; /* hsl(345, 90%, 40%); */
   display: inline-block;
-  font: .85em Menlo, Monaco, monospace;
-  padding: .1em .2em 0em;
+  font: .85em 'Source Code Pro', Menlo, Monaco, monospace;
+  padding: 0 .2em .1em;
+}
+
+pre {
+  background: hsla(0,0%,0%,.3);
+  font-family: 'Source Code Pro', Menlo, Monaco, monospace;
+  font-size: .8em;
+  line-height: 1.4;
+  padding: 1em;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-shadow: none;
 }
 
 code-block {
   color: #333;
   background: #fff;
   background-clip: padding-box;
-  border: .333em solid hsla(0,0%,0%,.1);
-  font-family: 'Source Code Pro';
-  margin: 0 -.333em;
-  xpadding: .333em;
+  border: 0;
+  font-family: 'Source Code Pro', Menlo, Monaco, monospace;
+  line-height: 1.4;
+}
+
+code-block:not(#enough-specificity) mark {
+  background-color: hsla(60, 100%, 50%, 0.5);
+  color: inherit;
+  line-height: 0;
+  padding: .1em .3em;
+  margin: -.1em -.3em;
+}
+
+/* Needed because shady dom isn't perfect... */
+code-block pre {
+  background: transparent;
 }
 
 blockquote {
@@ -119,16 +141,17 @@ button {
 }
 
 dl {
+  align-items: baseline;
   display: flex;
   flex-wrap: wrap;
 }
 dt {
   margin: 0;
-  width: 4.5em;
+  width: 5em;
 }
 dd {
-  margin: 0 0 .25em;
-  width: calc(100% - 4.5em);
+  margin: 0 0 .5em;
+  width: calc(100% - 5em);
 }
 
 tt {
@@ -143,8 +166,4 @@ tt {
 
 .small {
   font-size: 0.8em;
-}
-
-.center {
-  text-align: center;
 }
