@@ -5,7 +5,7 @@ export default function(css) {
 
   // Create a new <style> tag with all the polyfilled styles.
   const polyfillStyles = document.createElement('style');
-  polyfillStyles.innerText = css;
+  polyfillStyles.innerHTML = css;
   document.head.appendChild(polyfillStyles);
 
   // Remove the old styles once the new styles have been added.

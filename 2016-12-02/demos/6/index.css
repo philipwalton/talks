@@ -1,7 +1,3 @@
 .progress-bar {
   width: calc(random * 100%);
 }
-
-.progress:first-child > .progress-bar {
-  width: 50%!important;
-}

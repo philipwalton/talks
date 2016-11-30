@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Product+Sans:300,400,700);
+@import url(https://fonts.googleapis.com/css?family=Product+Sans:300,400,400i,700,700i);
 @import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,400i,700,700i);
 
 body {
@@ -107,13 +107,13 @@ code {
   background: hsla(0,0%,0%,.2);
   border-radius: .2em;
   display: inline-block;
-  font: .85em 'Source Code Pro', Menlo, Monaco, monospace;
+  font: .85em 'Roboto Mono', Monaco, monospace;
   padding: 0 .2em .1em;
 }
 
 pre {
   background: hsla(0,0%,0%,.3);
-  font-family: 'Source Code Pro', Menlo, Monaco, monospace;
+  font-family: 'Roboto Mono', Monaco, monospace;
   font-size: .8em;
   line-height: 1.4;
   padding: 1em;
@@ -136,9 +136,10 @@ code-block {
   border: 0;
   color: #333;
   display: flex;
-  font-family: 'Roboto Mono', Menlo, Monaco, monospace;
+  font-family: 'Roboto Mono', Monaco, monospace;
   justify-content: center;
   line-height: 1.3;
+  margin: 0 0 1em;
   text-align: left;
 }
 
@@ -214,17 +215,22 @@ button {
 }
 
 dl {
+  --dt-width: 36%;
+  --dt-gutter: 1em;
   align-items: baseline;
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
+  text-align: left;
 }
 dt {
   margin: 0;
-  width: 5em;
+  text-align: right;
+  width: var(--dt-width);
 }
 dd {
   margin: 0 0 .5em;
-  width: calc(100% - 5em);
+  width: calc(100% - var(--dt-width) - var(--dt-gutter));
+  padding-left: var(--dt-gutter);
 }
 
 tt {
@@ -262,6 +268,11 @@ tt {
   width: calc(100% + var(--gap));
 }
 
+.FlexLine--inline {
+  display: inline-flex;
+  width: auto;
+}
+
 .FlexLine--center {
   align-items: center;
   justify-content: center;
@@ -290,5 +301,5 @@ tt {
 }
 
 a-slide {
-  padding: calc(100%/16);
+  padding: 0 calc(100%/16);
 }
