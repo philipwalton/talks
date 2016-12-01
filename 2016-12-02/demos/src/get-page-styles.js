@@ -1,4 +1,4 @@
-export default function() {
+const getPageStyles = () => {
   // Query the document for any element that could have styles.
   var styleElements =
       [...document.querySelectorAll('style, link[rel="stylesheet"]')];
@@ -13,3 +13,5 @@ export default function() {
     }
   })).then((stylesArray) => stylesArray.join('\n'));
 };
+
+export default getPageStyles;

@@ -1,4 +1,4 @@
-export default function(css) {
+const replacePageStyles = (css) => {
   // Get a reference to all existing style elements.
   const existingStyles =
       [...document.querySelectorAll('style, link[rel="stylesheet"]')];
@@ -11,3 +11,5 @@ export default function(css) {
   // Remove the old styles once the new styles have been added.
   existingStyles.forEach((el) => el.parentElement.removeChild(el));
 };
+
+export default replacePageStyles;
