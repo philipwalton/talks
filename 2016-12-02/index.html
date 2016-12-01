@@ -262,7 +262,7 @@
         import getPageStyles from './get-page-styles';
 
         getPageStyles()
-          .then((css) => postcss.parse(css))
+          .then((css) => **postcss.parse(css)**)
           .then((ast) => console.log(ast));
       </code-block>
       <a href="demos/4/" target="_blank">View demo &#8594;</a>
@@ -324,11 +324,11 @@
       <code-block language="javascript">
         import postcss from 'postcss';
         import getPageStyles from './get-page-styles';
-        import randomKeyworkPlugins from './random-keyword-plugin';
+        import randomKeywordPlugins from './random-keyword-plugin';
         import replacePageStyles from './replace-page-styles';
 
         getPageStyles()
-          .then((css) => postcss([randomKeywordPlugin]).process(css))
+          .then((css) => postcss([**randomKeywordPlugin**]).process(css))
           .then((result) => replacePageStyles(result.css));
       </code-block>
       <a href="demos/5/" target="_blank">View demo &#8594;</a>
@@ -452,9 +452,9 @@
           rule.walkDecls((decl, i) => {
             if (decl.value.match('random')) {
               for (const el of **document.querySelectorAll(rule.selector)**) {
-                const pid = el.dataset.pid || (el.dataset.pid = getUniqueId());
-                const newRule = newRules[pid] || (newRules[pid] = rule.clone({
-                  selector: **appendToSelectors(rule.selector, `[data-pid="${pid}"]`)**,
+                const **pid** = el.dataset.pid || (el.dataset.pid = getUniqueId());
+                const **newRule** = newRules[pid] || (newRules[pid] = rule.clone({
+                  selector: appendToSelectors(rule.selector, **`[data-pid="${pid}"]`**),
                   nodes: [],
                 }));
                 newRule.nodes.push(decl.clone({
