@@ -1,7 +1,7 @@
 import postcss from 'postcss';
-import randomKeywordPlugin from '../src/random-keyword-plugin';
-import getPageStyles from '../src/get-page-styles';
-import replacePageStyles from '../src/replace-page-styles';
+import randomKeywordPlugin from './random-keyword-plugin';
+import getPageStyles from './get-page-styles';
+import replacePageStyles from './replace-page-styles';
 
 getPageStyles()
   .then((css) => postcss([randomKeywordPlugin]).process(css))

@@ -1,6 +1,6 @@
 import postcss from 'postcss';
-import getPageStyles from '../src/get-page-styles';
-import replacePageStyles from '../src/replace-page-styles';
+import getPageStyles from './get-page-styles';
+import replacePageStyles from './replace-page-styles';
 
 const randomKeywordPlugin = postcss.plugin('random-keyword', () => {
   return (css) => {

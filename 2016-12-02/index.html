@@ -259,7 +259,7 @@
       <h3>Inspecting the parsed CSS</h3>
       <code-block language="javascript">
         import postcss from 'postcss';
-        import getPageStyles from '../src/get-page-styles';
+        import getPageStyles from './get-page-styles';
 
         getPageStyles()
           .then((css) => postcss.parse(css))
@@ -323,9 +323,9 @@
       <h3>Putting the polyfill together</h3>
       <code-block language="javascript">
         import postcss from 'postcss';
-        import getPageStyles from '../src/get-page-styles';
-        import randomKeyworkPlugins from '../src/random-keyword-plugin';
-        import replacePageStyles from '../src/replace-page-styles';
+        import getPageStyles from './get-page-styles';
+        import randomKeyworkPlugins from './random-keyword-plugin';
+        import replacePageStyles from './replace-page-styles';
 
         getPageStyles()
           .then((css) => postcss([randomKeywordPlugin]).process(css))
@@ -492,9 +492,9 @@
       <p>The final plugin code</p>
       <code-block language="javascript">
         import postcss from 'postcss';
-        import randomKeywordPlugin from '../src/random-keyword-plugin';
-        import getPageStyles from '../src/get-page-styles';
-        import replacePageStyles from '../src/replace-page-styles';
+        import randomKeywordPlugin from './random-keyword-plugin';
+        import getPageStyles from './get-page-styles';
+        import replacePageStyles from './replace-page-styles';
 
         getPageStyles()
           .then((css) => postcss([randomKeywordPlugin]).process(css))
