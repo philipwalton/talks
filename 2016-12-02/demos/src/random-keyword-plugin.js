@@ -4,6 +4,8 @@ import postcss from 'postcss';
 let uid = 0;
 const randomRegex = /--[\w\-]+|"[^"]+"|'[^']+'|url\([^\(]*\)|(random)/g;
 const selectorRegex = /\[[^\]]+\]|(,)/g;
+const pseudoElementsRegex =
+    /(:(?:before|after|first-letter|first-line)|::[a-z\-]+)$/;
 
 
 export default postcss.plugin('random-keyword', (options) => {
@@ -44,23 +46,32 @@ export default postcss.plugin('random-keyword', (options) => {
 });
 
 
-const appendToSelectors = (selector, addition) => {
-  const selectors = [];
+const appendToSelectors = (selectors, addition) => {
+  const parts = [];
   let startIndex = 0;
   let matches;
-  while (matches = selectorRegex.exec(selector)) {
+  while (matches = selectorRegex.exec(selectors)) {
     if (matches[1]) {
       const endIndex = selectorRegex.lastIndex;
-      selectors.push(selector.slice(startIndex, endIndex - 1).trim());
+      parts.push(selectors.slice(startIndex, endIndex - 1).trim());
       startIndex = endIndex;
     }
   }
-  selectors.push(selector.slice(startIndex).trim());
+  parts.push(selectors.slice(startIndex).trim());
 
-  return selectors
-    .map((s) => s + addition)
+  return parts
+    .map((selector) => appendToSelector(selector, addition))
     .join(', ');
 };
+
+
+const appendToSelector = (selector, addition) => {
+  if (pseudoElementsRegex.test(selector)) {
+    return selector.replace(pseudoElementsRegex, `${addition}$1`);
+  } else {
+    return selector + addition;
+  }
+}
 
 
 const includesRandomKeyword = (str) => {
