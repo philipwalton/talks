@@ -9,10 +9,10 @@ To install the dependencies and view the slides, `cd` into the `2016-12-02` dire
 
 ```sh
 # Install the dependencies.
-bower install
+npm install
 
-# Start up a local server.
-python -m SimpleHTTPServer
+# Build the demo files and start up a local server.
+npm start
 ```
 
-You can now navigate in your browser to [localhost:8000/2016-12-02](http://localhost:8000/2016-12-02) and view the slides.
+You can now navigate in your browser to [localhost:8080/2016-12-02](http://localhost:8000/2016-12-02) and view the slides.
