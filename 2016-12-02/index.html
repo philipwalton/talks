@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>The Dark Side of CSS Polyfills &mdash; dotCSS (Dec. 2, 2016)</title>
+  <title>The Dark Side of Polyfilling CSS &mdash; dotCSS (Dec. 2, 2016)</title>
 
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 
@@ -18,8 +18,9 @@
 
     <a-slide>
       <hgroup>
-        <h1>The Dark Side<br>of Polyfilling CSS</h1>
-        <h2>What polyfill authors don't tell you</h2>
+        <h1>The Dark Side of<br>
+          <strong>Polyfilling CSS</strong></h1>
+        <h2>What polyfill authors won't tell you</h2>
       </hgroup>
       <p class="small">
         <a href="https://philipwalton.com">Philip Walton</a> /
@@ -34,17 +35,17 @@
 
     <a-slide>
       <blockquote>
-        <p>Why is it so hard<br>to write a CSS Polyfill?</p>
+        <p>What's so hard about polyfilling CSS?</p>
       </blockquote>
     </a-slide>
 
     <a-slide>
-      <p>Lets find out by writing one ourselves&hellip;</p>
+      <p>Let's find out by writing one ourselves&hellip;</p>
     </a-slide>
 
     <a-slide>
-      <h2>The <code>random</code> keyword</h2>
-      <p>A random number between 0 and 1</p>
+      <h2>A new CSS keyword</h2>
+      <p><code>random:</code> a number between 0 and 1</p>
       <div>
         <code-block language="css">
           .foo {
@@ -53,7 +54,9 @@
             opacity: **random**;
           }
         </code-block>
-        <a href="demos/1/" class="small" target="_blank">View demo &#8594;</a>
+        <div class="DemoLink">
+          <a href="demos/1/" target="_blank">View demo &#8594;</a>
+        </div>
       </div>
     </a-slide>
 
@@ -137,18 +140,20 @@
               const value = rule.style[property];
 
               if (value.includes('random')) {
-                rule.style[property] = value.replace('random', Math.random());
+                rule.style[property] = **value.replace('random', Math.random());**
               }
             }
           }
         }
       </code-block>
-      <a href="demos/2/" target="_blank">View demo &#8594;</a>
+      <div class="DemoLink">
+        <a href="demos/2/" target="_blank">View demo &#8594;</a>
+      </div>
     </a-slide>
 
     <a-slide>
       <blockquote>
-        <p>If the full style text isn't in the CSSOM, where is it?</p>
+        <p>If the full CSS isn't in the CSSOM, where is it?</p>
       </blockquote>
     </a-slide>
 
@@ -160,8 +165,8 @@
       <h2>Getting all CSS style rules</h2>
       <p>
       <ul>
-        <li><code>&lt;style&gt;</code></li>
-        <li><code>&lt;link href="..."&gt;</code></li>
+        <li align-bullet="center"><code>&lt;style&gt;</code></li>
+        <li align-bullet="center"><code>&lt;link rel="stylesheet" href="..."&gt;</code></li>
       </ul>
     </a-slide>
 
@@ -170,20 +175,22 @@
         const getPageStyles = () => {
           // Query the document for any element that could have styles.
           var styleElements =
-              [...document.querySelectorAll('style, link[rel="stylesheet"]')];
+              [...**document.querySelectorAll('style, link[rel="stylesheet"]')**];
 
           // Fetch all styles and ensure the results are in document order.
           // Resolve with a single string of CSS text.
           return Promise.all(styleElements.map((el) => {
             if (el.href) {
-              return fetch(el.href).then((response) => response.text());
+              return **fetch(el.href).then((response) => response.text());**
             } else {
-              return el.innerHTML;
+              return **el.innerHTML;**
             }
           })).then((stylesArray) => stylesArray.join('\n'));
         }
       </code-block>
-      <a href="demos/3/" target="_blank">View demo &#8594;</a>
+      <div class="DemoLink">
+        <a href="demos/3/" target="_blank">View demo &#8594;</a>
+      </div>
     </a-slide>
 
     <a-slide>
@@ -206,20 +213,21 @@
     </a-slide>
 
     <a-slide>
-      <p>#lols</p>
+      <p><a class="HashTag">#lols</a></p>
     </a-slide>
 
     <a-slide>
       <h2>Parsing the raw CSS text</h2>
       <p>There are many open source parsers that will convert
-        <br>a string of CSS into an abstract syntax tree.</p>
+        <br>a string of CSS into an abstract syntax tree (AST).</p>
+      <p part>For this polyfill we'll use PostCSS.</p>
     </a-slide>
 
     <a-slide>
       <h3>The PostCSS AST</h3>
       <div class="FlexLine FlexLine--center">
         <div class="FlexLine-item">
-          <code-block language="css" style="margin: 0">
+          <code-block language="css">
             .progress-bar {
               width: calc(random * 100%);
             }
@@ -232,7 +240,7 @@
         </div>
         <div class="FlexLine-item">
           <div>
-            <code-block language="json" style="margin: 0">
+            <code-block language="json">
               {
                 "type": "root",
                 "nodes": [
@@ -265,13 +273,16 @@
           .then((css) => **postcss.parse(css)**)
           .then((ast) => console.log(ast));
       </code-block>
-      <a href="demos/4/" target="_blank">View demo &#8594;</a>
+      <div class="DemoLink">
+        <a href="demos/4/" target="_blank">View demo &#8594;</a>
+      </div>
     </a-slide>
 
     <a-slide>
-      <h2>What have we done so far?</h2>
-      <p part>We've written a lot of code<br>
-        <span part>&hellip;none of which is directly related to our polyfill.</span></p>
+      <h2>Checking In</h2>
+      <p part>Up to this point, we've written a lot of code&hellip;</p>
+      <p part>&hellip;but none of it has anything to do with the
+        <br>core functionality of our polyfill.</p>
     </a-slide>
 
     <a-slide>
@@ -291,7 +302,7 @@
             css.walkRules((rule) => {
               rule.walkDecls((decl, i) => {
                 if (decl.value.includes('random')) {
-                  decl.value = decl.value.replace('random', Math.random());
+                  decl.value = **decl.value.replace('random', Math.random());**
                 }
               });
             });
@@ -311,7 +322,7 @@
           // Create a new &lt;style&gt; tag with all the polyfilled styles.
           const polyfillStyles = document.createElement('style');
           polyfillStyles.innerHTML = css;
-          document.head.appendChild(polyfillStyles);
+          **document.head.appendChild(polyfillStyles);**
 
           // Remove the old styles once the new styles have been added.
           existingStyles.forEach((el) => el.parentElement.removeChild(el));
@@ -331,7 +342,9 @@
           .then((css) => postcss([**randomKeywordPlugin**]).process(css))
           .then((result) => replacePageStyles(result.css));
       </code-block>
-      <a href="demos/5/" target="_blank">View demo &#8594;</a>
+      <div class="DemoLink">
+        <a href="demos/5/" target="_blank">View demo &#8594;</a>
+      </div>
     </a-slide>
 
     <a-slide>
@@ -342,7 +355,7 @@
 
     <a-slide>
       <h3>Option #1</h3>
-      <p part>Add inline styles to every element matching the rule selector</p>
+      <p part>Add inline styles to every element matching the rule selector.</p>
     </a-slide>
 
     <a-slide>
@@ -361,26 +374,35 @@
 
         // ...
       </code-block>
-      <a href="demos/6/" target="_blank">View demo &#8594;</a>
+      <div class="DemoLink">
+        <a href="demos/6/" target="_blank">View demo &#8594;</a>
+      </div>
     </a-slide>
 
     <a-slide>
       <h3>Option #2</h3>
       <p part style="line-height: 0.5; text-align: left">
-        <span style="line-height: 1.2">Check the rest of the CSS for matching rules and then apply the final, merged set of properties as inline style on each matching element.</span> <span style="font-size: .9em; line-height: 1.2" part>Of course, we also have to account for specificity, so we've gotta manually parse each selector to calculate that. Then we can sort the matching rules in specificity order from low to high.</span> <span style="font-size: .8em; line-height: 1.2" part>Oh and then there's <code>@media</code> rules, which we'll have to manually check for matches.</span> <span style="font-size: .7em; line-height: 1.2" part>And speaking of at-rules, there's also <code>@supports</code>&mdash;can't forget about that.</span> <span style="font-size: .6em; line-height: 1.2"  part>And lastly we'll have to account for property inheritance, so for each element we'll have to traverse up the DOM tree and inspect all its ancestors to get the full set of computed properties.</span> <span style="font-size: .5em; line-height: 1.2" part>Oh, and one more thing: we'll also have to account for <code>!important</code> declarations, which are calculated per-declaration instead of per-rule, so we'll have to maintain a separate mapping for those to figure out which declaration will ultimately win.</span>
+        <span style="line-height: 1.2">
+        Check the rest of the CSS for matching rules, and then only replace the <code>random</code> keyword with a random number and apply those declarations as inline styles if it's the last matching rule.</span>
+        <span style="font-size: .9em; line-height: 1.2" part>Wait, that won't work, because we have to account for specificity, so we'll have to manually parse each selector to calculate it. Then we can sort the matching rules in specificity order from low to high, and only apply the declarations from the most specific selector.</span>
+        <span style="font-size: .8em; line-height: 1.2" part>Oh and then there's <code>@media</code> rules, so we'll have to manually check for matches there as well.</span>
+        <span style="font-size: .7em; line-height: 1.2" part>And speaking of at-rules, there's also <code>@supports</code>&mdash;can't forget about that.</span>
+        <span style="font-size: .6em; line-height: 1.2"  part>And lastly we'll have to account for property inheritance, so for each element we'll have to traverse up the DOM tree and inspect all its ancestors to get the full set of computed properties.</span>
+        <span style="font-size: .5em; line-height: 1.2" part>Oh, sorry, one more thing: we'll also have to account for <code>!important</code>, which is calculated per-declaration instead of per-rule, so we'll have to maintain a separate mapping for that to figure out which declaration will ultimately win.</span>
       </p>
     </a-slide>
 
     <a-slide>
       <blockquote>
-        <p>Wait, didn't you just describe the cascade?</p>
+        <p>Wait, didn't you just describe
+          <br>the cascade?</p>
       </blockquote>
     </a-slide>
 
     <a-slide>
       <h3>Option #3</h3>
       <p>Rewrite the CSS to target individual elements
-        <br>while maintaining specificity order.</p>
+        <br>while maintaining cascade order.</p>
     </a-slide>
 
     <a-slide>
@@ -500,7 +522,9 @@
           .then((css) => postcss([randomKeywordPlugin]).process(css))
           .then((result) => replacePageStyles(result.css));
       </code-block>
-      <a href="demos/7/" target="_blank">View demo &#8594;</a>
+      <div class="DemoLink">
+        <a href="demos/7/" target="_blank">View demo &#8594;</a>
+      </div>
     </a-slide>
 
     <a-slide>
@@ -512,7 +536,7 @@
     <a-slide>
       <h2>Unresolved issues</h2>
       <ul>
-        <li part>Handle updates when the DOM/layout changes</li>
+        <li part>Handle updates when the DOM changes</li>
         <li part>Handle inline styles</li>
         <li part>Handle Shadow DOM</li>
       </ul>
@@ -523,7 +547,7 @@
       <ul>
         <li part>Requires a lot of extra code.</li>
         <li part>Doesn't work with cross-origin (non-CORS) stylesheets.</li>
-        <li part>Performs horribly if/when changes are needed<br>(e.g. DOM changes, scroll/resize handlers, etc.).</li>
+        <li part>Performs horribly if/when changes are needed (e.g. DOM changes, scroll/resize handlers, etc.).</li>
       </ul>
     </a-slide>
 
@@ -541,7 +565,7 @@
 
     <a-slide>
       <h3>Things the browser already does,
-        <br>but doesn't do for us:</h3>
+        <br>but that we can't use in CSS polyfills:</h3>
       <div class="FlexLine FlexLine--inline">
         <div class="FlexLine-item">
           <ul>
@@ -573,15 +597,15 @@
 
     <a-slide>
       <h2>Final thoughts</h2>
-      <ul style="margin: 0 2em">
-        <li part>Without the ability to polyfill CSS, innovation will move at the pace of the slowest-adopting browser.</li>
+      <ul>
+        <li part>Without low-level styling primitives, innovation will move at the pace of the slowest-adopting browser.</li>
         <li part>Developers complain about the pace of innovation in the JavaScript community. But you never hear about that in CSS.</li>
-        <li part>#makecssfatigueathing</li>
+        <li part align-bullet="center">Let's change that <a class="HashTag">#makecssfatigueathing</a></li>
       </ul>
     </a-slide>
 
     <a-slide>
-      <h1>The End</h1>
+      <h1>Questions?</h1>
       <dl>
         <dt>Twitter</dt>
         <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>

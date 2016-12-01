@@ -1,10 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Product+Sans:300,400,400i,700,700i);
 @import url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,400i,700,700i);
 
+:root {
+  --font-family-sans: 'Product sans', 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'Roboto Mono', Monaco, monospace;
+}
+
 body {
   background: hsl(200, 95%, 45%);
   color: #fff;
-  font: 400 54px/1.1 'Product sans', 'Helvetica Neue', sans-serif;
+  font: 400 54px/1.1 var(--font-family-sans);
   letter-spacing: -0.01em;
   margin: 0;
   text-rendering: optimizeLegibility;
@@ -34,9 +39,9 @@ h2 {
 }
 
 h1 {
-  font-size: 3.5em;
+  font-size: 2.5em;
   letter-spacing: -.03em;
-  margin: 0 0 calc(1em / 3.5);
+  margin: 0 0 calc(1em / 2.5);
 }
 
 h2 {
@@ -52,31 +57,45 @@ h3 {
 }
 
 hgroup > h1 {
-  margin-bottom: calc(1em / 2.667);
+  margin-bottom: 0.25em;
+  padding-bottom: 0.5em;
+  position: relative;
+}
+
+hgroup > h1::after {
+  background: linear-gradient(
+      to right,
+      hsla(0, 100%, 0%, 0) 0%,
+      hsla(0, 100%, 0%, 0.1) 25%,
+      hsla(0, 100%, 0%, 0.1) 75%,
+      hsla(0, 100%, 0%, 0) 100%);
+  bottom: 0;
+  content: '';
+  height: 2px;
+  left: 0;
+  position: absolute;
+  width: 100%;
 }
 
 hgroup > h1 > strong {
-  background-image: linear-gradient(
-      to bottom,
-      hsla(0, 0%, 0%, 0.1),
-      hsla(0, 0%, 0%, 0.1));
-  background-repeat: repeat-x;
-  background-size: 2px 0.04em;
-  background-position: 0 1.08em;
-  font-weight: 900;
-  letter-spacing: -.05em;
+  font-size: 1.4em;
 }
 
-
 hgroup > h2 {
-  font-size: 1.5em;
+  font-size: 1.25em;
   font-weight: 400;
   line-height: inherit;
   margin: 0 0 calc(1em / 1.5);
 }
 
 p {
-  margin: 0 2em 1em;
+  margin: 1em 2em;
+}
+p:first-child {
+  margin-top: 0;
+}
+p:last-child {
+  margin-bottom: 0;
 }
 
 ul {
@@ -103,17 +122,22 @@ li::before {
   width: 0.333em;
 }
 
+li[align-bullet="center"]::before {
+  margin-top: -0.133em;
+  top: 50%;
+}
+
 code {
   background: hsla(0,0%,0%,.2);
-  border-radius: .2em;
+  /*border-radius: .1em;*/
   display: inline-block;
-  font: .85em 'Roboto Mono', Monaco, monospace;
-  padding: 0 .2em .1em;
+  font: .85em var(--font-family-mono);
+  padding: 0 .3em .1em;
 }
 
 pre {
   background: hsla(0,0%,0%,.3);
-  font-family: 'Roboto Mono', Monaco, monospace;
+  font-family: var(--font-family-mono);
   font-size: .8em;
   line-height: 1.4;
   padding: 1em;
@@ -136,23 +160,22 @@ code-block {
   border: 0;
   color: #333;
   display: flex;
-  font-family: 'Roboto Mono', Monaco, monospace;
+  font-family: var(--font-family-mono);
   justify-content: center;
   line-height: 1.3;
-  margin: 0 0 1em;
+  margin: 0;
   text-align: left;
 }
 
 code-block pre {
   background: #fff;
   border-radius: .1em;
-  /*min-width: 24em;*/
 }
 
 code-block:not(#enough-specificity) mark {
   --highlight-color: hsla(60, 100%, 50%, 0.5);
   background-color: var(--highlight-color);
-  /*box-shadow: 0 0.05em 0 0.1em var(--highlight-color);*/
+  box-shadow: 0 0.05em 0 0.1em var(--highlight-color);
   color: inherit;
 }
 
@@ -186,34 +209,6 @@ blockquote p::before {
   line-height: 0;
 }
 
-hr {
-  border: 0;
-  display: block;
-  font-size: 2em;
-  height: 1em;
-  line-height: 0.5;
-  letter-spacing: 0.05em;
-  margin: 0.5em 0;
-}
-
-hr::before {
-  content: "...";
-  opacity: 0.6;
-}
-
-
-button {
-  background: linear-gradient(to bottom, hsl(0,0%,95%), hsl(0,0%,85%));
-  border: 1px solid hsl(0,0%,75%);
-  border-top-color: hsl(0,0%,80%);
-  border-bottom-color: hsl(0,0%,70%);
-  border-radius: .2em;
-  box-shadow: inset 0px 1px 0px #fff;
-  font: inherit;
-  padding: .5em 1em;
-  text-shadow: 0 1px 0 #fff;
-}
-
 dl {
   --dt-width: 36%;
   --dt-gutter: 1em;
@@ -233,18 +228,18 @@ dd {
   padding-left: var(--dt-gutter);
 }
 
-tt {
-  font-family: Menlo, Monaco, monospace;
-}
 
-.big {
-  font-size: 1.5em;
-  letter-spacing: -0.04em;
-  line-height: 1;
+a-slide {
+  padding: 0 calc(100%/16);
 }
 
 .small {
   font-size: 0.7em;
+}
+
+.DemoLink {
+  font-size: 0.7em;
+  margin-top: 1em;
 }
 
 
@@ -286,12 +281,8 @@ tt {
   flex-grow: 1;
 }
 
-.FlexGrid {
-
-}
-
-.FlexGrid-item {
-
+.HashTag {
+  color: #fff;
 }
 
 .Screenshot {
@@ -300,6 +291,3 @@ tt {
   margin: auto;
 }
 
-a-slide {
-  padding: 0 calc(100%/16);
-}
