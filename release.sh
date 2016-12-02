@@ -11,6 +11,7 @@ git pull origin gh-pages
 # the new ones from the parent directory.
 rm -rf *
 cp -rf ../* ./
+rm -rf ./*/node_modules
 git add -A
 
 # Commit and push the changes to
