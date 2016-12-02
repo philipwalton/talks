@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The Dark Side of Polyfilling CSS &mdash; dotCSS (Dec. 2, 2016)</title>
+
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="bower_components/slide-deck/a-slide-deck.html">
+  <link rel="import" href="bower_components/slide-deck/a-slide.html">
+  <link rel="import" href="bower_components/slide-deck/code-block.html">
+
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body unresolved>
+
+  <a-slide-deck width="1920" height="1080" padding="0">
+
+    <a-slide>
+      <hgroup>
+        <h1>The Dark Side of<br>
+          <strong>Polyfilling CSS</strong></h1>
+        <h2>What polyfill authors won't tell you</h2>
+      </hgroup>
+      <p class="small">
+        <a href="https://philipwalton.com">Philip Walton</a> /
+        <a href="https://philipwalton.com">philipwalton.com</a> /
+        <a href="https://twitter.com/philwalton">@philwalton</a>
+      </p>
+    </a-slide>
+
+    <a-slide>
+      <img class="Screenshot" src="images/smashing-article.png" alt="CSS Houdini on Smashing Magazine" width="1200" height="800" />
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>What's so hard about polyfilling CSS?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <p>Let's find out by writing one ourselves&hellip;</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>A new CSS keyword</h2>
+      <p><code>random:</code> a number between 0 and 1</p>
+      <div>
+        <code-block language="css">
+          .foo {
+            width: calc(**random** * 100%);
+            background: hsl(calc(**random** * 360), 50%, 50%);
+            opacity: **random**;
+          }
+        </code-block>
+        <div class="DemoLink">
+          <a href="demos/1/" target="_blank">View demo &#8594;</a>
+        </div>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>How do you tell the browser about a keyword it doesn't already understand?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <p>In JavaScript you'd do something like this:</p>
+      <code-block language="javascript">
+        if (typeof Math.random != 'function') {
+          Math.random = function() {
+            // Implement polyfill here...
+          };
+        }
+      </code-block>
+      <p>but you can't write imperative code in CSS.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>How CSS polyfills work</h2>
+      <p part>Fundamentally, all CSS polyfills do the same thing.</p>
+      <p part>They turn code the browser <strong>doesn't</strong> understand<br>into code the browser <strong>does</strong> understand.</p>
+      <div part class="FlexLine FlexLine--center">
+        <div class="FlexLine-item">
+          <code-block language="css">
+            calc(**random** * 100%);
+          </code-block>
+        </div>
+        <div class="FlexLine-item">
+          <svg class="Icon" viewBox="0 0 24 24">
+            <use xlink:href="icons.svg#icon-arrow-forward"></use>
+          </svg>
+        </div>
+        <div class="FlexLine-item">
+          <code-block language="css">
+            calc(**0.35746** * 100%);
+          </code-block>
+        </div>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>Okay, so we have to update the CSS,<br>but where do we do that?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <h2>The CSS Object Model</h2>
+      <div class="FlexLine FlexLine--inline">
+        <div class="FlexLine-item">
+          <ul>
+           <li><code>document.styleSheets</code></li>
+           <li><code>CSSStyleSheetList</code></li>
+           <li><code>CSSStyleSheet</code></li>
+         </ul>
+        </div>
+        <div class="FlexLine-item">
+          <ul>
+            <li><code>CSSRuleList</code></li>
+            <li><code>CSSStyleRule</code></li>
+            <li><code>CSSStyleDeclaration</code></li>
+          </ul>
+        </div>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <code-block language="javascript">
+        for (const stylesheet of document.styleSheets) {
+          // Flatten nested rules (@media blocks, etc.) into a single array.
+          const rules = [...stylesheet.rules].reduce((prev, next) => {
+            return prev.concat(next.cssRules ? [...next.cssRules] : [next]);
+          }, []);
+
+          for (const rule of rules) {
+            for (const property of Object.keys(rule.style)) {
+              const value = rule.style[property];
+
+              if (value.includes('random')) {
+                rule.style[property] = **value.replace('random', Math.random());**
+              }
+            }
+          }
+        }
+      </code-block>
+      <div class="DemoLink">
+        <a href="demos/2/" target="_blank">View demo &#8594;</a>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>If the full CSS isn't in the CSSOM, where is it?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <p>Nowhere. You have to search for it manually.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Getting all CSS style rules</h2>
+      <p>
+      <ul>
+        <li align-bullet="center"><code>&lt;style&gt;</code></li>
+        <li align-bullet="center"><code>&lt;link rel="stylesheet" href="..."&gt;</code></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <code-block language="javascript">
+        const getPageStyles = () => {
+          // Query the document for any element that could have styles.
+          var styleElements =
+              [...**document.querySelectorAll('style, link[rel="stylesheet"]')**];
+
+          // Fetch all styles and ensure the results are in document order.
+          // Resolve with a single string of CSS text.
+          return Promise.all(styleElements.map((el) => {
+            if (el.href) {
+              return **fetch(el.href).then((response) => response.text());**
+            } else {
+              return **el.innerHTML;**
+            }
+          })).then((stylesArray) => stylesArray.join('\n'));
+        }
+      </code-block>
+      <div class="DemoLink">
+        <a href="demos/3/" target="_blank">View demo &#8594;</a>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>Now that I have all the page<br>
+          styles, what do I do next?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <p>You need to parse the styles,
+        <br>so they can be more easily manipulated.</p>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>Okay, can the browser
+          <br>help me parse the CSS?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <p><a class="HashTag">#lols</a></p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Parsing the raw CSS text</h2>
+      <p>There are many open source parsers that will convert
+        <br>a string of CSS into an abstract syntax tree (AST).</p>
+      <p part>For this polyfill we'll use PostCSS.</p>
+    </a-slide>
+
+    <a-slide>
+      <h3>The PostCSS AST</h3>
+      <div class="FlexLine FlexLine--center">
+        <div class="FlexLine-item">
+          <code-block language="css">
+            .progress-bar {
+              width: calc(random * 100%);
+            }
+          </code-block>
+        </div>
+        <div class="FlexLine-item">
+          <svg class="Icon" viewBox="0 0 24 24">
+            <use xlink:href="icons.svg#icon-arrow-forward"></use>
+          </svg>
+        </div>
+        <div class="FlexLine-item">
+          <div>
+            <code-block language="json">
+              {
+                "type": "root",
+                "nodes": [
+                  {
+                    "type": "rule",
+                    "selector": ".progress-bar",
+                    "nodes": [
+                      {
+                        "type": "decl",
+                        "prop": "width",
+                        "value": "calc(random * 100%)"
+                      }
+                    ]
+                  }
+                ]
+              }
+            </code-block>
+          </div>
+        </div>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h3>Inspecting the parsed CSS</h3>
+      <code-block language="javascript">
+        import postcss from 'postcss';
+        import getPageStyles from './get-page-styles';
+
+        getPageStyles()
+          .then((css) => **postcss.parse(css)**)
+          .then((ast) => console.log(ast));
+      </code-block>
+      <div class="DemoLink">
+        <a href="demos/4/" target="_blank">View demo &#8594;</a>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h2>Checking In</h2>
+      <p part>Up to this point, we've written a lot of code&hellip;</p>
+      <p part>&hellip;but none of it has anything to do with the
+        <br>core functionality of our polyfill.</p>
+    </a-slide>
+
+    <a-slide>
+      <h2>Next steps</h2>
+      <ul>
+        <li part>Loop through each style declaration in the AST</li>
+        <li part>If the declaration contains the <code>random</code> keyword, replace it.</li>
+        <li part>Once done, replace the page styles with the modified styles.</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>Modifying the AST</h3>
+      <code-block language="javascript">
+        const randomKeywordPlugin = postcss.plugin('random-keyword', () => {
+          return (css) => {
+            css.walkRules((rule) => {
+              rule.walkDecls((decl, i) => {
+                if (decl.value.includes('random')) {
+                  decl.value = **decl.value.replace('random', Math.random());**
+                }
+              });
+            });
+          };
+        });
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Replacing the page styles</h3>
+      <code-block language="javascript">
+        const replacePageStyles = (css) => {
+          // Get a reference to all existing style elements.
+          const existingStyles =
+              [...document.querySelectorAll('style, link[rel="stylesheet"]')];
+
+          // Create a new &lt;style&gt; tag with all the polyfilled styles.
+          const polyfillStyles = document.createElement('style');
+          polyfillStyles.innerHTML = css;
+          **document.head.appendChild(polyfillStyles);**
+
+          // Remove the old styles once the new styles have been added.
+          existingStyles.forEach((el) => el.parentElement.removeChild(el));
+        };
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <h3>Putting the polyfill together</h3>
+      <code-block language="javascript">
+        import postcss from 'postcss';
+        import getPageStyles from './get-page-styles';
+        import randomKeywordPlugin from './random-keyword-plugin';
+        import replacePageStyles from './replace-page-styles';
+
+        getPageStyles()
+          .then((css) => postcss([**randomKeywordPlugin**]).process(css))
+          .then((result) => replacePageStyles(result.css));
+      </code-block>
+      <div class="DemoLink">
+        <a href="demos/5/" target="_blank">View demo &#8594;</a>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>How can we update the polyfill to target individual elements?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <h3>Option #1</h3>
+      <p part>Add inline styles to every element matching the rule selector.</p>
+    </a-slide>
+
+    <a-slide>
+      <code-block language="javascript">
+        // ...
+
+          rule.walkDecls((decl, i) => {
+            if (decl.value.includes('random')) {
+              const elements = **document.querySelectorAll(rule.selector);**
+              for (const element of elements) {
+                **element.style[decl.prop]** =
+                    decl.value.replace('random', Math.random());
+              }
+            }
+          });
+
+        // ...
+      </code-block>
+      <div class="DemoLink">
+        <a href="demos/6/" target="_blank">View demo &#8594;</a>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h3>Option #2</h3>
+      <p part style="line-height: 0.5; text-align: left">
+        <span style="line-height: 1.2">
+        Check the rest of the CSS for matching rules, and then only replace the <code>random</code> keyword with a random number and apply those declarations as inline styles if it's the last matching rule.</span>
+        <span style="font-size: .9em; line-height: 1.2" part>Wait, that won't work, because we have to account for specificity, so we'll have to manually parse each selector to calculate it. Then we can sort the matching rules in specificity order from low to high, and only apply the declarations from the most specific selector.</span>
+        <span style="font-size: .8em; line-height: 1.2" part>Oh and then there's <code>@media</code> rules, so we'll have to manually check for matches there as well.</span>
+        <span style="font-size: .7em; line-height: 1.2" part>And speaking of at-rules, there's also <code>@supports</code>&mdash;can't forget about that.</span>
+        <span style="font-size: .6em; line-height: 1.2"  part>And lastly we'll have to account for property inheritance, so for each element we'll have to traverse up the DOM tree and inspect all its ancestors to get the full set of computed properties.</span>
+        <span style="font-size: .5em; line-height: 1.2" part>Oh, sorry, one more thing: we'll also have to account for <code>!important</code>, which is calculated per-declaration instead of per-rule, so we'll have to maintain a separate mapping for that to figure out which declaration will ultimately win.</span>
+      </p>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>Hold up, didn't you just describe
+          <br>the cascade?</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <h3>Option #3</h3>
+      <p>Rewrite the CSS to target individual elements
+        <br>while maintaining cascade order.</p>
+    </a-slide>
+
+    <a-slide>
+      <div class="FlexLine FlexLine--center">
+        <div class="FlexLine-item">
+          <code-block language="css">
+            * {
+              box-sizing: border-box;
+            }
+            **p {**
+              opacity: random;
+            }
+            .foo {
+              opacity: initial;
+            }
+          </code-block>
+        </div>
+        <div class="FlexLine-item">
+          <svg class="Icon" viewBox="0 0 24 24">
+            <use xlink:href="icons.svg#icon-arrow-forward"></use>
+          </svg>
+        </div>
+        <div class="FlexLine-item" style="position: relative">
+          <div>
+            <code-block language="css">
+              * {
+                box-sizing: border-box;
+              }
+              p**[data-pid="1"]** {
+                opacity: .23421;
+              }
+              p**[data-pid="2"]** {
+                opacity: .82305;
+              }
+              p**[data-pid="3"]** {
+                opacity: .31178;
+              }
+              .foo {
+                opacity: initial;
+              }
+            </code-block>
+            <code-block part language="css" style="position: absolute; top: 0; left: 0">
+              *&#8203;**:not(.z)** {
+                box-sizing: border-box;
+              }
+              p**[data-pid="1"]** {
+                opacity: .23421;
+              }
+              p**[data-pid="2"]** {
+                opacity: .82305;
+              }
+              p**[data-pid="3"]** {
+                opacity: .31178;
+              }
+              .foo**:not(.z)** {
+                opacity: initial;
+              }
+            </code-block>
+          </div>
+        </div>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <p>Adding a unique ID to each element&hellip;</p>
+      <code-block language="javascript">
+        css.walkRules((rule) => {
+          const newRules = {};
+          rule.walkDecls((decl, i) => {
+            if (decl.value.match('random')) {
+              for (const el of **document.querySelectorAll(rule.selector)**) {
+                const **pid** = el.dataset.pid || (el.dataset.pid = getUniqueId());
+                const **newRule** = newRules[pid] || (newRules[pid] = rule.clone({
+                  selector: appendToSelectors(rule.selector, **`[data-pid="${pid}"]`**),
+                  nodes: [],
+                }));
+                newRule.nodes.push(decl.clone({
+                  value: **decl.value.replace('random', Math.random())**,
+                }));
+              }
+            }
+            // ...
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>"Up-specifizing" the other rules&hellip;</p>
+      <code-block language="javascript">
+        // ...
+
+            // Clone the current rule and update the selector.
+            rule.parent.insertBefore(rule, rule.clone({
+              selector: appendToSelectors(rule.selector, **':not(.z)'**)
+            }))
+
+            // Insert all the new rules before the current rule.
+            for (const id of Object.keys(newRules)) {
+              rule.parent.insertBefore(rule, newRules[id]);
+            }
+
+            // Remove the current rule and continue iterating.
+            rule.remove();
+          });
+        });
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>The final plugin code</p>
+      <code-block language="javascript">
+        import postcss from 'postcss';
+        import randomKeywordPlugin from './random-keyword-plugin';
+        import getPageStyles from './get-page-styles';
+        import replacePageStyles from './replace-page-styles';
+
+        getPageStyles()
+          .then((css) => postcss([randomKeywordPlugin]).process(css))
+          .then((result) => replacePageStyles(result.css));
+      </code-block>
+      <div class="DemoLink">
+        <a href="demos/7/" target="_blank">View demo &#8594;</a>
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>Zomg! You've solved everything!</p>
+      </blockquote>
+    </a-slide>
+
+    <a-slide>
+      <h2>Unresolved issues</h2>
+      <ul>
+        <li part>Handle updates when the DOM changes</li>
+        <li part>Handle inline styles</li>
+        <li part>Handle Shadow DOM</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Unavoidable problems</h2>
+      <ul>
+        <li part>Requires a lot of extra code.</li>
+        <li part>Doesn't work with cross-origin (non-CORS) stylesheets.</li>
+        <li part>Performs horribly if/when changes are needed (e.g. DOM changes, scroll/resize handlers, etc.).</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h3>Understanding the performance implications</h3>
+      <div style="position: relative; display: inline-block; width:1440px; height:700;">
+        <img width="100%" height="100%" src="images/render-pipeline.svg" style="display: block">
+        <img part width="100%" height="100%" src="images/render-pipeline-polyfill.svg" style="position: absolute; left: 0; top: 0;">
+      </div>
+    </a-slide>
+
+    <a-slide>
+      <h2>Wrapping Up</h2>
+    </a-slide>
+
+    <a-slide>
+      <h3>Things the browser already does,
+        <br>but that we can't use in CSS polyfills:</h3>
+      <div class="FlexLine FlexLine--inline">
+        <div class="FlexLine-item">
+          <ul>
+           <li>Fetching the CSS</li>
+           <li>Parsing the CSS</li>
+           <li>Creating the CSSOM</li>
+         </ul>
+        </div>
+        <div class="FlexLine-item">
+          <ul>
+            <li>Handling the Cascade</li>
+            <li>Invalidating styles</li>
+            <li>Revalidating styles</li>
+          </ul>
+        </div>
+      </div>
+
+    </a-slide>
+
+    <a-slide>
+      <h3>Without Houdini APIs,
+        <br>CSS polyfills will inevitably be:</h3>
+      <ul>
+        <li part>Too big</li>
+        <li part>Too slow</li>
+        <li part>Too incorrect</li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Final thoughts</h2>
+      <ul>
+        <li part>Without low-level styling primitives, innovation will move at the pace of the slowest-adopting browser.</li>
+        <li part>Developers complain about the pace of innovation in the JavaScript community. But you never hear about that in CSS.</li>
+        <li part align-bullet="center">Let's change that <a class="HashTag">#makecssfatigueathing</a></li>
+      </ul>
+    </a-slide>
+
+    <a-slide>
+      <h1>Fin</h1>
+      <dl>
+        <dt>Twitter</dt>
+        <dd><a href="https://twitter.com/philwalton">@philwalton</a></dd>
+        <dt>Website</dt>
+        <dd><a href="http://philipwalton.com">philipwalton.com</a></dd>
+        <dt>Github</dt>
+        <dd><a href="https://github.com/philipwalton">github.com/philipwalton</a></dd>
+        <dt>Slides</dt>
+        <dd><a href="https://github.com/philipwalton/talks">github.com/philipwalton/talks</a></dd>
+      </dl>
+    </a-slide>
+
+  </a-slide-deck>
+
+</body>
+</html>

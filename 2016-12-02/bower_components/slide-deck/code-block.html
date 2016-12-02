@@ -1,0 +1,194 @@
+<script src="assets/highlight.js"></script>
+<link href="../polymer/polymer.html" rel="import">
+
+<dom-module id="code-block">
+<style>
+  :host {
+    display: block;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font: 1em/1.25 'Menlo', monospace;
+    margin: 1em 0;
+  }
+  :host > pre {
+    display: block;
+    font: inherit;
+    font-size: .6em;
+    padding: 1em;
+    margin: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: pre;
+    -webkit-text-size-adjust: none;
+  }
+  :host ::content mark {
+    background-color: #ff7;
+    color: inherit;
+  }
+  :host ::content i {
+    color: #bbb;
+    font: inherit;
+  }
+  :host ::content i * {
+    color: inherit!important;
+    font: inherit;
+  }
+
+  /* highlight.js github theme */
+
+  :host ::content .comment,
+  :host ::content .diff .header {
+    color: #998;
+    font-style: italic;
+  }
+
+  :host ::content .keyword,
+  :host ::content .css .rule .keyword,
+  :host ::content .winutils,
+  :host ::content .nginx .title,
+  :host ::content .subst,
+  :host ::content .request,
+  :host ::content .status {
+    color: #333;
+    font-weight: bold;
+  }
+
+  :host ::content .number,
+  :host ::content .hexcolor,
+  :host ::content .ruby .constant {
+    color: #008080;
+  }
+
+  :host ::content .string,
+  :host ::content .tag .value,
+  :host ::content .doctag,
+  :host ::content .tex .formula {
+    color: #d14;
+  }
+
+  :host ::content .title,
+  :host ::content .id,
+  :host ::content .scss .preprocessor {
+    color: #900;
+    font-weight: bold;
+  }
+
+  :host ::content .list .keyword,
+  :host ::content .subst {
+    font-weight: normal;
+  }
+
+  :host ::content .class .title,
+  :host ::content .type,
+  :host ::content .vhdl .literal,
+  :host ::content .tex .command {
+    color: #458;
+    font-weight: bold;
+  }
+
+  :host ::content .tag,
+  :host ::content .tag .title,
+  :host ::content .rule .property,
+  :host ::content .django .tag .keyword {
+    color: #000080;
+    font-weight: normal;
+  }
+
+  :host ::content .attribute,
+  :host ::content .variable,
+  :host ::content .lisp .body,
+  :host ::content .name {
+    color: #008080;
+  }
+
+  :host ::content .regexp {
+    color: #009926;
+  }
+
+  :host ::content .symbol,
+  :host ::content .ruby .symbol .string,
+  :host ::content .lisp .keyword,
+  :host ::content .clojure .keyword,
+  :host ::content .scheme .keyword,
+  :host ::content .tex .special,
+  :host ::content .prompt {
+    color: #990073;
+  }
+
+  :host ::content .built_in {
+    color: #0086b3;
+  }
+
+  :host ::content .preprocessor,
+  :host ::content .pragma,
+  :host ::content .pi,
+  :host ::content .doctype,
+  :host ::content .shebang,
+  :host ::content .cdata {
+    color: #999;
+    font-weight: bold;
+  }
+
+  :host ::content .deletion {
+    background: #fdd;
+  }
+
+  :host ::content .addition {
+    background: #dfd;
+  }
+
+  :host ::content .diff .change {
+    background: #0086b3;
+  }
+
+  :host ::content .chunk {
+    color: #aaa;
+  }
+</style>
+
+<template>
+  <pre class$="[[language]]" id="code">
+    <content></content>
+  </pre>
+</template>
+
+<script>
+// A class prefix is unnecessary since these elements will be in shadow DOM.
+hljs.configure({classPrefix: ''});
+
+Polymer({
+
+  is: 'code-block',
+
+  properties: {
+    language: String
+  },
+
+  ready: function() {
+
+    var lines = this.$.code.innerHTML.split('\n').slice(1, -1);
+    var whiteSpace = /^\s+/.exec(lines[0]);
+    var whitespaceChars = (whiteSpace && whiteSpace[0].length) || 0;
+
+    var code = lines.map(function(line) {
+      return line.slice(whitespaceChars)
+        .replace(/=""/g, '') // Remove empty attributes.
+        .replace(/&lt;/g, '<') // Unescape open angle brackets.
+        .replace(/&gt;/g, '>'); // Unescape closing angle brackets.
+    }).join('\n');
+
+    // Not specifying a language disables syntax highlighting.
+    if (this.language) {
+      code = hljs.highlight(this.language, code, true).value;
+    }
+
+    this.$.code.innerHTML = code
+        // highlight content between `**` characters.
+        .replace(/\*\*([\s\S]+?)\*\*/g, '<mark>$1</mark>')
+        // mute content between `~~` characters.
+        .replace(/\~\~([\s\S]+?)\~\~/g, '<i>$1</i>');
+  }
+})
+</script>
+</dom-module>
