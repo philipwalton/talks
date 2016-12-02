@@ -45,7 +45,7 @@
 
     <a-slide>
       <h2>A new CSS keyword</h2>
-      <p><code>random:</code> a number between 0 and 1</p>
+      <p><code>random</code> &ndash; a number between 0 and 1</p>
       <div>
         <code-block language="css">
           .foo {
@@ -388,7 +388,7 @@
         <span style="font-size: .8em; line-height: 1.2" part>Oh and then there's <code>@media</code> rules, so we'll have to manually check for matches there as well.</span>
         <span style="font-size: .7em; line-height: 1.2" part>And speaking of at-rules, there's also <code>@supports</code>&mdash;can't forget about that.</span>
         <span style="font-size: .6em; line-height: 1.2"  part>And lastly we'll have to account for property inheritance, so for each element we'll have to traverse up the DOM tree and inspect all its ancestors to get the full set of computed properties.</span>
-        <span style="font-size: .5em; line-height: 1.2" part>Oh, sorry, one more thing: we'll also have to account for <code>!important</code>, which is calculated per-declaration instead of per-rule, so we'll have to maintain a separate mapping for that to figure out which declaration will ultimately win.</span>
+        <span style="font-size: .5em; line-height: 1.2" part>Oh, sorry, one more thing: we'll also have to account for <code>!important</code>, which is calculated per-property instead of per-rule, so we'll have to maintain a separate mapping for that to figure out which declaration will ultimately win.</span>
       </p>
     </a-slide>
 
