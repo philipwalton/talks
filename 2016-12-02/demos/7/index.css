@@ -1,10 +1,3 @@
-
-* {
-  font-size: calc(random * 50px)!important;
-}
-
 .progress-bar {
   width: calc(random * 100%);
-  background-color: hsl(calc(random * 360), 50%, 50%);
-  opacity: random;
 }
