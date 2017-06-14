@@ -43,7 +43,7 @@
     </a-slide>
 
     <a-slide>
-      <p>Let's find out by writing one ourselves&hellip;</p>
+      <p>It's easier to show than to tell...</p>
     </a-slide>
 
     <a-slide>
@@ -106,7 +106,7 @@
 
     <a-slide>
       <blockquote>
-        <p>Okay, so we have to update the CSS,<br>but where do we do that?</p>
+        <p>Okay, so you have to update the CSS,<br>but where do you do that?</p>
       </blockquote>
     </a-slide>
 
@@ -156,12 +156,8 @@
 
     <a-slide>
       <blockquote>
-        <p>If the full CSS isn't in the CSSOM, where is it?</p>
+        <p>If the original CSS isn't in the CSSOM, where is it?</p>
       </blockquote>
-    </a-slide>
-
-    <a-slide>
-      <p>Nowhere. You have to search for it manually.</p>
     </a-slide>
 
     <a-slide>
@@ -197,15 +193,7 @@
     </a-slide>
 
     <a-slide>
-      <blockquote>
-        <p>Now that I have all the page<br>
-          styles, what do I do next?</p>
-      </blockquote>
-    </a-slide>
-
-    <a-slide>
-      <p>You need to parse the styles,
-        <br>so they can be more easily manipulated.</p>
+      <p>Now that you have the raw CSS text, you have to parse it.</p>
     </a-slide>
 
     <a-slide>
@@ -319,8 +307,7 @@
       <code-block language="javascript">
         export const replacePageStyles = (css) => {
           // Get a reference to all existing style elements.
-          const existingStyles =
-              [...document.querySelectorAll('style, link[rel="stylesheet"]')];
+          const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
 
           // Create a new &lt;style> tag with all the polyfilled styles.
           const polyfillStyles = document.createElement('style');
@@ -328,7 +315,7 @@
           **document.head.appendChild(polyfillStyles);**
 
           // Remove the old styles once the new styles have been added.
-          existingStyles.forEach((el) => el.parentElement.removeChild(el));
+          styles.forEach((el) => el.parentElement.removeChild(el));
         };
       </code-block>
     </a-slide>
@@ -387,7 +374,7 @@
       <p part style="line-height: 0.5; text-align: left">
         <span style="line-height: 1.2">
         Check the rest of the CSS for matching rules, and then only replace the <code>random()</code> function with a random number and apply those declarations as inline styles if it's the last matching rule.</span>
-        <span style="font-size: .9em; line-height: 1.2" part>Wait, that won't work, because we have to account for specificity, so we'll have to manually parse each selector to calculate it. Then we can sort the matching rules in specificity order from low to high, and only apply the declarations from the most specific selector.</span>
+        <span style="font-size: .9em; line-height: 1.2" part>Wait, that won't work, because we have to account for specificity, so we'll have to manually parse each selector to calculate its specificity. Then we can sort the matching rules in specificity order from low to high, and only apply the declarations from the most specific selector.</span>
         <span style="font-size: .8em; line-height: 1.2" part>Oh and then there's <code>@media</code> rules, so we'll have to manually check for matches there as well.</span>
         <span style="font-size: .7em; line-height: 1.2" part>And speaking of at-rules, there's also <code>@supports</code>&mdash;can't forget about that.</span>
         <span style="font-size: .6em; line-height: 1.2"  part>And lastly we'll have to account for property inheritance, so for each element we'll have to traverse up the DOM tree and inspect all its ancestors to get the full set of computed properties.</span>
@@ -404,8 +391,7 @@
 
     <a-slide>
       <h3>Option #3</h3>
-      <p>Rewrite the CSS to target individual elements
-        <br>while maintaining cascade order.</p>
+      <p>Rewrite all selectors that contain the <code>random()</code> function in such a way that instead of one selector matching many elements, you have many selectors each only matching one element.</p>
     </a-slide>
 
     <a-slide>
@@ -549,8 +535,8 @@
       <h2>Unavoidable problems</h2>
       <ul>
         <li part>Requires a lot of extra code.</li>
-        <li part>Doesn't work with cross-origin (non-CORS) stylesheets.</li>
-        <li part>Performs horribly if/when changes are needed (e.g. DOM changes, scroll/resize handlers, etc.).</li>
+        <li part>Doesn't work with cross-origin stylesheets.</li>
+        <li part>Performs horribly if/when changes are needed<br>(e.g. DOM changes, scroll/resize handlers, etc.).</li>
       </ul>
     </a-slide>
 
@@ -563,128 +549,75 @@
     </a-slide>
 
     <a-slide>
-      <h3>Things the browser already does,
-        <br>but that we can't use in CSS polyfills:</h3>
-      <div class="FlexLine FlexLine--inline">
-        <div class="FlexLine-item">
-          <ul>
-           <li>Fetching the CSS</li>
-           <li>Parsing the CSS</li>
-           <li>Creating the CSSOM</li>
-         </ul>
-        </div>
-        <div class="FlexLine-item">
-          <ul>
-            <li>Handling the Cascade</li>
-            <li>Invalidating styles</li>
-            <li>Revalidating styles</li>
-          </ul>
-        </div>
-      </div>
-    </a-slide>
-
-    <a-slide>
-      <h2>What is the solution?</h2>
-    </a-slide>
-
-    <a-slide>
-      <img class="Screenshot" src="images/smashing-article.png" alt="CSS Houdini on Smashing Magazine" width="1200" height="800" />
+      <blockquote>
+        <p>What is the solution?</p>
+      </blockquote>
     </a-slide>
 
     <a-slide>
       <h2>Houdini</h2>
-      <p>The solution to all the problems I just described.</p>
-      <p>It's a set of low-level primatives that allow developers to hook into the style and layout mechanisms in all browsers.</p>
+      <p>A set of low-level APIs that give developers hooks<br>into the browsers styling and layout mechanisms.</p>
     </a-slide>
 
     <a-slide>
-      <h3>New APIs</h3>
-      <div class="FlexLine FlexLine--inline">
-        <div class="FlexLine-item">
-          <ul>
-           <li>CSS Parser API</li>
-           <li>CSS Typed OM</li>
-           <li>CSS Properties and Values</li>
-         </ul>
-        </div>
-        <div class="FlexLine-item">
-          <ul>
-            <li>Worklets</li>
-            <li>CSS Painting API</li>
-            <li>CSS Layout API</li>
-          </ul>
-        </div>
+      <h3>The rendering pipeline with Houdini APIs</h3>
+      <div style="position: relative; display: inline-block; width:1440px; height:340;">
+        <img width="100%" height="100%" src="images/render-pipeline-houdini.svg" style="display: block">
       </div>
     </a-slide>
 
     <a-slide>
-      <h3>CSS Paint API Example</h3>
+      <h3>New features</h3>
+      <ul>
+        <li part>New <code>paint()</code> function</li>
+        <li part>New <code>layout()</code> function</li>
+        <li part>More powerful custom properties</li>
+        <li part>A better object model</li>
+        <li part>And lots more...</li>
+     </ul>
+    </a-slide>
+
+    <a-slide>
+      <h2>Examples</h2>
+    </a-slide>
+
+    <a-slide>
+      <h3>Paint and layout functions</h3>
+      <code-block language="css" style="width: 22em">
+        #foo {
+          background-image: **paint(circle)**;
+        }
+
+        #bar {
+          display: **layout(masonry)**;
+        }
+      </code-block>
+      <br>
+      <code-block language="html" style="width: 22em">
+        &lt;script>
+          CSS.paintWorklet.addModule('./circle.js');
+          CSS.layoutWorklet.addModule('./masonry.js');
+        &lt;/script>
+      </code-block>
+    </a-slide>
+
+    <a-slide>
       <code-block language="javascript">
-        // In the circle.js worklet.
         registerPaint(**'circle'**, class {
           static get inputProperties() {
             return ['--circle-color'];
           }
-          paint(ctx, geom, styleMap) {
-            ctx.fillStyle = styleMap.get('--circle-color');
+          **paint**(ctx, geom, props) {
             const x = geom.width / 2;
             const y = geom.height / 2;
             const radius = Math.min(x, y);
-            ctx.beginPath();
+            const color = props.get('--circle-color').toString();
+
+            ctx.fillStyle = color;
             ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
             ctx.fill();
           }
         });
-      </code-block>
-    </a-slide>
-
-    <a-slide>
-      <code-block language="html">
-        &lt;textarea id="example">&lt;/textarea>
-
-        &lt;style>
-          textarea {
-            --circle-color: deepskyblue;
-            background-image: **paint(circle)**;
-          }
-        &lt;/style>
-
-        &lt;script>
-          **CSS.paintWorklet.addModule('./circle.js');**
-        &lt;/script>
-      </code-block>
-      <div class="DemoLink">
-        <a href="demos/8/" target="_blank">View demo &#8594;</a>
-      </div>
-    </a-slide>
-
-    <a-slide>
-      <h3>CSS Properties and Values Example</h3>
-      <code-block language="html">
-        &lt;script>
-          **CSS.registerProperty**({
-            name: '--circle-color',
-            syntax: '&lt;color>',
-            initialValue: '#000',
-            inherits: true,
-          });
-          CSS.paintWorklet.addModule('./circle.js');
-        &lt;/script>
-      </code-block>
-    </a-slide>
-
-    <a-slide>
-      <code-block language="html">
-        &lt;style>
-          textarea {
-            --circle-color: blue;
-            background-image: paint(circle);
-            **transition: --circle-color 1s linear;**
-          }
-          textarea:focus {
-            --circle-color: purple;
-          }
-        &lt;/style>
       </code-block>
       <div class="DemoLink">
         <a href="demos/8/" target="_blank">View demo &#8594;</a>
@@ -693,27 +626,64 @@
 
     <a-slide>
       <blockquote>
-        <p>...I don't need Houdini to draw a circle</p>
+        <p>Cool story bro, but I could make a<br>circle in CSS without Houdini...</p>
       </blockquote>
     </a-slide>
 
     <a-slide>
-      <h3>Material Design effects</h3>
+      <p>Let's add some additional properties...</p>
+      <code-block language="javascript">
+        registerPaint('circle', class {
+          static get inputProperties() {
+            return ['--circle-color', **'--circle-x', '--circle-y', '--circle-radius'**];
+          }
+          paint(ctx, geom, props) {
+            const x = parseFloat(**props.get('--circle-x')**);
+            const y = parseFloat(**props.get('--circle-y')**);
+            const radius = parseFloat(**props.get('--circle-radius')**);
+            const color = props.get('--circle-color').toString();
+
+            ctx.fillStyle = color;
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        });
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>...and transition those properties when a class is added...</p>
       <code-block language="css">
         button {
           background-color: #37e;
 
-          --ripple-size: 0;
-          --ripple-color: #fff8;
+          --circle-radius: 0;
+          --circle-color: #fff8;
         }
         button.animating {
-          background-image: **paint(ripple)**;
+          background-image: paint(circle);
           transition:
-            --ripple-size 1s cubic-bezier(0, 0, 0.4, 1),
-            --ripple-color 1s linear;
+            **--circle-radius 1s cubic-bezier(0, 0, 0.4, 1)**,
+            **--circle-color 1s linear**;
 
-          --ripple-size: 600;
-          --ripple-color: #fff0;
+          --circle-radius: 600;
+          --circle-color: #fff0;
+        }
+      </code-block>
+    </a-slide>
+
+    <a-slide>
+      <p>...and add that class when the button is clicked.</p>
+      <code-block language="javascript">
+        for (const button of document.querySelectorAll('button')) {
+         button.addEventListener('click', (evt) => {
+           **button.classList.add('animating');**
+           button.styleMap.set('--circle-x', CSS.px(evt.offsetX));
+           button.styleMap.set('--circle-y', CSS.px(evt.offsetY));
+         });
+         button.addEventListener('transitionend', () => {
+           button.classList.remove('animating');
+         });
         }
       </code-block>
       <div class="DemoLink">
@@ -722,10 +692,23 @@
     </a-slide>
 
     <a-slide>
+      <p>This works because of the new properties and values API</p>
+      <code-block language="javascript">
+        CSS.registerProperty({
+          name: '--circle-radius',
+          syntax: '&lt;number>',
+          initialValue: '0',
+          inherits: true, // defaults to false
+        });
+      </code-block>
+    </a-slide>
+
+    <!--
+    <a-slide>
       <code-block language="javascript">
         const customProps =  [
-          {name: '--ripple-size', syntax: '&lt;number>', initialValue: '0'},
-          {name: '--ripple-color', syntax: '&lt;color>', initialValue: '#fff'},
+          {name: '--circle-radius', syntax: '&lt;number>', initialValue: '0'},
+          {name: '--circle-color', syntax: '&lt;color>', initialValue: '#fff'},
         ];
         customProps.forEach(CSS.registerProperty);
         CSS.paintWorklet.addModule('ripple.js');
@@ -733,8 +716,8 @@
         for (const button of document.querySelectorAll('button')) {
          button.addEventListener('click', (evt) => {
            **button.classList.add('animating');**
-           button.styleMap.set('--ripple-x', CSS.px(evt.offsetX));
-           button.styleMap.set('--ripple-y', CSS.px(evt.offsetY));
+           button.styleMap.set('--circle-x', CSS.px(evt.offsetX));
+           button.styleMap.set('--circle-y', CSS.px(evt.offsetY));
          });
          button.addEventListener('transitionend', () => {
            button.classList.remove('animating');
@@ -742,51 +725,31 @@
         }
       </code-block>
     </a-slide>
-
-    <a-slide>
-      <code-block language="javascript">
-        registerPaint('ripple', class {
-          static get inputProperties() {
-            return ['--ripple-x', '--ripple-y', '--ripple-size', '--ripple-color'];
-          }
-          paint(ctx, geom, styleMap) {
-            const x = parseFloat(styleMap.get('--ripple-x'));
-            const y = parseFloat(styleMap.get('--ripple-y'));
-            const size = parseFloat(styleMap.get('--ripple-size'));
-            const color = styleMap.get('--ripple-color').toString();
-
-            ctx.fillStyle = color;
-            ctx.arc(x, y, size, 0, 2 * Math.PI);
-            ctx.fill();
-          }
-        });
-      </code-block>
-    </a-slide>
+    -->
 
     <a-slide>
       <blockquote>
-        <p>How can I</p>
+        <p>Ok, but how does this stuff<br>relate to polyfilling CSS?</p>
       </blockquote>
     </a-slide>
 
     <a-slide>
-      <h3>Custom paint to polyfill standard features</h3>
+      <p>You can use these functions to polyfill standard features</p>
       <code-block language="css">
         div {
-          background-image: conic-gradient(red, white, black);
+          background-image: **conic-gradient**(red, white, black);
         }
       </code-block>
     </a-slide>
 
     <a-slide>
       <p>
-        <code-block language="css" style="width:20em">
-          background-image: paint(
-              conic-gradient, 0 50% 100%, red white black);
+        <code-block language="css" style="width:26em">
+          background-image: **paint(conic-gradient, 0 50% 100%, red white black)**;
         </code-block>
       </p>
       <p>
-        <code-block language="javascript" style="width:20em">
+        <code-block language="javascript" style="width:26em">
           registerPaint('conic-gradient', class {
             static get inputArguments() {
               return ['&lt;angle>+ | &lt;percentage>+', '&lt;color>+'];
@@ -798,12 +761,18 @@
         </code-block>
       </p>
       <div class="DemoLink">
-        <a href="demos/10/index.html" target="_blank">View Demo &#8594;</a>
+        <a href="demos/10/index.html" target="_blank">Demo #1 &#8594;</a>
         &nbsp;
-        <a href="demos/10/hue-wheel.html" target="_blank">Hue Wheel &#8594;</a>
+        <a href="demos/10/hue-wheel.html" target="_blank">Demo #2 &#8594;</a>
         &nbsp;
-        <a href="demos/10/pie-chart.html" target="_blank">Pie Chart &#8594;</a>
+        <a href="demos/10/pie-chart.html" target="_blank">Demo #3 &#8594;</a>
       </div>
+    </a-slide>
+
+    <a-slide>
+      <blockquote>
+        <p>But I don't want to write paint functions for standard features!</p>
+      </blockquote>
     </a-slide>
 
     <a-slide>
@@ -811,7 +780,9 @@
       <div class="FlexLine FlexLine--center">
         <div class="FlexLine-item">
           <code-block language="css">
-            conic-gradient( ... )
+            #foo {
+              background: conic-gradient(...);
+            }
           </code-block>
         </div>
         <div class="FlexLine-item">
@@ -821,7 +792,10 @@
         </div>
         <div class="FlexLine-item">
           <code-block language="css">
-            paint(conic-gradient, ... )
+            #foo {
+              **background: paint(conic-gradient,...);**
+              background: conic-gradient(...);
+            }
           </code-block>
         </div>
       </div>
@@ -829,14 +803,14 @@
 
     <a-slide>
       <h3>A webpack loader</h3>
-      <code-block language="javascript">
+      <code-block language="javascript" style="width: 18em">
         module: {
           rules: [
             {
               test: /\.css$/,
               use: [
-                'conic-gradient-houdini-loader', // Uses custom paint
-                'snap-points-houdini-loader', // Uses custom layout
+                'sass-loader',
+                **'houdini-loader',**
                 // ...
               }
             }
@@ -847,95 +821,72 @@
 
     <a-slide>
       <blockquote>
-        <p>What about features that aren't paint or layout related?</p>
+        <p>What about features that aren't<br>paint or layout related?</p>
       </blockquote>
     </a-slide>
 
     <a-slide>
-      <h3>The CSS Parser API</h3>
-      <p>Still TBD</p>
-      <code-block language="javascript">
-        CSS.registerSyntax({
-          type: 'selector'
-          grammer: 'pattern'
-        });
-        CSS.registerSyntax({
-          type: 'function',
-          name: 'pattern',
-          arguments: { ... }
-        });
-        CSS.registerSyntax({
-          type: 'function',
-          name: 'pattern',
-          arguments: { ... }
-        });
+      <h3>Custom functions</h3>
+      <code-block language="css" style="width: 20em">
+        .progress-bar {
+          width: calc(**random()** * 100%);
+        }
+      </code-block>
+      <br>
+      <code-block language="css" style="width: 20em">
+        button:hover {
+          background-color: **darken(var(--btn-color), 10%)**;
+        }
       </code-block>
     </a-slide>
 
     <a-slide>
-      <h3>Custom functions</h3>
-      <code-block language="javascript">
-        registerFunction('random', class {
-          resolve(geom, styleMap) {
-            return Math.random();
-          }
-        });
+      <h3>Custom pseudo-classes</h3>
+      <code-block language="html">
+        .next-sibling**:preceeded-by(.previous-sibling)** {
+          margin-top: 1em;
+        }
       </code-block>
     </a-slide>
 
     <a-slide>
       <h3>Custom @-rules</h3>
-      <code-block language="html">
-        &lt;style>
-          #parent {
-            --container-width: initial;
-          }
+      <code-block language="scss">
+        .component {
+          /* Default, small size styles... */
 
-          #child {
-            /* Base styles... */
-
-            **@condition** (var(--container-width) >= 40em) {
-              /* Larger width styles... */
-            }
+          **@condition** (var(--container-width)) >= 768px) {
+            /* Large size styles... */
           }
-        &lt;/style>
+        }
       </code-block>
+      <p part>This + <code>ResizeObserver</code> gives you container queries</p>
     </a-slide>
 
     <a-slide>
+      <p></p>
       <code-block language="javascript">
-        registerAtRule('condition', class {
-          static get inputArguments() {
-            return ['&lt;length> &lt;operator> &lt;length>'];
-          }
-          resolve(args) {
-            // Determine if condition applies...
-          }
-        })
-      </code-block>
-    </a-slide>
-
-    <a-slide>
-      <code-block language="html">
-        &lt;script>
-        const ro = new ResizeObserver((entries) => {
+        const ro = new **ResizeObserver**((entries) => {
           for (const entry of entries) {
             const {width} = entry.contentRect;
             const element = entry.target;
-            **element.styleMap.set('--container-width', CSS.px(width));**
+            element.styleMap.set('--container-width', CSS.px(width));
           }
         });
-        ro.observe(document.querySelector('#parent'));
-        &lt;/script>
-      </code-block>
+
+        document.querySelectorAll('.component')
+            .map((el) => el.parentNode)
+            .forEach(**ro.observe**);
+    </a-slide>
+
+    <a-slide>
+      <h2>Wrapping Up</h2>
     </a-slide>
 
 
-
-
     <a-slide>
-      <h3>Without Houdini APIs,
-        <br>CSS polyfills will inevitably be:</h3>
+      <h3>It's <strong>hard</strong> to write CSS polyfills</h3>
+      <p part>Due to browser limitations, polyfills today are either:</p>
       <ul>
         <li part>Too big</li>
         <li part>Too slow</li>
@@ -944,12 +895,21 @@
     </a-slide>
 
     <a-slide>
-      <h2>Final thoughts</h2>
+      <h3>Houdini finally makes CSS extensible</h3>
       <ul>
-        <li part>Without low-level styling primitives, innovation will move at the pace of the slowest-adopting browser.</li>
-        <li part>Developers complain about the pace of innovation in the JavaScript community. But you never hear about that in CSS.</li>
-        <li part align-bullet="center">Let's change that <a class="HashTag">#makecssfatigueathing</a></li>
+        <li part>Innovation will transfer from spec authors<br>
+          and browser makers directly to web developers.</li>
+        <li part>As it is today, innovation moves at the pace<br>
+          of the slowest-adopting browser.</li>
       </ul>
+
+    </a-slide>
+
+
+    <a-slide>
+      <p>Developers complain about too much innovation in the JavaScript community. But you don't hear that about CSS.</p>
+      <p part><a class="HashTag">#makecssfatigueathing</a></p>
+
     </a-slide>
 
     <a-slide>

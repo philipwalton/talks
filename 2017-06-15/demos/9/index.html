@@ -31,40 +31,40 @@ button {
   padding: 1em;
   width: 500px;
 
-  --ripple-x: 0;
-  --ripple-y: 0;
-  --ripple-size: 0;
-  --ripple-color: #fff8;
+  --circle-x: 0;
+  --circle-y: 0;
+  --circle-size: 0;
+  --circle-color: #fff8;
 }
 button:focus {
   outline: none;
 }
 button.animating {
-  background-image: paint(ripple);
+  background-image: paint(circle);
   transition:
-    --ripple-size 1s cubic-bezier(0, 0, 0.4, 1),
-    --ripple-color 1s linear;
+    --circle-size 1s cubic-bezier(0, 0, 0.4, 1),
+    --circle-color 1s linear;
 
-  --ripple-size: 600;
-  --ripple-color: #fff0;
+  --circle-size: 500;
+  --circle-color: #fff0;
 }
 </style>
 
 <script>
 const customProps =  [
-  {name: '--ripple-size', syntax: '<number>', initialValue: '0'},
-  {name: '--ripple-color', syntax: '<color>', initialValue: '#fff8'}
+  {name: '--circle-size', syntax: '<number>', initialValue: '0'},
+  {name: '--circle-color', syntax: '<color>', initialValue: '#fff8'}
 ];
 customProps.forEach(CSS.registerProperty);
-window.paintWorklet.addModule('ripple.js');
+window.paintWorklet.addModule('circle.js');
 
 for (const button of document.querySelectorAll('button')) {
  button.addEventListener('click', (evt) => {
    button.classList.add('animating');
 
    // TODO: Should be `styleMap.set` once that's implemented.
-   button.style.setProperty('--ripple-x', evt.offsetX);
-   button.style.setProperty('--ripple-y', evt.offsetY);
+   button.style.setProperty('--circle-x', evt.offsetX);
+   button.style.setProperty('--circle-y', evt.offsetY);
  });
  button.addEventListener('transitionend', () => {
    button.classList.remove('animating');
