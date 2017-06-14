@@ -1,0 +1,43 @@
+<style>
+body {
+  margin: 0;
+}
+#parent {
+  background: yellow;
+  width: calc(100vw - 200px);
+  --container-width: initial;
+}
+#child {
+  width: 100%;
+  background: red;
+}
+.large > #child {
+  width: calc(var(--container-width) / 2);
+  background: blue;
+}
+</style>
+
+<div id="parent">
+  Parent
+  <div id="child">Child</div>
+</div>
+
+<script>
+const parent = document.querySelector('#parent');
+const ro = new ResizeObserver((entries) => {
+  for (const entry of entries) {
+    const {width} = entry.contentRect;
+    const element = entry.target;
+
+    if (width > 320) {
+      parent.classList.add('large');
+    } else {
+      parent.classList.remove('large');
+    }
+
+    // console.log(width);
+    element.style.setProperty('--container-width', width + 'px');
+  }
+});
+ro.observe(parent);
+</script>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<textarea rows="15" cols="30"></textarea>
+
+<style>
+  textarea {
+    --circle-color: blue;
+    background-image: paint(circle);
+    transition: --circle-color 1s linear;
+  }
+
+  textarea:focus {
+    --circle-color: red;
+  }
+</style>
+
+
+<script>
+  CSS.registerProperty({
+    name: '--circle-color',
+    syntax: '<color>',
+    initialValue: 'black',
+    inherits: false
+  });
+  window.paintWorklet.addModule('./circle.js');
+</script>
