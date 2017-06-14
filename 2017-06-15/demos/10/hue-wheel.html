@@ -1,0 +1,26 @@
+<style>
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+div {
+  width: 500px;
+  height: 500px;
+  flex: none;
+  border-radius: 50%;
+
+  background-image: paint(conic-gradient,
+    0% 16.6% 33.3% 50% 66.7% 83.3% 100%,
+    rgb(255,0,0) rgb(255,0,255) rgb(0,0,255) rgb(0,255,255)
+    rgb(0,255,0) rgb(255,255,0) rgb(255,0,0)
+  );
+}
+
+</style>
+
+<div></div>
+
+<script>
+window.paintWorklet.addModule('conic-gradient.js');
+</script>

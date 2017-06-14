@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<textarea rows="15" cols="30"></textarea>
+
+<style>
+  textarea {
+    --circle-color: blue;
+    background-image: paint(circle);
+  }
+  textarea:focus {
+    --circle-color: red;
+  }
+</style>
+
+
+<script>
+  window.paintWorklet.addModule('./circle.js');
+</script>

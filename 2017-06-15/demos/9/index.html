@@ -1,0 +1,73 @@
+<!doctype html>
+
+<nav>
+  <button>One</button>
+  <button>Two</button>
+  <button>Three</button>
+  <button>Four</button>
+</nav>
+
+<style>
+body {
+  margin: 0;
+  font: 2.5em/1 sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+nav {
+  display: flex;
+  flex-flow: column;
+}
+button {
+  background-color: #37e;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  margin: .5em;
+  padding: 1em;
+  width: 500px;
+
+  --circle-x: 0;
+  --circle-y: 0;
+  --circle-size: 0;
+  --circle-color: #fff8;
+}
+button:focus {
+  outline: none;
+}
+button.animating {
+  background-image: paint(circle);
+  transition:
+    --circle-size 1s cubic-bezier(0, 0, 0.4, 1),
+    --circle-color 1s linear;
+
+  --circle-size: 500;
+  --circle-color: #fff0;
+}
+</style>
+
+<script>
+const customProps =  [
+  {name: '--circle-size', syntax: '<number>', initialValue: '0'},
+  {name: '--circle-color', syntax: '<color>', initialValue: '#fff8'}
+];
+customProps.forEach(CSS.registerProperty);
+window.paintWorklet.addModule('circle.js');
+
+for (const button of document.querySelectorAll('button')) {
+ button.addEventListener('click', (evt) => {
+   button.classList.add('animating');
+
+   // TODO: Should be `styleMap.set` once that's implemented.
+   button.style.setProperty('--circle-x', evt.offsetX);
+   button.style.setProperty('--circle-y', evt.offsetY);
+ });
+ button.addEventListener('transitionend', () => {
+   button.classList.remove('animating');
+ });
+}
+</script>
