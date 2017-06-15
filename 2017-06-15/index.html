@@ -51,10 +51,8 @@
       <p><code>random()</code> &mdash; a number between 0 and 1</p>
       <div>
         <code-block language="css">
-          .foo {
+          .progress-bar {
             width: calc(**random()** * 100%);
-            background: hsl(calc(**random()** * 360), 50%, 50%);
-            opacity: **random()**;
           }
         </code-block>
         <div class="DemoLink">
@@ -373,7 +371,7 @@
       <h3>Option #2</h3>
       <p part style="line-height: 0.5; text-align: left">
         <span style="line-height: 1.2">
-        Check the rest of the CSS for matching rules, and then only replace the <code>random()</code> function with a random number and apply those declarations as inline styles if it's the last matching rule.</span>
+        Check the rest of the CSS for matching rules, and then only replace the <code>random()</code> function with a random number as an inline style if it's the last matching rule.</span>
         <span style="font-size: .9em; line-height: 1.2" part>Wait, that won't work, because we have to account for specificity, so we'll have to manually parse each selector to calculate its specificity. Then we can sort the matching rules in specificity order from low to high, and only apply the declarations from the most specific selector.</span>
         <span style="font-size: .8em; line-height: 1.2" part>Oh and then there's <code>@media</code> rules, so we'll have to manually check for matches there as well.</span>
         <span style="font-size: .7em; line-height: 1.2" part>And speaking of at-rules, there's also <code>@supports</code>&mdash;can't forget about that.</span>
@@ -391,7 +389,7 @@
 
     <a-slide>
       <h3>Option #3</h3>
-      <p>Rewrite all selectors that contain the <code>random()</code> function in such a way that instead of one selector matching many elements, you have many selectors each only matching one element.</p>
+      <p part>Rewrite all selectors that contain the <code>random()</code> function in such a way that instead of one selector matching many elements, you have many selectors each only matching one element.</p>
     </a-slide>
 
     <a-slide>
@@ -736,7 +734,7 @@
     <a-slide>
       <p>You can use these functions to polyfill standard features</p>
       <code-block language="css">
-        div {
+        .media {
           background-image: **conic-gradient**(red, white, black);
         }
       </code-block>
@@ -744,12 +742,14 @@
 
     <a-slide>
       <p>
-        <code-block language="css" style="width:26em">
-          background-image: **paint(conic-gradient, 0 50% 100%, red white black)**;
+        <code-block language="css" style="width:27em">
+          .media {
+            background-image: **paint(conic-gradient, 0 50% 100%, red white black)**;
+          }
         </code-block>
       </p>
       <p>
-        <code-block language="javascript" style="width:26em">
+        <code-block language="javascript" style="width:27em">
           registerPaint('conic-gradient', class {
             static get inputArguments() {
               return ['&lt;angle>+ | &lt;percentage>+', '&lt;color>+'];
@@ -843,7 +843,7 @@
     <a-slide>
       <h3>Custom pseudo-classes</h3>
       <code-block language="html">
-        .next-sibling**:preceeded-by(.previous-sibling)** {
+        .next-sibling**:preceded-by(.previous-sibling)** {
           margin-top: 1em;
         }
       </code-block>
@@ -855,7 +855,7 @@
         .component {
           /* Default, small size styles... */
 
-          **@condition** (var(--container-width)) >= 768px) {
+          **@condition** (var(--container-width)) >= 48em) {
             /* Large size styles... */
           }
         }
@@ -883,33 +883,24 @@
       <h2>Wrapping Up</h2>
     </a-slide>
 
-
     <a-slide>
-      <h3>It's <strong>hard</strong> to write CSS polyfills</h3>
-      <p part>Due to browser limitations, polyfills today are either:</p>
-      <ul>
-        <li part>Too big</li>
-        <li part>Too slow</li>
-        <li part>Too incorrect</li>
-      </ul>
+      <h3>Polyfilling CSS today is much<br>harder than it should be</h3>
+      <p part>Without the ability to polyfill new features, innovation<br>
+        will move at the pace of the slowest-adopting browser.</p>
     </a-slide>
 
     <a-slide>
-      <h3>Houdini finally makes CSS extensible</h3>
-      <ul>
-        <li part>Innovation will transfer from spec authors<br>
-          and browser makers directly to web developers.</li>
-        <li part>As it is today, innovation moves at the pace<br>
-          of the slowest-adopting browser.</li>
-      </ul>
-
+      <h3>Houdini makes CSS truly extensible</h3>
+      <p part>It transfers the ability to innovate<br>
+        from spec authors to web developers.</p>
+      <p part>It will enable proper CSS polyfills,<br>
+        but it will also do so much more.</p>
     </a-slide>
 
-
     <a-slide>
-      <p>Developers complain about too much innovation in the JavaScript community. But you don't hear that about CSS.</p>
+      <h2>Final Thought</h2>
+      <p part>Developers complain about too much innovation in the JavaScript community. But you don't hear that about CSS.</p>
       <p part><a class="HashTag">#makecssfatigueathing</a></p>
-
     </a-slide>
 
     <a-slide>
@@ -928,12 +919,12 @@
 
   </a-slide-deck>
 
-  <!-- <script>
+  <script>
   window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
   ga('create', 'UA-40829935-5', 'auto');
   ga('send', 'pageview');
   </script>
   <script async src='https://www.google-analytics.com/analytics.js'></script>
- -->
+
 </body>
 </html>
