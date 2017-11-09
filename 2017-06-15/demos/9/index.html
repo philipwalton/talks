@@ -56,7 +56,7 @@ const customProps =  [
   {name: '--circle-color', syntax: '<color>', initialValue: '#fff8'}
 ];
 customProps.forEach(CSS.registerProperty);
-window.paintWorklet.addModule('circle.js');
+CSS.paintWorklet.addModule('circle.js');
 
 for (const button of document.querySelectorAll('button')) {
  button.addEventListener('click', (evt) => {
