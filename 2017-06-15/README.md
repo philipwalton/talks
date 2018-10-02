@@ -15,4 +15,4 @@ npm install
 npm start
 ```
 
-You can now navigate in your browser to [localhost:8080/2017-06-15](http://localhost:8000/2017-06-15) and view the slides.
+You can now navigate in your browser to [localhost:8080](http://localhost:8080/) and view the slides.
